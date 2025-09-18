@@ -86,11 +86,11 @@ function App() {
       <section id="about" className="z-10 my-10">
         <div className="bg-black min-w-dvw p-5">
           <h2 className="text-4xl mb-10 font-bold">About Me</h2>
-          <div className="flex items-center justify-between pb-10">
-            <div className="min-w-1/3 max-w-sm mx-auto rounded-md">
-              <img className="roundede-md" src={about_me_working} alt="Vicent working on a tattoo" />
+          <div className="flex items-center justify-between pb-10 gap-5">
+            <div className="min-w-130 max-w-sm ml-auto rounded-xl">
+              <img className="rounded-xl" src={about_me_working} alt="Vicent working on a tattoo" />
             </div>
-            <aside className="max-w-150 text-left flex flex-col gap-8 pl-5 md:w-1/2 text-lg text-gray-300 leading-relaxed">
+            <aside className="max-w-150 text-left flex flex-col gap-8 pl-5 text-lg text-gray-300 leading-relaxed mr-auto sm:text-sm md:text-lg">
               <div>
                 <h4 className="text-4xl font-['Cinzel'] mb-3">Me</h4>
                 <p>
