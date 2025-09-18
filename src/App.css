@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap');
+@import 'tailwindcss';
+
+:root {
+  --font-cinzel: 'Cinzel', serif;
+  --font-roboto: 'Roboto', sans-serif;
+}
+
+h1,
+h2 {
+  font-family: 'Cinzel', serif;
+}
+
+li,
+p {
+    font-family: 'Roboto', sans-serif;
+}

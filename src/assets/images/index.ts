@@ -1,0 +1,5 @@
+export { default as portfolio1 } from './portfolio1.webp'
+export { default as portfolio2 } from './portfolio2.webp'
+export { default as portfolio3 } from './portfolio3.webp'
+export { default as portfolio4 } from './portfolio4.webp'
+export { default as about_me_working } from './about_me_working.webp'
