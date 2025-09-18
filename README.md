@@ -32,7 +32,6 @@ src/
 │       └── index.ts         # Image exports
 ├── App.tsx                  # Main application component
 ├── App.css                  # Global styles and font imports
-├── index.css                # Base styles
 └── main.tsx                 # Application entry point
 ```
 
@@ -49,7 +48,7 @@ Clone the repository:
 
 ```bash
 git clone <repository-url>
-cd VicentArtTatto
+cd VicentArtTattoo
 ```
 
 Install dependencies:
@@ -155,7 +154,7 @@ Please include in your message:
 
 The website showcases Vicentart's expertise in:
 
-- Hyper-realistic black and grey tattoos
+- Hyperrealistic black and grey tattoos
 - Vibrant color designs
 - Custom artwork tailored to each client
 - Personal storytelling through ink
