@@ -1,24 +1,9 @@
-import { useEffect, useState } from 'react'
 import { navigation } from '@/common'
 import { MobileNavbar } from '@/components/MobileNavbar.tsx'
+import { useNavigation } from '@/hooks/useNavigation'
 
 export const NavigationBar = () => {
-  const [isActive, setIsActive] = useState(-1)
-
-  useEffect(() => {
-    const tabs = document.querySelectorAll('.tab')
-
-    if (isActive !== -1) {
-      navigation.forEach((_item, index) => {
-        const { [index]: tab } = tabs
-        if (index === isActive) {
-          tab.classList.add('tab-active')
-        } else {
-          tab.classList.remove('tab-active')
-        }
-      })
-    }
-  }, [isActive])
+  const { tabsRef, setIsActive } = useNavigation()
 
   return (
     <nav className="navbar bg-base-100 shadow-sm justify-between">
@@ -29,7 +14,9 @@ export const NavigationBar = () => {
             {navigation.map(({ name, href }, index) => (
               <li className="list-none" key={index}>
                 <a
-                  key={index}
+                  ref={el => {
+                    tabsRef.current[index] = el!
+                  }}
                   role="tab"
                   className="tab text-xl font-['Roboto'] uppercase"
                   href={href}
