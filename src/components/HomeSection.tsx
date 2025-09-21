@@ -7,7 +7,7 @@ export const HomeSection = () => (
         alt="logo"
       />
     </div>
-    <h1 className="mt-5 font-['Cinzel'] text-5xl font-bold">Vicentart</h1>
+    <h1 className="mt-5 font-cinzel text-5xl font-bold">Vicentart</h1>
     <h2 className="mb-5 text-md font-['Roboto'] text-gray-300">TATTOO ARTIST</h2>
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="max-w-lg">

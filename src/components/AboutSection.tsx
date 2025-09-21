@@ -10,7 +10,7 @@ export const AboutSection = () => (
         </div>
         <aside className="max-w-150 text-left flex flex-col gap-8 pl-5 text-lg text-gray-300 leading-relaxed mr-auto sm:text-sm md:text-lg">
           <div>
-            <h4 className="text-4xl font-['Cinzel'] mb-3">Me</h4>
+            <h4 className="text-4xl font-cinzel mb-3">Me</h4>
             <p>
               Vicent has been honing his craft for over 15 years, starting from a small studio in
               the heart of the city. His passion for art and ink is not just a profession but a
@@ -21,7 +21,7 @@ export const AboutSection = () => (
             </p>
           </div>
           <div>
-            <h4 className="text-4xl font-['Cinzel'] mb-3">My Philosophy</h4>
+            <h4 className="text-4xl font-cinzel mb-3">My Philosophy</h4>
             <p>
               At Vicentart, we believe that a tattoo is more than just an image on the skin; it's a
               piece of your soul made visible. Our philosophy is rooted in the belief that everyone
