@@ -1,18 +1,18 @@
+import { CarouselItem } from '@/components/ui/carousel.tsx'
+
 interface PortfolioProps {
+  index: number
   image: string
-  alt?: string
+  alt: string
 }
 
-const PortfolioCard = ({ image, alt }: PortfolioProps) => (
-  <div className="bg-white min-h-50 flex items-center justify-center mb-10 hover:scale-105 transition-transform duration-300 rounded-3xl">
-    <a href={image} target="_blank" rel="noopener noreferrer">
-      <img
-        className="w-80 h-80 object-cover rounded-2xl"
-        src={image}
-        alt={alt || 'Portfolio image'}
-      />
-    </a>
-  </div>
+export const PortfolioCard = ({ index, image, alt }: PortfolioProps) => (
+  <CarouselItem className="basis-1/2 sm:basis-1/4 ">
+    <img
+      className="w-80 h-80 max-h-80 object-cover rounded-2xl hover:opacity-70 transition-opacity duration-200"
+      key={index}
+      src={image}
+      alt={alt}
+    />
+  </CarouselItem>
 )
-
-export default PortfolioCard
