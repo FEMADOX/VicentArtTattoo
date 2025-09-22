@@ -13,7 +13,7 @@ export const accordionData: AccordionData[] = [
     title: 'Me',
     content: `Vicent has been honing his craft for over 15 years, starting from a small studio in
     the heart of the city. His passion for art and ink is not just a profession but a
-    calling. Specializing in hyper-realistic black and grey and vibrant color tattoos,
+    calling. Specializing in black and grey and vibrant color tattoos,
     he transforms personal stories into breathtaking pieces of art. Each design is a
     collaboration, a shared journey between artist and client to create something truly
     unique and personal.`
