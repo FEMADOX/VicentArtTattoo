@@ -18,7 +18,7 @@ export const NavigationBar = () => {
                     tabsRef.current[index] = el!
                   }}
                   role="tab"
-                  className="tab text-xl font-['Roboto'] uppercase"
+                  className="tab text-xl font-roboto uppercase"
                   href={href}
                   onClick={() => setIsActive(index)}
                 >

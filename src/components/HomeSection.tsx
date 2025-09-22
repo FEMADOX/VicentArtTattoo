@@ -1,5 +1,5 @@
 export const HomeSection = () => (
-  <section id="home" className="z-10 mt-20 mb-10 max-w-200">
+  <section id="home" className="mt-25 mb-10 max-w-200">
     <div className="border-b-2 flex justify-center pb-4 mb-4">
       <img
         className="bg-white text-black max-w-30 min-h-20 text-center mb-2 rounded-full p-1"
@@ -8,7 +8,7 @@ export const HomeSection = () => (
       />
     </div>
     <h1 className="mt-5 font-cinzel text-5xl font-bold">Vicentart</h1>
-    <h2 className="mb-5 text-md font-['Roboto'] text-gray-300">TATTOO ARTIST</h2>
+    <h2 className="mb-5 text-md font-roboto text-gray-400">TATTOO ARTIST</h2>
     <div className="flex flex-col items-center justify-center gap-4">
       <p className="max-w-lg">
         Location
