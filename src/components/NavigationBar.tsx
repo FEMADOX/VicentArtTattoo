@@ -1,6 +1,7 @@
 import { navigation } from '@/common'
 import { MobileNavbar } from '@/components/MobileNavbar.tsx'
 import { useNavigation } from '@/hooks/useNavigation'
+import { FaGithub } from 'react-icons/fa'
 
 export const NavigationBar = () => {
   const { tabsRef, setIsActive } = useNavigation()
@@ -29,8 +30,11 @@ export const NavigationBar = () => {
           </ul>
         </div>
       </div>
-      <div className="font-cinzel text-xl md:pr-10">VicentArt</div>
-      <div className="px-6 sm:hidden"></div>
+      <div className="font-cinzel text-xl md:pr-5">VicentArt</div>
+      <div className="px-5 hover:text-gray-300 cursor-pointer md:hidden">
+        <a href="https://github.com/FEMADOX/VicentArtTattoo"></a>
+        <FaGithub />
+      </div>
     </nav>
   )
 }
