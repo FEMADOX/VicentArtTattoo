@@ -86,7 +86,7 @@ const standardTsStyle = {
 // https://vite.dev/config/
 export default defineConfig({
   staged: {
-    '*': 'vp check --fix'
+    '!{.agents,.claude,.aiassistant,.continue,.junie,.stitch}/**': 'vp check --fix'
   },
   lint: {
     plugins: ['oxc', 'typescript', 'unicorn'],
