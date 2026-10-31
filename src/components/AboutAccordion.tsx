@@ -8,7 +8,10 @@ export const AboutAccordion = () => {
   return (
     <div className="join join-vertical">
       {accordionData.map(({ id, title, content }, index) => (
-        <div key={id} className={getItemClasses(index, isOpen(id), accordionData.length)}>
+        <div
+          key={id}
+          className={getItemClasses(index, isOpen(id), accordionData.length)}
+        >
           <input
             type="checkbox"
             checked={isOpen(id)}
@@ -16,7 +19,9 @@ export const AboutAccordion = () => {
             onChange={() => toggleSection(id)}
             className="cursor-pointer"
           />
-          <div className="collapse-title font-semibold text-4xl font-cinzel">{title}</div>
+          <div className="collapse-title font-semibold text-4xl font-cinzel">
+            {title}
+          </div>
           <div className="collapse-content text-md xl:text-xl">
             <p>{content}</p>
           </div>

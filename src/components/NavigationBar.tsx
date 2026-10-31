@@ -16,7 +16,7 @@ export const NavigationBar = () => {
               <li className="list-none" key={index}>
                 <a
                   ref={el => {
-                    tabsRef.current[index] = el!
+                    tabsRef.current[index] = el
                   }}
                   role="tab"
                   className="tab text-xl font-roboto uppercase"

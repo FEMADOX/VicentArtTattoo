@@ -14,20 +14,24 @@ export const HomeSection = () => (
         Location
         <br />
         9117 Little Rd, New Port Richey, FL 34654
-        <br />ɪ ᴍᴏsᴛʟʏ ᴡᴏʀᴋ ʙʏ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ. You can contact me through my instagram, Facebook or
-        send a message to 813-696-1137
+        <br />
+        ɪ ᴍᴏsᴛʟʏ ᴡᴏʀᴋ ʙʏ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ. You can contact me through my
+        instagram, Facebook or send a message to 813-696-1137
       </p>
       <p className="max-w-lg">
         Design Process
-        <br />ɪ ᴀʟᴡᴀʏs ᴛᴀᴋᴇ ᴍʏ ᴛɪᴍᴇ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ᴘʀᴏᴄᴇss ᴄʀᴇᴀᴛɪɴɢ ᴀn ᴜɴɪǫᴜᴇ ᴘɪᴇᴄᴇ ғᴏʀ ᴇᴀᴄʜ
-        ᴄᴜsᴛᴏᴍᴇʀ, ᴇᴠᴇʀʏᴛʜɪɴɢ ɪs ᴅᴇsɪɢɴᴇᴅ ʙᴇғᴏʀᴇ ʏᴏᴜ ᴀʀʀɪᴠᴇ ᴛᴏ ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ᴀɴᴅ sʜᴏᴡɴ ᴛᴏ ʏᴏᴜ ᴏɴ
-        ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ᴅᴀᴛᴇ.
+        <br />
+        ɪ ᴀʟᴡᴀʏs ᴛᴀᴋᴇ ᴍʏ ᴛɪᴍᴇ ᴀɴᴅ ᴇɴᴊᴏʏ ᴛʜᴇ ᴘʀᴏᴄᴇss ᴄʀᴇᴀᴛɪɴɢ ᴀn ᴜɴɪǫᴜᴇ
+        ᴘɪᴇᴄᴇ ғᴏʀ ᴇᴀᴄʜ ᴄᴜsᴛᴏᴍᴇʀ, ᴇᴠᴇʀʏᴛʜɪɴɢ ɪs ᴅᴇsɪɢɴᴇᴅ ʙᴇғᴏʀᴇ ʏᴏᴜ ᴀʀʀɪᴠᴇ ᴛᴏ
+        ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ᴀɴᴅ sʜᴏᴡɴ ᴛᴏ ʏᴏᴜ ᴏɴ ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ᴅᴀᴛᴇ.
       </p>
       <p className="max-w-lg">
         Deposit
-        <br />ᴀ ᴅᴇᴘᴏsɪᴛ ɪs ᴀ ᴍᴜsᴛ. ᴛʜᴇ ᴅᴇᴘᴏsɪᴛ ᴡɪʟʟ ʙᴇ ɪɴᴄʟᴜᴅᴇᴅ ɪɴ ʏᴏᴜʀ ᴘʀᴏᴊᴇᴄᴛ ᴛᴏᴛᴀʟ ᴘʀɪᴄᴇ. ᴏɴᴄᴇ
-        ᴛʜᴇ ᴅᴇᴘᴏsɪᴛ ɪs ʀᴇᴄᴇɪᴠᴇᴅ, ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ɪs ᴛʜᴇɴ ᴄᴏɴғɪʀᴍᴇᴅ. ɪ ᴍᴏsᴛʟʏ ᴜsᴇ Cash app, Zelle,
-        Apple-pay, Venmo ᴀs ᴘᴀʏᴍᴇɴᴛ ᴍᴇᴛʜᴏᴅ. ʙᴜᴛ, ʏᴏᴜ ᴄᴀɴ sᴛᴏᴘ ʙʏ ᴛʜᴇ sʜᴏᴘ ᴀɴᴅ ᴘᴀʏ ɪɴ ᴄᴀsʜ ᴀs ᴡᴇʟʟ.
+        <br />
+        ᴀ ᴅᴇᴘᴏsɪᴛ ɪs ᴀ ᴍᴜsᴛ. ᴛʜᴇ ᴅᴇᴘᴏsɪᴛ ᴡɪʟʟ ʙᴇ ɪɴᴄʟᴜᴅᴇᴅ ɪɴ ʏᴏᴜʀ ᴘʀᴏᴊᴇᴄᴛ
+        ᴛᴏᴛᴀʟ ᴘʀɪᴄᴇ. ᴏɴᴄᴇ ᴛʜᴇ ᴅᴇᴘᴏsɪᴛ ɪs ʀᴇᴄᴇɪᴠᴇᴅ, ʏᴏᴜʀ ᴀᴘᴘᴏɪɴᴛᴍᴇɴᴛ ɪs ᴛʜᴇɴ
+        ᴄᴏɴғɪʀᴍᴇᴅ. ɪ ᴍᴏsᴛʟʏ ᴜsᴇ Cash app, Zelle, Apple-pay, Venmo ᴀs ᴘᴀʏᴍᴇɴᴛ
+        ᴍᴇᴛʜᴏᴅ. ʙᴜᴛ, ʏᴏᴜ ᴄᴀɴ sᴛᴏᴘ ʙʏ ᴛʜᴇ sʜᴏᴘ ᴀɴᴅ ᴘᴀʏ ɪɴ ᴄᴀsʜ ᴀs ᴡᴇʟʟ.
       </p>
       <p>How to book</p>
       <ul className="list-disc max-w-lg text-left">
@@ -38,8 +42,9 @@ export const HomeSection = () => (
       </ul>
       <p>Rescheduling | Cancellations</p>
       <p className="text-center">
-        Deposits are non-refundable and a second deposit will be required if you want to change your
-        appointment day. Please be sure you can make it before booking.
+        Deposits are non-refundable and a second deposit will be required if you
+        want to change your appointment day. Please be sure you can make it
+        before booking.
       </p>
     </div>
   </section>

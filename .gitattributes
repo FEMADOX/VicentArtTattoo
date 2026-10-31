@@ -1,0 +1,12 @@
+* text=auto
+
+# Git hooks must remain executable by the POSIX shell on Windows.
+.vite-hooks/** text eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary

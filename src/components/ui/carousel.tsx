@@ -91,12 +91,13 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // oxlint-disable-next-line react/set-state-in-effect -- Synchronize controls with the external Embla instance.
     onSelect(api)
     api.on('reInit', onSelect)
     api.on('select', onSelect)
 
     return () => {
-      api?.off('select', onSelect)
+      api.off('select', onSelect)
     }
   }, [api, onSelect])
 
@@ -106,7 +107,7 @@ function Carousel({
         carouselRef,
         api,
         opts,
-        orientation: orientation || (opts?.axis === 'y' ? 'vertical' : 'horizontal'),
+        orientation,
         scrollPrev,
         scrollNext,
         canScrollPrev,

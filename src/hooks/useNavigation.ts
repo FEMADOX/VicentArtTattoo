@@ -4,7 +4,7 @@ import { navigation } from '@/common'
 export const useNavigation = () => {
   const [isActive, setIsActive] = useState(-1)
   const [currentSection, setCurrentSection] = useState('')
-  const tabsRef = useRef<HTMLAnchorElement[]>([])
+  const tabsRef = useRef<Array<HTMLAnchorElement | null>>([])
 
   // Handle active tab styling
   useEffect(() => {
@@ -26,7 +26,9 @@ export const useNavigation = () => {
   useEffect(() => {
     const sections = navigation
       .map(({ href }) => document.querySelector(href))
-      .filter(Boolean) as HTMLElement[]
+      .filter(
+        (section): section is HTMLElement => section instanceof HTMLElement
+      )
 
     const observerOptions = {
       root: null,
@@ -46,7 +48,9 @@ export const useNavigation = () => {
             setCurrentSection(sectionId)
 
             // Update active tab
-            const activeIndex = navigation.findIndex(({ href }) => href === sectionHash)
+            const activeIndex = navigation.findIndex(
+              ({ href }) => href === sectionHash
+            )
             if (activeIndex !== -1) setIsActive(activeIndex)
           }
         }
@@ -55,7 +59,7 @@ export const useNavigation = () => {
 
     // Observe all sections
     sections.forEach(section => {
-      if (section) observer.observe(section)
+      observer.observe(section)
     })
 
     return () => observer.disconnect()
