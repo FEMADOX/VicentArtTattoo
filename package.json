@@ -13,7 +13,7 @@
     "type-check": "tsc --build --noEmit",
     "check-all": "vp run check && vp run type-check",
     "preview": "vp preview",
-    "prepare": "vp config",
+    "prepare": "vp config && vp fmt --no-error-on-unmatched-pattern AGENTS.md",
     "check": "vp check --deny-warnings",
     "test": "vp test",
     "test:watch": "vp test watch"
