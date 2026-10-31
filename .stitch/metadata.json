@@ -1,0 +1,571 @@
+{
+  "schemaVersion": 1,
+  "projectId": "14587093072929101256",
+  "projectUrl": "https://stitch.withgoogle.com/projects/14587093072929101256",
+  "title": "VicentArtTattoo — current website baseline",
+  "status": "complete",
+  "uploadStartedAt": "2026-10-31T18:07:41.584784+00:00",
+  "completedAt": "2026-10-31T18:15:02.858733+00:00",
+  "manifest": "integration-manifest.json",
+  "approvedManifestSha256": "b6d1a184648b94c9779c04b3e0e521110d952732f346ee6b8b71e41e86ff69e8",
+  "source": {
+    "gitHead": "8eab271d5fdac636ac47f2b3b1cd0a34564060a9",
+    "includesUncommittedChanges": true,
+    "sha256": "c13999303926b0422fed5a2b226a2eddda5f1ae2df6da320870929ce1372fc88",
+    "files": [
+      {
+        "path": "index.html",
+        "sha256": "fdc8a0265068cb215a3433dfcf1a9bb075a69a86c298198ed3827ca91dc2ad78"
+      },
+      {
+        "path": "package.json",
+        "sha256": "6e1bdbccbb1749d315a02b8f8e05a8abf787f9f59118a71b41653328a7740dd5"
+      },
+      {
+        "path": "pnpm-lock.yaml",
+        "sha256": "829513c8698e97f14adf0495f25c8a757311bb6cac01dd5667abf33b83485ec7"
+      },
+      {
+        "path": "public/logo.svg",
+        "sha256": "fd3ede4a25adb52e34c87fe6ce84dc25f092818f294024c9ea91125efd768867"
+      },
+      {
+        "path": "src/App.css",
+        "sha256": "677603fab37a3cd0ff8f806d5aa819e6c44ed1c428a182be5aa40c0c512470b0"
+      },
+      {
+        "path": "src/App.tsx",
+        "sha256": "04aca7b0424da6397df77994f91215b0e5819fc255e0c3c402ea055b8c397963"
+      },
+      {
+        "path": "src/assets/images/Background.webp",
+        "sha256": "f4ee3f3656d73775377b9d64458468314b0c055332501702098485d546363175"
+      },
+      {
+        "path": "src/assets/images/about_me_working.webp",
+        "sha256": "473bba7357613d394b1f81737dd3b9c6b6729e5c77f39a81ae274112e7abd776"
+      },
+      {
+        "path": "src/assets/images/index.ts",
+        "sha256": "637c1d373d976d9ccaf8d5b9fb39a420cfb2b8e0bf3eefcd2215da6c829585a0"
+      },
+      {
+        "path": "src/assets/images/portfolio1.webp",
+        "sha256": "113797e1436aaa311787de2add332bc9f3fd7ba66570dd9bf9a9cd53ec25d397"
+      },
+      {
+        "path": "src/assets/images/portfolio2.webp",
+        "sha256": "87309ca99b98212d785750a1984c33f11dd032dbb1db62a014141adae5812a26"
+      },
+      {
+        "path": "src/assets/images/portfolio3.webp",
+        "sha256": "1d10c3cdb224f7b8b29691af9d4924c3e4f19b702e33c5af5e09f9a435f938e0"
+      },
+      {
+        "path": "src/assets/images/portfolio4.webp",
+        "sha256": "54f5022494022562210890fbbedd32656f7736b6ee4d56cbd5061955f070cdab"
+      },
+      {
+        "path": "src/assets/images/portfolio5.webp",
+        "sha256": "a21bc12e4a6cadf98a096a62fffb445f35369a8595c213467ac750a2fb84bb81"
+      },
+      {
+        "path": "src/assets/images/portfolio6.webp",
+        "sha256": "298b078d92e7626e630a7cb56c864a24a83f2f61112be73a02d33846eba06f80"
+      },
+      {
+        "path": "src/assets/images/portfolio7.webp",
+        "sha256": "84d7b8681409084cfcf9d40a091e9a6b1c7160b0394addd85092fe9a6a494228"
+      },
+      {
+        "path": "src/assets/images/portfolio8.webp",
+        "sha256": "cfe7d00665006fb53580fd9ea0a995f28bb2cb89561cd2babfacb6ab20238130"
+      },
+      {
+        "path": "src/common/constants.ts",
+        "sha256": "9966d54627ee578f5b42a039a020651518345a9bb8f13dee896e1922250b6300"
+      },
+      {
+        "path": "src/common/index.ts",
+        "sha256": "a84cb47603f8de5d1522900cfbc611ab4d498def86b6af6b46cbd027102fb37f"
+      },
+      {
+        "path": "src/common/types.ts",
+        "sha256": "a96f7be41bd1a98b05bdf924dacd78287ac1bacc92fbd8f2758251b3f5ee1478"
+      },
+      {
+        "path": "src/components/AboutAccordion.tsx",
+        "sha256": "7cf0e84c4a5437d7c103f9b3b07409396d968aba8c4091ea38b0ef7b1bef5850"
+      },
+      {
+        "path": "src/components/AboutSection.tsx",
+        "sha256": "bf0f04a35e42565f1d221e212c262204762d5e9d282360561b26c0ab7a2e120f"
+      },
+      {
+        "path": "src/components/ContactSection.tsx",
+        "sha256": "202c31ca37ed707f7c0583b88a08da8bda64c9e0f7b9a401ec92ff4efc4aaf68"
+      },
+      {
+        "path": "src/components/Footer.tsx",
+        "sha256": "0fdb9d7e1039f21c6a51db0634acd52b52a55614e846f9962d59e00982a5c1bb"
+      },
+      {
+        "path": "src/components/HomeSection.tsx",
+        "sha256": "d228c454aa44829addc0152a2a02e12ac97ab27227a02762b64f1b56cd8b530e"
+      },
+      {
+        "path": "src/components/MobileNavbar.tsx",
+        "sha256": "2c856ea749c8d843fa6d628f8e5ee72dc1d349b63f04e5357b5e7aa02c7ca3bf"
+      },
+      {
+        "path": "src/components/NavigationBar.tsx",
+        "sha256": "6182a4b71d5ba513f6c7044f0d9e17dc289e8fbe05efafb4da629b1d75497091"
+      },
+      {
+        "path": "src/components/PortfolioCard.tsx",
+        "sha256": "1dbf57cd5dae5fdd1f7630a62b7cbbe5f3655cf075951b2f49afc2aa9a7017c1"
+      },
+      {
+        "path": "src/components/PortfolioCarousel.tsx",
+        "sha256": "b05ebc1438bdd2b6081693b647bd04448de35c7c507b43186b45ad300a997ae3"
+      },
+      {
+        "path": "src/components/PortfolioSection.tsx",
+        "sha256": "2b5a4e1d5b3fa052830ec1b0651c7e002d163fc008279ee109d65b14587f2c86"
+      },
+      {
+        "path": "src/components/index.ts",
+        "sha256": "7353267a771aa4475095db5703fc7b403c86d749245b106716e205751c434ea9"
+      },
+      {
+        "path": "src/components/ui/button.tsx",
+        "sha256": "274096e460c392a15160e8afc01f582f6c3fb49e49976530762508c0931b7857"
+      },
+      {
+        "path": "src/components/ui/carousel.tsx",
+        "sha256": "23be6d2925964a69e5087fe3154913d0217449da37ceea10f630d243add4f918"
+      },
+      {
+        "path": "src/hooks/index.ts",
+        "sha256": "53474fd74fdcb0db612aac0b28fa70daf8171c2f3cf21504947c960ac537c6cb"
+      },
+      {
+        "path": "src/hooks/useAccordion.ts",
+        "sha256": "225f87f7c1bba48d34eab9c5499773104741e1c90ebb6ea2c605be3b117a0556"
+      },
+      {
+        "path": "src/hooks/useCarousel.ts",
+        "sha256": "8272000abd60833da7028d5b84662de0bb0c0c53cbe053d78cec147bdc024817"
+      },
+      {
+        "path": "src/hooks/useNavigation.ts",
+        "sha256": "12ad3155d4b2d221dea95232bd3afdea364ce67d8be11efb14d52bc89cf8106e"
+      },
+      {
+        "path": "src/lib/utils.ts",
+        "sha256": "e46429536f43f5910f5b2b0c50bb2769b510a4558bb4b5d20a3b0a9091dbf7c3"
+      },
+      {
+        "path": "src/main.tsx",
+        "sha256": "9719f1ac89b2c0ee9cef50e435935415c0acea3e536a012a5c86c019a3e25f62"
+      },
+      {
+        "path": "src/utils/accordionUtils.ts",
+        "sha256": "0fe5f14fa51338b8ccba7fcbdc5b6244902c0303ab48729b5a1e29a440387aee"
+      },
+      {
+        "path": "src/utils/index.ts",
+        "sha256": "b3ef2c87c49ca5a50e407157c702dad9c198477352089a8d5faea68b9c4e7827"
+      },
+      {
+        "path": "src/vite-env.d.ts",
+        "sha256": "5650e2957c15f72f8bd5461ceda885b7ef5739b08d435a9cac9661b8510740f6"
+      },
+      {
+        "path": "vite.config.ts",
+        "sha256": "b760cb8f5ed45323c4299075bfad4b85d02ca170d84b8302aa7505eef27f94be"
+      }
+    ]
+  },
+  "legacyScreenInstancesPreserved": 11,
+  "projectScreenInstanceCount": 21,
+  "designDocument": {
+    "name": "projects/14587093072929101256/screens/2180304302419543128",
+    "screenInstanceId": "2180304302419543128",
+    "file": "projects/14587093072929101256/files/2180304302419544965",
+    "bytes": 14770,
+    "sha256": "54e5b4c86fe936abd585e299289b05801828d34db1783492014063fb30441e72",
+    "remoteContentVerified": true
+  },
+  "designSystem": {
+    "name": "assets/f4d12f1305024789a7246059272b3877",
+    "assetId": "f4d12f1305024789a7246059272b3877",
+    "displayName": "Vicentart Tattoo Artist",
+    "version": "1",
+    "status": "created",
+    "sourceDocument": "DESIGN.md",
+    "nativeTheme": {
+      "colorMode": "DARK",
+      "headlineFontFamily": "Cinzel",
+      "bodyFontFamily": "Roboto",
+      "labelFontFamily": "Roboto",
+      "roundness": "ROUND_EIGHT",
+      "customColor": "#000000",
+      "background": "#131313",
+      "navigationSeed": "#1d232a",
+      "designMdSha256": "6b4ed55bf86101297cbeeba7f0fa19a2173dd467b20c53da6c81b223d05d5031"
+    },
+    "sourceTokens": {
+      "background": "#000000",
+      "text": "#ffffff",
+      "navigation": "#1d232a",
+      "headlineFontFamily": "Cinzel",
+      "navigationFontFamily": "Roboto",
+      "bodyFontFamily": "system-ui",
+      "baseRadius": "10px",
+      "aboutImageRadius": "14px",
+      "portfolioImageRadius": "16px"
+    },
+    "nativeExtractionDifferences": [
+      "Stitch inferred Roboto for body text; the source inherits the system sans stack.",
+      "Stitch derived Material surface/background #131313; the rendered page uses #000000.",
+      "Stitch selected global ROUND_EIGHT; source radii are 10px base, 14px About image, and 16px portfolio images.",
+      "The native generated designMd is a normalized interpretation. The uploaded DESIGN.md and nine HTML files preserve the approved baseline."
+    ],
+    "updateLimitation": "The current MCP update input requires preset global font enums and does not expose the custom global font-family fields returned on read. Correction attempts returned invalid argument; the generated asset was retained.",
+    "appliedToExistingScreens": false
+  },
+  "screens": [
+    {
+      "key": "home-desktop",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "state": "default",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "frame": {
+        "width": 1440,
+        "height": 3039
+      },
+      "menuOpen": false,
+      "accordion": [
+        true,
+        false
+      ],
+      "screenId": "3783298403144295436",
+      "name": "projects/14587093072929101256/screens/3783298403144295436",
+      "screenInstanceId": "3783298403144295436",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/3783298403144297134",
+        "bytes": 5684325,
+        "sha256": "411e6800f4aaf94c9e86e79114d1b26e4c51c5dcd74f1007d7ad2c702ba6be33"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/3783298403144298333",
+        "bytes": 1570816,
+        "sha256": "b3c04c19f2702b18c6e0c04b6f86696e605c9f00bf3034194a7ba51ddddf4f60"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-mobile",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "state": "default",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frame": {
+        "width": 390,
+        "height": 3345
+      },
+      "menuOpen": false,
+      "accordion": [
+        true,
+        false
+      ],
+      "screenId": "15337879196870185524",
+      "name": "projects/14587093072929101256/screens/15337879196870185524",
+      "screenInstanceId": "15337879196870185524",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/15337879196870188706",
+        "bytes": 5684325,
+        "sha256": "d3bef214af1716b66ee295dd8b0e742e5c0d45e211dc2a139a933efee208db20"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/15337879196870185067",
+        "bytes": 530683,
+        "sha256": "d5073f9346705d1ffdfd5a22e2ac268972cb38ea81ef5fa59ad7a2f6c0b725df"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-small-tablet",
+      "route": "/",
+      "deviceType": "TABLET",
+      "state": "default",
+      "viewport": {
+        "width": 680,
+        "height": 900
+      },
+      "frame": {
+        "width": 680,
+        "height": 3286
+      },
+      "menuOpen": false,
+      "accordion": [
+        true,
+        false
+      ],
+      "screenId": "682037120202371325",
+      "name": "projects/14587093072929101256/screens/682037120202371325",
+      "screenInstanceId": "682037120202371325",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/682037120202371771",
+        "bytes": 5684321,
+        "sha256": "e4085f6ba3a4202f0ac1f890857ab4f309f6a71ec6285425a29d4bf240d05fb4"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/682037120202373596",
+        "bytes": 1058839,
+        "sha256": "e9f266ab1b470a07f676cb9b1fc7a151f87e9c80bcab460d34c1d1ac27b63146"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-tablet",
+      "route": "/",
+      "deviceType": "TABLET",
+      "state": "default",
+      "viewport": {
+        "width": 768,
+        "height": 1024
+      },
+      "frame": {
+        "width": 768,
+        "height": 2950
+      },
+      "menuOpen": false,
+      "accordion": [
+        true,
+        false
+      ],
+      "screenId": "5365604941477335045",
+      "name": "projects/14587093072929101256/screens/5365604941477335045",
+      "screenInstanceId": "5365604941477335045",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/5365604941477335355",
+        "bytes": 5684327,
+        "sha256": "241e5846cfaaf9627de00c6456d31599b93bb8fb666232ebdbe2d2947ce90101"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/5365604941477337248",
+        "bytes": 998809,
+        "sha256": "b938776ea85c5bc2fba8519ed78f795af96810b5bac33270eca7b4e4822cd449"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-mobile-menu",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "state": "menu-open",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frame": {
+        "width": 390,
+        "height": 3345
+      },
+      "menuOpen": true,
+      "accordion": [
+        true,
+        false
+      ],
+      "screenId": "7077288105043426643",
+      "name": "projects/14587093072929101256/screens/7077288105043426643",
+      "screenInstanceId": "7077288105043426643",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/7077288105043424265",
+        "bytes": 5684345,
+        "sha256": "365f16b2775fab80e313c90486cea54368893b67cc1f655c8e12b301dece054a"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/7077288105043425454",
+        "bytes": 527965,
+        "sha256": "651c68660cc5a42fe4ae66ceff2ad038392a464a504a3a0c18f78a486261f6a6"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-desktop-philosophy",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "state": "philosophy-open",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "frame": {
+        "width": 1440,
+        "height": 3039
+      },
+      "menuOpen": false,
+      "accordion": [
+        false,
+        true
+      ],
+      "screenId": "3919123031824910686",
+      "name": "projects/14587093072929101256/screens/3919123031824910686",
+      "screenInstanceId": "3919123031824910686",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/3919123031824908472",
+        "bytes": 5684325,
+        "sha256": "17239fc35cb35887a4e9b91e52811da2878b88e756f3bfe3b4670a4f2e6cf425"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/3919123031824909579",
+        "bytes": 1609604,
+        "sha256": "8d4461d33ac767aab30d2b57cdef290b767ec2ac5a9f42834c7cff1777d26a05"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-mobile-philosophy",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "state": "philosophy-open",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frame": {
+        "width": 390,
+        "height": 3404
+      },
+      "menuOpen": false,
+      "accordion": [
+        false,
+        true
+      ],
+      "screenId": "6046930230499830612",
+      "name": "projects/14587093072929101256/screens/6046930230499830612",
+      "screenInstanceId": "6046930230499830612",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/6046930230499828310",
+        "bytes": 5684326,
+        "sha256": "f47b1dbab7318f2e5028e58c5f8220f8a2803e41cc3bdd0cb325d8a0cceae91b"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/6046930230499831509",
+        "bytes": 543747,
+        "sha256": "e455f73b0a7ecf2eb57cc9a2e8ad75767201be2bfa064fe9a1d65741c71b9818"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-desktop-collapsed",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "state": "accordion-collapsed",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "frame": {
+        "width": 1440,
+        "height": 3039
+      },
+      "menuOpen": false,
+      "accordion": [
+        false,
+        false
+      ],
+      "screenId": "162764914660217873",
+      "name": "projects/14587093072929101256/screens/162764914660217873",
+      "screenInstanceId": "162764914660217873",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/162764914660218907",
+        "bytes": 5684315,
+        "sha256": "17d4d59dc83f427be6174708099eaf3480ad84e63236eba46cd2ff82ea58de5b"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/162764914660220438",
+        "bytes": 1555318,
+        "sha256": "06c0afbe77bacc3e4841569f5574270ef84e7268328348bfdd33905273e8983e"
+      },
+      "remoteContentVerified": true
+    },
+    {
+      "key": "home-mobile-collapsed",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "state": "accordion-collapsed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "frame": {
+        "width": 390,
+        "height": 2978
+      },
+      "menuOpen": false,
+      "accordion": [
+        false,
+        false
+      ],
+      "screenId": "17042685750750143229",
+      "name": "projects/14587093072929101256/screens/17042685750750143229",
+      "screenInstanceId": "17042685750750143229",
+      "status": "COMPLETE",
+      "html": {
+        "file": "projects/14587093072929101256/files/17042685750750143235",
+        "bytes": 5684316,
+        "sha256": "6bf7cea09b8121f869ada58b747f414267077fa8ea532a1d5c3e523ac3eb6276"
+      },
+      "screenshot": {
+        "file": "projects/14587093072929101256/files/17042685750750143232",
+        "bytes": 517644,
+        "sha256": "2f81bba40780a3e66be24855fca232d25cefe83f843d60c9b9eab3982afcaed9"
+      },
+      "remoteContentVerified": true
+    }
+  ],
+  "verification": {
+    "method": "Stitch MCP get_screen/download_file, SHA-256 comparison against the approved manifest, and get_project readback",
+    "checkedAt": "2026-10-31T18:15:02.858733+00:00",
+    "filesDownloadedAndMatched": 19,
+    "screenCount": 9,
+    "dimensionsAndDeviceTypesMatched": true,
+    "allNewInstancesPresent": true,
+    "legacyInstancesPreserved": 11,
+    "nativeDesignSystemPresent": true,
+    "offlineHtml": {
+      "offlineHtmlCount": 9,
+      "externalRequests": 0,
+      "imagesPerHtml": 10,
+      "fonts": [
+        "Cinzel",
+        "Roboto"
+      ],
+      "scriptsPerHtml": 0,
+      "menuAndAccordionStatesVerified": true
+    }
+  },
+  "limitations": [
+    "Static snapshots preserve captured UI states; live React interactions and carousel autoplay are not embedded.",
+    "The native design-system extraction has the documented differences; use DESIGN.md and the captured HTML as the exact baseline."
+  ]
+}

@@ -86,6 +86,12 @@ AGENTS.md centraliza las instrucciones de trabajo, los comandos de validación y
 
 Los enlaces de .claude/skills/ apuntan a esas mismas referencias. GitHub Copilot y el asistente de JetBrains tienen instrucciones que remiten a AGENTS.md mediante archivos Markdown normales, también compatibles con clones de Windows sin soporte de enlaces. En nuevos clones de Windows, los enlaces simbólicos requieren que Git y el sistema permitan conservarlos; las referencias canónicas siguen en AGENTS.md y .agents/skills/.
 
+## Diseño en Stitch
+
+La [integración documentada con Stitch](.stitch/README.md) conserva nueve vistas responsivas de la web, sus estados de menú y acordeón, y el sistema de diseño extraído del código. El manifiesto fija los hashes de los 19 archivos subidos y los metadatos registran los recursos remotos verificados.
+
+Los HTML, PNG y respuestas temporales permanecen en .stitch/.cache/, fuera de Git. El diseño documentado y los registros de importación mantienen LF para conservar sus hashes. Consulta las diferencias de la extracción nativa de Stitch antes de utilizarla como base del rediseño.
+
 ## Mapa del proyecto
 
 ```text
