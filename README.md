@@ -1,201 +1,105 @@
-# 🎨 Vicentart - Tattoo Artist Portfolio Website
+# VicentArt Tattoo
 
-A modern, responsive single-page application showcasing the work and services of Vicentart, a professional tattoo artist based in New Port Richey, FL.
+Portafolio web de una sola página para presentar el trabajo y la información de contacto de Vicentart. La interfaz y el contenido visible del sitio están en inglés.
 
-## 🌟 Features
+## Tecnologías
 
-- **Modern Design**: Clean, professional layout with artistic typography
-- **Responsive Layout**: Optimized for all devices and screen sizes
-- **Smooth Navigation**: Single-page application with smooth scroll navigation
-- **Portfolio Gallery**: Interactive image gallery showcasing tattoo artwork
-- **Contact Information**: Easy access to booking and contact details
-- **Performance Optimized**: Built with Vite for fast loading and development
+- React 19 y TypeScript
+- Vite+ como toolchain de desarrollo y build
+- Tailwind CSS v4 con DaisyUI y componentes UI locales inspirados en shadcn/ui
+- Embla Carousel para la galería
 
-## 🛠️ Tech Stack
+Es una aplicación estática de frontend. No contiene backend ni requiere variables de entorno para ejecutarse.
 
-- **Frontend**: React 19 + TypeScript
-- **Build Tool**: Vite 7
-- **Styling**: Tailwind CSS
-- **Fonts**: Google Fonts (Cinzel, Roboto)
-- **Code Quality**: ESLint + Prettier with StandardJS configuration
+## Desarrollo
 
-## 📂 Project Structure
+Requisitos fijados por el proyecto: Node.js `26.13.0` en `.node-version` y pnpm `12.16.1` en `packageManager`.
 
-```bash
-src/
-├── components/
-│   ├── NavigationBar.tsx    # Fixed navigation bar
-│   ├── PortfolioCard.tsx    # Portfolio image component
-│   └── index.ts             # Component exports
-├── assets/
-│   └── images/              # Portfolio and profile images
-│       └── index.ts         # Image exports
-├── App.tsx                  # Main application component
-├── App.css                  # Global styles and font imports
-└── main.tsx                 # Application entry point
+Los comandos siguientes requieren [Vite+ CLI](https://viteplus.dev/guide/) y RTK disponibles en el `PATH`. VS Code incluye recomendaciones de extensiones y tareas de calidad y build en `.vscode/`.
+
+```powershell
+rtk vp install
+rtk vp dev
 ```
 
-## 🚀 Getting Started
+Vite muestra la dirección local en la terminal al iniciar el servidor.
 
-### Prerequisites
+## Comandos
 
-- Node.js (v18 or higher)
-- pnpm (recommended) or npm
-
-### Installation
-
-Clone the repository:
-
-```bash
-git clone <repository-url>
-cd VicentArtTattoo
+```powershell
+rtk vp run check
+rtk vp run type-check
+rtk vp run check-all
+rtk vp run test
+rtk vp run test:watch
+rtk vp test --passWithNoTests
+rtk vp run build
+rtk vp preview
 ```
 
-Install dependencies:
+Usa `rtk vp run <script>` para ejecutar scripts definidos por el proyecto. En particular, `rtk vp run build` ejecuta primero la compilación TypeScript y después el build de Vite; `rtk vp build` ejecuta solo el comando integrado de build. El repositorio aún no tiene archivos de pruebas. En CI se pasa explícitamente `--passWithNoTests` al test runner para aceptar la suite vacía mientras siga así.
 
-```bash
-pnpm install
+## Formato
+
+El estilo se configura en `vite.config.ts` y se aplica a través de Vite+. [Stylistic](https://eslint.style/) se ejecuta como plugin de Oxlint para JavaScript y TypeScript; [Oxfmt](https://viteplus.dev/guide/fmt) formatea CSS, JSON y los demás formatos habilitados.
+
+```powershell
+rtk vp run format
+rtk vp run format:check
 ```
 
-Start the development server:
+El perfil `standardTsStyle` aplica un estilo inspirado en [StandardJS](https://standardjs.com/rules.html): dos espacios, comillas simples, sin punto y coma ni comas finales opcionales, espacios dentro de objetos, paréntesis opcionales en flechas y salto de línea final. Exige también `function nombre ()`, funciones anónimas y métodos con espacio antes del paréntesis. TypeScript conserva sus anotaciones de tipos; JSX utiliza comillas dobles.
 
-```bash
-pnpm dev
+Oxfmt excluye JS/TS porque su impresión eliminaría ese espacio. Cada archivo tiene un único responsable de estilo. En VS Code, guardar JS/TS aplica `source.fixAll.oxc`; para los demás formatos sigue activo el formateo de Oxc. `format` ejecuta `vp check --fix`, que aplica el formato y las correcciones seguras del linter; `format:check` valida ambos sin escribir. Los hooks y CI utilizan el mismo perfil.
+
+Stylistic corrige las reglas de estilo, pero no redistribuye automáticamente todas las líneas a 80 columnas como Oxfmt. El editor conserva esa guía y Oxfmt la aplica a sus formatos. El perfil no equivale a ejecutar `ts-standard`; las reglas de calidad y tipos siguen en Oxlint y TypeScript.
+
+Oxlint aplica una pasada de correcciones. Si varias se solapan, puede dejar problemas corregibles y devolver un error; vuelve a ejecutar `rtk vp run format` y comprueba después con `rtk vp run format:check`. Esta [limitación de correcciones sucesivas](https://github.com/oxc-project/oxc/issues/16118) también puede afectar las acciones del editor. Los hooks y CI rechazan los problemas restantes.
+
+`lineEnding: auto` se reproduce con CRLF en Windows y LF en los demás sistemas; Git normaliza el texto y CI configura el checkout según el sistema. Los hooks mantienen LF.
+
+Las exclusiones de Biome se comparten mediante `formatIgnorePatterns`, incluidas `src/components/ui`, `src/lib` y `public`. Se usan en Oxfmt y en el override de estilo de Oxlint; las reglas de calidad mantienen su alcance anterior. HTML permanece excluido: el formato de documentos HTML completos es opt-in en Biome y no está activado en `biome.json`. Se conservan además las exclusiones de artefactos y herramientas del proyecto.
+
+`biome.json` se conserva como referencia. Sus reglas de lint y la acción `organizeImports` pertenecen al analizador de Biome y no se trasladan como opciones del formatter. Oxfmt sigue respetando `.gitignore`, aunque Biome tenga `vcs.useIgnoreFile: false`. Los dos motores pueden distribuir algunas expresiones de forma distinta aun compartiendo preferencias.
+
+## CodeGraph
+
+El proyecto tiene configuración de [CodeGraph](https://github.com/colbymchenry/codegraph) en `codegraph.json`. El índice local SQLite se guarda en `.codegraph/`, excluido de Git. Se utiliza el CLI y MCP globales, sin añadir dependencias al sitio.
+
+Para crear el índice en un nuevo clon y consultar el código:
+
+```powershell
+rtk codegraph init
+rtk codegraph status
+rtk codegraph explore "App PortfolioCarousel useCarousel"
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser
+El MCP activo actualiza el índice cuando cambian el código o las exclusiones. También puedes sincronizar manualmente con `rtk codegraph sync` y comprobar los cambios pendientes con `rtk codegraph status`. Para consultas mediante MCP, pasa la raíz absoluta del proyecto como `projectPath` a `codegraph_explore`.
 
-## 📜 Available Scripts
+Si necesitas una reconstrucción completa con `rtk codegraph index`, cierra primero el consumidor MCP que esté escribiendo en el índice. CodeGraph admite un único escritor; conserva su bloqueo mientras siga activo.
 
-- `pnpm dev` - Start development server
-- `pnpm build` - Build for production
-- `pnpm preview` - Preview production build
-- `pnpm lint` - Run ESLint to check for code issues
-- `pnpm lint:fix` - Automatically fix ESLint issues where possible
-- `pnpm format` - Format code with Prettier
-- `pnpm format:check` - Check if code is properly formatted
-- `pnpm type-check` - Run TypeScript type checking
-- `pnpm check-all` - Run all quality checks (TypeScript, ESLint, Prettier)
+Se excluyen las skills y los artefactos de herramientas. Los componentes UI, utilidades y exportaciones de imágenes de la aplicación permanecen indexados; CodeGraph ya excluye dependencias y builds de forma predeterminada.
 
-## 🎨 Design Features
+## Guías para agentes
 
-### Typography
+AGENTS.md centraliza las instrucciones de trabajo, los comandos de validación y el uso de CodeGraph. Las 12 skills compartidas se conservan como referencias de solo lectura en .agents/skills/, con sus orígenes y hashes registrados en skills-lock.json.
 
-- **Primary Font**: Cinzel (elegant serif for headings)
-- **Secondary Font**: Roboto (clean sans-serif for body text)
-- **Special Characters**: Unicode styling for unique text effects
+Los enlaces de .claude/skills/ apuntan a esas mismas referencias. GitHub Copilot y el asistente de JetBrains tienen instrucciones que remiten a AGENTS.md mediante archivos Markdown normales, también compatibles con clones de Windows sin soporte de enlaces. En nuevos clones de Windows, los enlaces simbólicos requieren que Git y el sistema permitan conservarlos; las referencias canónicas siguen en AGENTS.md y .agents/skills/.
 
-### Layout Sections
+## Mapa del proyecto
 
-1. **Home**: Hero section with artist introduction and booking information
-2. **Portfolio**: Gallery of tattoo artwork with hover effects
-3. **Contact**: Booking information and contact details
-4. **About**: Artist biography and philosophy
-
-### Visual Elements
-
-- Background logo pattern with opacity overlay
-- Smooth hover animations and transitions
-- Responsive image galleries
-- Fixed navigation with smooth scroll
-
-## 🔧 Code Quality & Formatting
-
-This project is configured with:
-
-- **ESLint** with StandardJS configuration (`eslint-config-love`) for TypeScript/React
-- **Prettier** for code formatting with StandardJS-compatible settings
-- **TypeScript** with strict type checking
-
-### VS Code Integration
-
-The project includes VS Code settings that will:
-
-- Format code with Prettier on save
-- Fix ESLint issues on save
-- Provide proper TypeScript support
-
-Install the recommended extensions for the best development experience.
-
-## 📱 Contact Information
-
-### Vicentart Tattoo Studio
-
-- **Location**: 9117 Little Rd, New Port Richey, FL 34654
-- **Email**: <vicentartattoo@gmail.com>
-- **Phone**: 813-696-1137
-- **Booking**: By appointment only
-
-### How to Book
-
-Please include in your message:
-
-- A short description of your idea
-- Desired size & placement
-- Days of the week or specific dates that work for you
-- Budget
-
-### Payment Methods
-
-- Cash App
-- Zelle
-- Apple Pay
-- Venmo
-- Cash (in-person at shop)
-
-## 🎯 Business Policies
-
-- **Deposits**: Required to confirm appointments (non-refundable)
-- **Design Process**: Custom designs created before appointment
-- **Rescheduling**: Second deposit required for date changes
-- **Cancellations**: Please provide adequate notice
-
-## 🖼️ Portfolio Highlights
-
-The website showcases Vicentart's expertise in:
-
-- Hyperrealistic black and grey tattoos
-- Vibrant color designs
-- Custom artwork tailored to each client
-- Personal storytelling through ink
-
-## 🌐 Deployment
-
-### Build for Production
-
-```bash
-pnpm build
+```text
+index.html                 Metadatos de la página y punto de entrada HTML
+public/logo.svg            Logo
+src/main.tsx               Montaje de React
+src/App.tsx                Orden y composición de las secciones
+src/components/            Navegación, secciones y componentes de la página
+src/components/ui/         Primitivas locales de botón y carrusel
+src/hooks/                 Estado de navegación, acordeón y carrusel
+src/common/                Datos de navegación, textos del acordeón y tipos
+src/assets/images/         Imágenes WebP y sus exportaciones
+src/lib/                   Utilidades de clases CSS
+src/App.css                Tailwind v4, tokens, DaisyUI y estilos globales
 ```
 
-The build artifacts will be stored in the `dist/` directory.
-
-### Deploy to Static Hosting
-
-This project can be deployed to any static hosting service:
-
-- **Netlify**: Drag and drop the `dist` folder
-- **Vercel**: Connect your GitHub repository
-- **GitHub Pages**: Use GitHub Actions for automatic deployment
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Vite Team** for the excellent build tool
-- **Tailwind CSS** for the utility-first CSS framework
-- **Google Fonts** for the beautiful typography
-- **React Community** for the robust ecosystem
-
----
-
-_Transforming personal stories into breathtaking pieces of art, one tattoo at a time._
+Los textos de la página viven principalmente en `src/components/` y `src/common/`. Mantén esos textos en inglés salvo que se solicite explícitamente cambiar el idioma.

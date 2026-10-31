@@ -3,6 +3,10 @@
 # Git hooks must remain executable by the POSIX shell on Windows.
 .vite-hooks/** text eol=lf
 
+# Keep reference files and approved upload hashes stable across platforms.
+.agents/** text eol=lf
+.stitch/** text eol=lf
+
 *.png binary
 *.jpg binary
 *.jpeg binary
