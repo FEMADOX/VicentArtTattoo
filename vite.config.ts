@@ -790,7 +790,7 @@ export default defineConfig({
       }
     ]
   },
-  plugins: lazyPlugins(() => [react(), tailwindcss()]),
+  plugins: lazyPlugins(() => [react({ compiler: true }), tailwindcss()]),
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
