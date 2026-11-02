@@ -64,7 +64,7 @@ export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' 
       {...(preview && index < 4 ? {} : reveal((index % 3) * 0.06))}
       key={artwork.id}
       type="button"
-      className={cn(designStyles.artwork, preview && index < 4 && 'focus-visible:-outline-offset-2 [&_img]:h-[min(52svh,560px)] [&_img]:object-contain')}
+      className={cn(designStyles.artwork, preview && index < 4 && 'focus-visible:-outline-offset-2')}
       onClick={event => {
         trigger.current = event.currentTarget
         setActiveIndex(index)
@@ -73,7 +73,7 @@ export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' 
       aria-haspopup="dialog"
       aria-label={'Enlarge piece ' + artwork.id + ': ' + artwork.alt}
     >
-      <img src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
+      <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
       <span className={designStyles.artworkCaption}><span>Piece {String(artwork.id).padStart(2, '0')}</span><span>View full image <ArrowRight size={16} aria-hidden="true" /></span></span>
     </m.button>
   ))

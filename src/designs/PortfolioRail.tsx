@@ -53,7 +53,7 @@ function PortfolioRail ({ children }: { children: ReactNode[] }) {
         >
           <CarouselContent className="-ml-5 items-start py-1">
             {children.map((child, index) => (
-              <CarouselItem key={index} aria-label={'Selected work ' + (index + 1) + ' of ' + children.length} className="basis-[86%] pl-5 sm:basis-[58%] lg:basis-[44%]">
+              <CarouselItem key={index} aria-label={'Selected work ' + (index + 1) + ' of ' + children.length} className="max-w-[calc(min(45svh,420px)+1.25rem)] basis-[86%] pl-5 sm:basis-[58%] lg:basis-[44%]">
                 {child}
               </CarouselItem>
             ))}

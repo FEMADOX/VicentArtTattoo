@@ -31,8 +31,12 @@ scroll-driven selection; there is no autoplay or wheel interception.
 
 View more projects reveals the other four works in the existing masonry layout.
 The shared Dialog can still browse the entire collection and returns focus to
-the photograph that opened it. Preview images use object-contain to show the
-complete original photograph within the rail's reserved frame.
+the photograph that opened it. Portfolio cards share a 3:4 image frame and an
+80px minimum caption height across the rail and expanded gallery. Images use
+object-contain against the dark canvas, preserving the complete original file.
+The rail caps card width to fit its image and controls in the viewport. The
+retained galleries and legacy carousel use the same image-frame proportions;
+the enlarged viewer retains its existing viewport-based containment.
 
 ## Development catalog
 

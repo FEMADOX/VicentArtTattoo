@@ -47,9 +47,19 @@ test('lightbox navigates all eight pieces and restores focus to each opener', as
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
   const first = portfolio.getByRole('button', { name: /^Enlarge piece 1:/ })
+  const sourceImage = first.locator('img')
+  const originalWidth = await sourceImage.getAttribute('width') ?? ''
+  const originalHeight = await sourceImage.getAttribute('height') ?? ''
+
+  expect(originalWidth).not.toBe('')
+  expect(originalHeight).not.toBe('')
 
   await first.click()
   const dialog = page.getByRole('dialog', { name: 'Original tattoo work' })
+  const lightboxImage = dialog.getByRole('img')
+  await expect(lightboxImage).toHaveCSS('object-fit', 'contain')
+  await expect(lightboxImage).toHaveAttribute('width', originalWidth)
+  await expect(lightboxImage).toHaveAttribute('height', originalHeight)
   await expect(dialog.getByText('1 / 8', { exact: true })).toBeVisible()
   await page.keyboard.press('ArrowRight')
   await expect(dialog.getByText('2 / 8', { exact: true })).toBeVisible()
@@ -139,12 +149,31 @@ test('portfolio images stay contained without horizontal overflow at responsive 
   await page.setViewportSize({ width: 320, height: 900 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
+  await portfolio.getByRole('button', { name: 'View more projects' }).click()
+  const artworks = portfolio.getByRole('button', { name: /^Enlarge piece/ })
 
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
-    await expect(gallery.locator('img')).toHaveCount(4)
-    expect(await gallery.locator('img').evaluateAll(images => images.map(image => getComputedStyle(image).objectFit))).toEqual(['contain', 'contain', 'contain', 'contain'])
+    await expect(artworks).toHaveCount(8)
+    const measurements = await artworks.evaluateAll(buttons => buttons.map(button => {
+      const image = button.querySelector('img')
+      const imageRect = image?.getBoundingClientRect()
+      return {
+        ratio: imageRect ? imageRect.width / imageRect.height : 0,
+        objectFit: image ? getComputedStyle(image).objectFit : '',
+        captionHeight: button.lastElementChild?.getBoundingClientRect().height ?? 0
+      }
+    }))
+    expect(measurements).toHaveLength(8)
+    for (const measurement of measurements) {
+      expect(measurement.ratio).toBeCloseTo(0.75, 2)
+      expect(measurement.objectFit).toBe('contain')
+    }
+    for (const group of [measurements.slice(0, 4), measurements.slice(4)]) {
+      const heights = group.map(measurement => measurement.captionHeight)
+      expect(heights[0]).toBeGreaterThanOrEqual(80)
+      expect(new Set(heights).size).toBe(1)
+    }
     await expectNoOverflow(page)
   }
 })

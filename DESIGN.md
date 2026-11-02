@@ -119,6 +119,12 @@ Surfaces are flat, without decorative shadows. Depth comes from photography, bla
 
 Artwork and content surfaces use square corners. The radius scale is explicitly zero at every size so no negative corner calculation can occur. Buttons are pills; icon controls and slider thumbs are circular. Preserve the original aspect ratio and focal point when showing artwork; enlarged photographs use containment rather than a destructive crop.
 
+Portfolio card images use a shared 3:4 frame with object-contain. Cards at the
+same layout width have matching image and caption areas; the image may leave
+space against the dark canvas so the full tattoo remains visible. Keep original
+files and intrinsic dimensions intact. The enlarged viewer fits the original
+photograph to the viewport instead of imposing a thumbnail crop.
+
 ## Components
 
 **Button.** Preserve the existing default, outline, secondary, ghost, destructive, and link variants and the asChild API. The primary action is a transparent white outlined pill. Controls have a minimum 44px hit area, a visible white focus outline, and distinct hover, pressed, and disabled states. The catalog pins normal, hover, focus, pressed and disabled examples for the primary and outline variants with data-preview-state and native disabled; every enabled specimen also responds to real interaction. Other variants remain supported by the shared API.

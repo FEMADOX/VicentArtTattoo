@@ -112,7 +112,7 @@ function PreviewArtwork ({ id, lead = false, index = 0 }: { id: number, lead?: b
   return (
     <m.a {...reveal(index * 0.06)} {...hover} className={cn(styles.previewArtwork, lead && styles.leadArtwork)} href={routes.portfolio}>
       <span className={styles.previewImage}>
-        <img className="h-auto w-full" src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" />
+        <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" />
       </span>
       <span className={styles.previewCaption}>
         <span>Piece {String(id).padStart(2, '0')}</span>

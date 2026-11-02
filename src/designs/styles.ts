@@ -13,7 +13,8 @@ export const designStyles = {
   policy: 'border border-border p-6 text-base leading-relaxed text-body [&_strong]:font-normal [&_strong]:text-foreground [&_p]:mt-2',
   checklist: 'mt-6 grid list-none gap-4 p-0 [&_li]:flex [&_li]:items-start [&_li]:gap-3 [&_li]:text-lg [&_svg]:mt-1 [&_svg]:text-muted-foreground',
   lightboxImage: 'h-[min(65dvh,900px)] w-full object-contain max-[720px]:h-[58dvh]',
-  artwork: 'group/artwork block w-full overflow-hidden border border-border bg-card p-0 text-left text-foreground transition-colors duration-150 hover:border-input focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring [&_img]:h-auto [&_img]:w-full',
-  artworkCaption: 'flex flex-wrap items-center justify-between gap-3 p-4 font-mono text-xs text-muted-foreground [&>span:last-child]:flex [&>span:last-child]:items-center [&>span:last-child]:gap-2 [&>span:last-child]:text-foreground',
+  artwork: 'group/artwork block w-full overflow-hidden border border-border bg-card p-0 text-left text-foreground transition-colors duration-150 hover:border-input focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring',
+  artworkImage: 'aspect-3/4 w-full bg-background object-contain',
+  artworkCaption: 'flex min-h-20 flex-wrap items-center justify-between gap-3 p-4 font-mono text-xs text-muted-foreground [&>span:last-child]:flex [&>span:last-child]:items-center [&>span:last-child]:gap-2 [&>span:last-child]:text-foreground',
   galleryFeatured: 'mb-8 grid grid-cols-2 items-start gap-8 max-[1000px]:mb-6 max-[1000px]:gap-6 max-[720px]:grid-cols-1'
 }
