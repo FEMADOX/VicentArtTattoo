@@ -1,0 +1,31 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/designs",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/designs/a",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/designs/b",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/designs/c",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/designs/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}

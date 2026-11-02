@@ -1,0 +1,51 @@
+import { artworks } from './content'
+import { gorillaSketch, owlSketch } from './ink-sketches'
+import { gorillaFill, owlFill } from './ink-fill-paths'
+import { INK_DURATION } from './ink-timeline'
+import TattooDrawReveal from './TattooDrawReveal'
+import { designStyles } from './styles'
+
+const styles = {
+  page: 'py-[clamp(3rem,6vw,6rem)]',
+  heading: 'mb-[clamp(2.5rem,5vw,4rem)] max-w-3xl [&_h1]:mb-5 [&_h1]:text-[clamp(2.25rem,5vw,4.5rem)] [&_h1]:font-normal [&_h1]:tracking-wide',
+  studies: 'grid grid-cols-2 items-start gap-[clamp(2rem,4vw,4rem)] [@media(width<=720px)]:grid-cols-1 [@media(width<=720px)]:gap-12',
+  study: 'min-w-0',
+  studyHeading: 'mb-5 [&_h2]:mb-2 [&_h2]:text-[clamp(1.5rem,2.4vw,2rem)] [&_h2]:font-normal'
+}
+
+export default function InkStudyPage () {
+  return (
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className={`${designStyles.container} ${styles.page}`}
+    >
+      <header className={styles.heading}>
+        <h1>Ink animation study</h1>
+        <p className={designStyles.copy}>
+          The machine draws the contours, shades the tattoo and fills in its color
+          before revealing the full photograph. Blacks are enhanced within the
+          tattoo; choose Show original to compare. The full sequence takes
+          {' '}{INK_DURATION} seconds at normal speed. This is a visual study, not a
+          recreation of the tattooing process.
+        </p>
+      </header>
+      <div className={styles.studies}>
+        <section aria-labelledby="gorilla-study-heading" className={styles.study}>
+          <header className={styles.studyHeading}>
+            <h2 id="gorilla-study-heading">Gorilla and mountain</h2>
+            <p className={designStyles.copy}>Face, landscape and riders.</p>
+          </header>
+          <TattooDrawReveal image={artworks[0]} paths={gorillaSketch} fill={gorillaFill} />
+        </section>
+        <section aria-labelledby="owl-study-heading" className={styles.study}>
+          <header className={styles.studyHeading}>
+            <h2 id="owl-study-heading">Owl eye</h2>
+            <p className={designStyles.copy}>The eye and surrounding feathers.</p>
+          </header>
+          <TattooDrawReveal image={artworks[6]} paths={owlSketch} fill={owlFill} />
+        </section>
+      </div>
+    </main>
+  )
+}

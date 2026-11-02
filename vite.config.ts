@@ -19,13 +19,15 @@ const browserGlobals = Object.fromEntries(
 
 const scriptFiles = ['**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}']
 
-// Keep Biome's exclusions shared by both formatting owners.
 const formatIgnorePatterns = [
   'build',
   'coverage',
+  '.playwright-results/**',
+  'playwright-report/**',
+  '.playwright-report/**',
+  '.impeccable/**',
   'node_modules',
   'dist',
-  // Biome's full HTML formatter is opt-in and is not enabled in biome.json.
   '*.html',
   '.next/**',
   '.stitch/**',
@@ -85,6 +87,10 @@ const standardTsStyle = {
 
 // https://vite.dev/config/
 export default defineConfig({
+  test: {
+    include: ['tests/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['tests/e2e/**']
+  },
   staged: {
     '!{.agents,.claude,.aiassistant,.continue,.junie,.stitch}/**': 'vp check --fix'
   },

@@ -1,29 +1,24 @@
-import './App.css'
-import {
-  AboutSection,
-  ContactSection,
-  Footer,
-  HomeSection,
-  NavigationBar,
-  PortfolioSection
-} from '@/components'
+import { NavigationBar } from '@/components/NavigationBar'
+import { HomeSection } from '@/components/HomeSection'
+import { PortfolioSection } from '@/components/PortfolioSection'
+import { ContactSection } from '@/components/ContactSection'
+import { AboutSection } from '@/components/AboutSection'
+import { Footer } from '@/components/Footer'
 
 function App () {
   return (
-    <div className="relative bg-[url('assets/images/Background.webp')] bg-fixed bg-black min-h-screen min-w-dvw bg-no-repeat bg-center bg-size-[contain] md:bg-repeat-space">
-      <div className="min-w-dvw flex flex-col items-center justify-center text-center text-white">
-        <NavigationBar />
-
+    <div className="min-h-screen bg-background font-body text-foreground">
+      <a className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-background focus:px-6 focus:py-3 focus:text-foreground" href="#main-content">
+        Skip to content
+      </a>
+      <NavigationBar />
+      <main id="main-content">
         <HomeSection />
-
         <PortfolioSection />
-
         <ContactSection />
-
         <AboutSection />
-
-        <Footer />
-      </div>
+      </main>
+      <Footer />
     </div>
   )
 }
