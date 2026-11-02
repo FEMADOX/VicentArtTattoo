@@ -1,0 +1,241 @@
+{
+  "id": "DURo4dTjc6g",
+  "source": "https://www.instagram.com/vicentart/reel/DURo4dTjc6g/",
+  "interval": {
+    "start": 0.25,
+    "end": 5
+  },
+  "width": 720,
+  "height": 1280,
+  "referenceIndex": 16,
+  "frames": [
+    {
+      "small": "small/frame-001.webp",
+      "large": "large/frame-001.webp",
+      "timestamp": 0.25,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-002.webp",
+      "large": "large/frame-002.webp",
+      "timestamp": 0.3984375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-003.webp",
+      "large": "large/frame-003.webp",
+      "timestamp": 0.546875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-004.webp",
+      "large": "large/frame-004.webp",
+      "timestamp": 0.6953125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-005.webp",
+      "large": "large/frame-005.webp",
+      "timestamp": 0.84375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-006.webp",
+      "large": "large/frame-006.webp",
+      "timestamp": 0.9921875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-007.webp",
+      "large": "large/frame-007.webp",
+      "timestamp": 1.140625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-008.webp",
+      "large": "large/frame-008.webp",
+      "timestamp": 1.2890625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-009.webp",
+      "large": "large/frame-009.webp",
+      "timestamp": 1.4375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-010.webp",
+      "large": "large/frame-010.webp",
+      "timestamp": 1.5859375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-011.webp",
+      "large": "large/frame-011.webp",
+      "timestamp": 1.734375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-012.webp",
+      "large": "large/frame-012.webp",
+      "timestamp": 1.8828125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-013.webp",
+      "large": "large/frame-013.webp",
+      "timestamp": 2.03125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-014.webp",
+      "large": "large/frame-014.webp",
+      "timestamp": 2.1796875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-015.webp",
+      "large": "large/frame-015.webp",
+      "timestamp": 2.328125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-016.webp",
+      "large": "large/frame-016.webp",
+      "timestamp": 2.4765625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-017.webp",
+      "large": "large/frame-017.webp",
+      "timestamp": 2.625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-018.webp",
+      "large": "large/frame-018.webp",
+      "timestamp": 2.7734375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-019.webp",
+      "large": "large/frame-019.webp",
+      "timestamp": 2.921875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-020.webp",
+      "large": "large/frame-020.webp",
+      "timestamp": 3.0703125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-021.webp",
+      "large": "large/frame-021.webp",
+      "timestamp": 3.21875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-022.webp",
+      "large": "large/frame-022.webp",
+      "timestamp": 3.3671875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-023.webp",
+      "large": "large/frame-023.webp",
+      "timestamp": 3.515625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-024.webp",
+      "large": "large/frame-024.webp",
+      "timestamp": 3.6640625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-025.webp",
+      "large": "large/frame-025.webp",
+      "timestamp": 3.8125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-026.webp",
+      "large": "large/frame-026.webp",
+      "timestamp": 3.9609375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-027.webp",
+      "large": "large/frame-027.webp",
+      "timestamp": 4.109375,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-028.webp",
+      "large": "large/frame-028.webp",
+      "timestamp": 4.2578125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-029.webp",
+      "large": "large/frame-029.webp",
+      "timestamp": 4.40625,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-030.webp",
+      "large": "large/frame-030.webp",
+      "timestamp": 4.5546875,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-031.webp",
+      "large": "large/frame-031.webp",
+      "timestamp": 4.703125,
+      "width": 720,
+      "height": 1280
+    },
+    {
+      "small": "small/frame-032.webp",
+      "large": "large/frame-032.webp",
+      "timestamp": 4.8515625,
+      "width": 720,
+      "height": 1280
+    }
+  ],
+  "bytes": {
+    "small": 1098586,
+    "large": 1669792
+  }
+}

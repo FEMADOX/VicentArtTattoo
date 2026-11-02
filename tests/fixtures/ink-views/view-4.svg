@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="768" viewBox="0 0 512 768" role="img" aria-labelledby="title description">
+  <title id="title">Synthetic view 4</title>
+  <desc id="description">Geometric test artwork with blue bars, an orange diamond and a white circle.</desc>
+  <rect width="512" height="768" fill="#e1eaf3"/>
+  <rect x="108" y="190" width="296" height="76" fill="#315985"/>
+  <rect x="108" y="502" width="296" height="76" fill="#315985"/>
+  <path d="M256 244 388 384 256 524 124 384Z" fill="#ec8950"/>
+  <circle cx="256" cy="384" r="76" fill="#f5f0e8"/>
+  <path d="M154 624H358" stroke="#557da5" stroke-width="22"/>
+  <text x="256" y="70" fill="#171717" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">Synthetic view 4</text>
+  <text x="256" y="720" fill="#171717" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">SYNTHETIC TEST ART</text>
+</svg>

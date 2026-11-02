@@ -203,3 +203,7 @@ coverage/
 .playwright-report/
 
 .impeccable/review/
+
+# Local source videos and preparation tools
+.local-media/
+.local-tools/

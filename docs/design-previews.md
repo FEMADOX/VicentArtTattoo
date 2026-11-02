@@ -84,3 +84,7 @@ Las referencias visuales y exportaciones originales siguen en [las propuestas de
 ## Component-system migration
 
 All retained versions now share the VicentArt dark theme and shadcn/Radix primitives. Use the development-only `/__ui` catalog to compare A, B, C's four pages, the legacy App, the ink study and component states. Public redirects remain unchanged. Current validation:40 Vitest tests,42 full Playwright tests,34 subsequent layout/state checks and5 focused C About/navigation checks passed. Final check-all (49 Tailwind source files) and build passed. A Chrome production smoke confirmed local fonts, no public catalog and reduced-motion ink behavior. Independent visual review disposition:ship for the supplied desktop/mobile captures. See [the component standard](component-system.md).
+
+## Recorded views after drawing
+
+The ink study also supports four locally prepared video sequences. See [preparation, source intervals and interaction details](ink-angle-study.md). The original gorilla/owl studies remain available, and portfolio galleries keep their current behavior.

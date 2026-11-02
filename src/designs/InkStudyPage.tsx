@@ -4,6 +4,7 @@ import { gorillaFill, owlFill } from './ink-fill-paths'
 import { INK_DURATION } from './ink-timeline'
 import TattooDrawReveal from './TattooDrawReveal'
 import { designStyles } from './styles'
+import { videoStudies } from './ink-video-studies'
 
 const styles = {
   page: 'py-[clamp(3rem,6vw,6rem)]',
@@ -24,13 +25,23 @@ export default function InkStudyPage () {
         <h1>Ink animation study</h1>
         <p className={designStyles.copy}>
           The machine draws the contours, shades the tattoo and fills in its color
-          before revealing the full photograph. Blacks are enhanced within the
-          tattoo; choose Show original to compare. The full sequence takes
-          {' '}{INK_DURATION} seconds at normal speed. This is a visual study, not a
-          recreation of the tattooing process.
+          before revealing the photograph. Video studies let you explore the
+          recorded views afterwards. The drawing takes {INK_DURATION} seconds at
+          normal speed. The gorilla and owl studies also let you compare enhanced
+          blacks with the original. This is a visual study, not a recreation of the
+          tattooing process.
         </p>
       </header>
       <div className={styles.studies}>
+        {videoStudies.map(study => (
+          <section key={study.id} aria-labelledby={study.id + '-study-heading'} className={styles.study}>
+            <header className={styles.studyHeading}>
+              <h2 id={study.id + '-study-heading'}>{study.title}</h2>
+              <p className={designStyles.copy}>After the drawing finishes, move the pointer or drag to explore the recorded views.</p>
+            </header>
+            <TattooDrawReveal image={study.image} paths={study.paths} fill={study.fill} sequence={study.sequence} />
+          </section>
+        ))}
         <section aria-labelledby="gorilla-study-heading" className={styles.study}>
           <header className={styles.studyHeading}>
             <h2 id="gorilla-study-heading">Gorilla and mountain</h2>

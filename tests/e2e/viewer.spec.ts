@@ -97,7 +97,7 @@ test('InkStudy opens the shared viewer shell with full image dimensions and rest
 
   await page.goto('/designs/ink-study')
   const originalTrigger = page.getByRole('button', { name: /^View original:/ }).first()
-  const sourceImage = originalTrigger.locator('img')
+  const sourceImage = originalTrigger.locator('..').locator('img')
   const width = await sourceImage.getAttribute('width')
   const height = await sourceImage.getAttribute('height')
   expect(width).not.toBeNull()
