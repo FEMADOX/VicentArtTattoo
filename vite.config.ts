@@ -796,6 +796,19 @@ export default defineConfig({
       }
     ]
   },
+  // Watching preparation folders can block atomic publication on Windows.
+  server: {
+    watch: {
+      ignored: [
+        '**/.local-media/**',
+        '**/.local-tools/**',
+        '**/.playwright-results/**',
+        '**/.playwright-report/**',
+        '**/.prepare-ink-views-*',
+        '**/.prepare-ink-views-*/**'
+      ]
+    }
+  },
   plugins: lazyPlugins(() => [react({ compiler: true }), tailwindcss()]),
   resolve: {
     alias: {
