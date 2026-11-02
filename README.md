@@ -28,16 +28,19 @@ Vite muestra la dirección local en la terminal al iniciar el servidor.
 
 ```powershell
 rtk vp run check
-rtk vp run type-check
+rtk vp run tsc
 rtk vp run check-all
+rtk vp run lint:tailwind
+rtk vp run lint:tailwind:fix
 rtk vp run test
 rtk vp run test:watch
-rtk vp test --passWithNoTests
 rtk vp run build
 rtk vp preview
 ```
 
-Usa `rtk vp run <script>` para ejecutar scripts definidos por el proyecto. En particular, `rtk vp run build` ejecuta primero la compilación TypeScript y después el build de Vite; `rtk vp build` ejecuta solo el comando integrado de build. El repositorio aún no tiene archivos de pruebas. En CI se pasa explícitamente `--passWithNoTests` al test runner para aceptar la suite vacía mientras siga así.
+Usa `rtk vp run <script>` para ejecutar scripts definidos por el proyecto. En particular, `rtk vp run build` ejecuta primero la compilación TypeScript y después el build de Vite; `rtk vp build` ejecuta solo el comando integrado de build. Las pruebas viven en `tests/designs/`; Vitest busca únicamente archivos `*.test.ts`, `*.test.tsx`, `*.spec.ts` y `*.spec.tsx` dentro de `tests/`. TypeScript también comprueba ese directorio. `check-all` incluye formato, lint, tipos y `tailwind-lint`.
+
+Los diseños de `src/designs/` usan utilidades Tailwind v4 y constantes reutilizables de clases, sin hojas CSS específicas ni CSS Modules. `src/global.css` contiene la entrada de Tailwind, las fuentes locales y el tema oscuro compartido. `DESIGN.md` y [el sistema de componentes](docs/component-system.md) documentan el estándar shadcn/Radix; DaisyUI está retirado. `lint:tailwind:fix` corrige las clases canónicas; los conflictos que no tengan corrección automática se revisan manualmente. La configuración del editor incluye las constantes `styles` y `designStyles` en la extracción de clases.
 
 ## Formato
 
@@ -92,20 +95,38 @@ La [integración documentada con Stitch](.stitch/README.md) conserva nueve vista
 
 Los HTML, PNG y respuestas temporales permanecen en .stitch/.cache/, fuera de Git. El diseño documentado y los registros de importación mantienen LF para conservar sus hashes. Consulta las diferencias de la extracción nativa de Stitch antes de utilizarla como base del rediseño.
 
+## Diseño seleccionado
+
+La propuesta A es la web principal en `/`, con galería adaptable, proceso de reserva, contactos y animaciones de Motion. El comparador y las propuestas B/C ya no se muestran; sus enlaces antiguos llevan al inicio o a la sección equivalente. El estudio aislado continúa en `/designs/ink-study`.
+
+Consulta las [rutas, interacciones y validación](docs/design-previews.md). Para verla localmente, ejecuta `rtk vp dev`.
+
 ## Mapa del proyecto
 
 ```text
 index.html                 Metadatos de la página y punto de entrada HTML
 public/logo.svg            Logo
 src/main.tsx               Montaje de React
-src/App.tsx                Orden y composición de las secciones
+src/Entry.tsx              Entrada pública y compatibilidad de rutas
+src/designs/DesignApp.tsx   Web seleccionada, navegación y estudio aislado
+src/designs/styles.ts      Primitivas visuales compartidas con Tailwind
+src/App.tsx                Versión anterior migrada, disponible en el catálogo local
 src/components/            Navegación, secciones y componentes de la página
-src/components/ui/         Primitivas locales de botón y carrusel
-src/hooks/                 Estado de navegación, acordeón y carrusel
+src/components/ui/         Primitivas compartidas shadcn/Radix y carrusel
+src/hooks/                 Estado de navegación y carrusel
 src/common/                Datos de navegación, textos del acordeón y tipos
 src/assets/images/         Imágenes WebP y sus exportaciones
 src/lib/                   Utilidades de clases CSS
-src/App.css                Tailwind v4, tokens, DaisyUI y estilos globales
+src/global.css             Tailwind v4, fuentes locales y tokens semánticos
+src/dev/                   Catálogo exclusivo de desarrollo /__ui
+tests/designs/             Pruebas Vitest de rutas y animación de tinta
+tests/e2e/                 Pruebas de interacción y adaptación con Playwright
 ```
 
 Los textos de la página viven principalmente en `src/components/` y `src/common/`. Mantén esos textos en inglés salvo que se solicite explícitamente cambiar el idioma.
+
+## Sistema de componentes
+
+Abre `/__ui` con `rtk vp dev` para revisar primitivas, estados y las ocho vistas conservadas. El catálogo y los módulos de C y del antiguo App se excluyen del build público; los caminos antiguos siguen redirigiendo al inicio. La variante B comparte el módulo de composición de A, aunque su ruta pública permanece retirada.
+
+`rtk vp run check-all` valida formato, lint, tipos y las clases Tailwind de todos los TS/TSX. `rtk vp run test:e2e` compila y ejecuta Playwright; en Windows usa Chrome instalado y en Linux requiere `rtk vpx playwright install --with-deps chromium`.
