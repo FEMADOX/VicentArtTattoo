@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="768" viewBox="0 0 512 768" role="img" aria-labelledby="title description">
+  <title id="title">Synthetic view 2</title>
+  <desc id="description">Geometric test artwork with a teal hexagon, gold bands and pale circles.</desc>
+  <rect width="512" height="768" fill="#e5efe3"/>
+  <circle cx="256" cy="390" r="188" fill="#bed8c5"/>
+  <path d="M256 160 390 238 390 420 256 498 122 420 122 238Z" fill="#287866"/>
+  <path d="M150 560H362V630H150Z" fill="#e5ad43"/>
+  <path d="M176 592H336" stroke="#273f3a" stroke-width="10"/>
+  <circle cx="256" cy="330" r="54" fill="#f6cd72"/>
+  <text x="256" y="70" fill="#171717" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">Synthetic view 2</text>
+  <text x="256" y="720" fill="#171717" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">SYNTHETIC TEST ART</text>
+</svg>
