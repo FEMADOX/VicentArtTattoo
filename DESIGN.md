@@ -123,7 +123,10 @@ Portfolio card images use a shared 3:4 frame with object-contain. Cards at the
 same layout width have matching image and caption areas; the image may leave
 space against the dark canvas so the full tattoo remains visible. Keep original
 files and intrinsic dimensions intact. The enlarged viewer fits the original
-photograph to the viewport instead of imposing a thumbnail crop.
+photograph to the viewport instead of imposing a thumbnail crop. Gallery and ink
+study viewers share a stable panel, image area, caption and action row; changing
+the selected photograph must not move the navigation controls. The photo area
+adapts to short viewports while preserving access to the close and arrow buttons.
 
 ## Components
 

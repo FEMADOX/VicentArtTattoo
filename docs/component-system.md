@@ -38,6 +38,19 @@ The rail caps card width to fit its image and controls in the viewport. The
 retained galleries and legacy carousel use the same image-frame proportions;
 the enlarged viewer retains its existing viewport-based containment.
 
+## Image viewer
+
+DesignDialog owns the image frame, caption, header and action area for both the
+portfolio and ink study. Its panel has a viewport-based height capped at 960px
+and a maximum width of 896px. A flexible image area contains each complete
+photograph, retaining its source dimensions. Captions reserve 64px and controls
+reserve at least 44px, keeping the layout stable while navigating the collection.
+Longer text can grow rather than being truncated. At narrow widths, Previous
+and Next retain their accessible names while their visual labels collapse to
+icons. Short landscape viewports place the photo beside the caption and controls
+to preserve viewing space. The single-image study viewer offers Close image in
+the same action area.
+
 ## Development catalog
 
 Run the development server and open /__ui. The nine choices are Components, Design A, Design B, Design C / Home, Design C / Portfolio, Design C / About, Design C / Contact, Legacy App, and Ink study. Only development loads this module; production keeps the public Design A entry. The catalog sets noindex/nofollow and retains view selection in the URL.

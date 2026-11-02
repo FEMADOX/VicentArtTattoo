@@ -12,17 +12,21 @@ import { Button } from '../components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '../components/ui/dialog'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion'
 
-export function DesignDialog ({ title, children, open, onClose, onKeyDown, returnFocusRef }: {
+export function DesignDialog ({ title, image, caption = image.alt, children, open, onClose, onKeyDown, returnFocusRef }: {
   title: string
-  children: ReactNode
+  image: { src: string, alt: string, width: number, height: number }
+  caption?: string
+  children?: ReactNode
   open: boolean
   onClose: () => void
   onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void
   returnFocusRef: RefObject<HTMLButtonElement | null>
 }) {
+  const { enabled } = useDesignMotion()
   return (
     <Dialog open={open} onOpenChange={next => { if (!next) onClose() }}>
       <DialogContent
+        className={designStyles.lightbox}
         showCloseButton={false}
         onKeyDown={onKeyDown}
         onCloseAutoFocus={event => {
@@ -30,12 +34,18 @@ export function DesignDialog ({ title, children, open, onClose, onKeyDown, retur
           returnFocusRef.current?.focus({ preventScroll: true })
         }}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className={designStyles.lightboxHeader}>
           <DialogTitle>{title}</DialogTitle>
           <DialogClose asChild><Button variant="ghost" size="icon" aria-label="Close dialog"><X aria-hidden="true" /></Button></DialogClose>
         </div>
-        <DialogDescription className="sr-only">The complete original photograph. Use the gallery controls to explore the work.</DialogDescription>
-        {children}
+        <DialogDescription className="sr-only">The complete original photograph. Press Escape or use Close dialog to return to the page.</DialogDescription>
+        <div className={designStyles.lightboxFrame}>
+          <m.img key={image.src} className={designStyles.lightboxImage} src={image.src} alt={image.alt} width={image.width} height={image.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />
+        </div>
+        <div className={designStyles.lightboxFooter}>
+          <p className={designStyles.lightboxCaption} aria-live="polite">{caption}</p>
+          {children ?? <DialogClose asChild><Button variant="outline" className="justify-self-end">Close image</Button></DialogClose>}
+        </div>
       </DialogContent>
     </Dialog>
   )
@@ -47,7 +57,7 @@ export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' 
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
   const selected = collection.at(activeIndex)
-  const { enabled, reveal } = useDesignMotion()
+  const { reveal } = useDesignMotion()
 
   function handleArrowKey (event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'ArrowRight') {
@@ -88,13 +98,11 @@ export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' 
             </div>
           )}
       {selected && (
-        <DesignDialog title="Original tattoo work" open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} returnFocusRef={trigger}>
-          <m.img key={selected.id} className={designStyles.lightboxImage} src={selected.src} alt={selected.alt} width={selected.width} height={selected.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />
-          <p className="text-center font-mono text-xs text-muted-foreground" aria-live="polite">Piece {selected.id}: {selected.alt}</p>
-          <div className="flex items-center justify-between gap-2">
-            <Button variant="outline" size="sm" disabled={activeIndex === 0} onClick={() => setActiveIndex(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" />Previous</Button>
-            <span className="whitespace-nowrap font-mono text-xs text-muted-foreground">{activeIndex + 1} / {collection.length}</span>
-            <Button variant="outline" size="sm" disabled={activeIndex === collection.length - 1} onClick={() => setActiveIndex(activeIndex + 1)}>Next<ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
+        <DesignDialog title="Original tattoo work" image={selected} caption={'Piece ' + selected.id + ': ' + selected.alt} open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} returnFocusRef={trigger}>
+          <div className={designStyles.lightboxControls}>
+            <Button variant="outline" size="sm" className="justify-self-start" aria-label="Previous" disabled={activeIndex === 0} onClick={() => setActiveIndex(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" /><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Previous</span></Button>
+            <span className="whitespace-nowrap font-mono text-xs text-muted-foreground tabular-nums">{activeIndex + 1} / {collection.length}</span>
+            <Button variant="outline" size="sm" className="justify-self-end" aria-label="Next" disabled={activeIndex === collection.length - 1} onClick={() => setActiveIndex(activeIndex + 1)}><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Next</span><ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
           </div>
         </DesignDialog>
       )}
