@@ -5,6 +5,8 @@ catalog:
   vite-plus: 1.4.0
 overrides:
   vite@*: "catalog:"
+  # Match the v3 tokenizer and parser APIs used by this language-service release.
+  "@tailwindcss/language-service@0.16.0>@csstools/media-query-list-parser": "3.0.1"
 peerDependencyRules:
   allowAny:
     - vite
