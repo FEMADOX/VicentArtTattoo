@@ -21,6 +21,19 @@ Use font-display, font-body, and font-mono. Local WOFF2 files include their OFL 
 
 Portal overlays use layers 80/81, above page navigation. Both entering and exiting animations last 240ms; global reduced-motion rules suppress nonessential movement. Dialog content scrolls within a mobile dynamic viewport. These are shared component responsibilities, not caller-specific patches.
 
+## Portfolio selection
+
+Design A initially mounts four works in the shared Embla Carousel. On desktop
+with a fine pointer and sufficient viewport height, scrolling down advances the
+sticky horizontal selection. Small screens and reduced motion use manual swipe
+and arrow controls. Focused artwork and manual navigation take priority over
+scroll-driven selection; there is no autoplay or wheel interception.
+
+View more projects reveals the other four works in the existing masonry layout.
+The shared Dialog can still browse the entire collection and returns focus to
+the photograph that opened it. Preview images use object-contain to show the
+complete original photograph within the rail's reserved frame.
+
 ## Development catalog
 
 Run the development server and open /__ui. The nine choices are Components, Design A, Design B, Design C / Home, Design C / Portfolio, Design C / About, Design C / Contact, Legacy App, and Ink study. Only development loads this module; production keeps the public Design A entry. The catalog sets noindex/nofollow and retains view selection in the URL.

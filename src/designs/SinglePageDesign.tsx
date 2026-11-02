@@ -206,13 +206,14 @@ export default function SinglePageDesign ({ design }: { design: 'a' | 'b' }) {
 
               <h2 className={designStyles.heading} id="portfolio-heading">{design === 'a' ? 'Portfolio' : 'Selected work'}</h2>
               <p className={cn(designStyles.copy, styles.portfolioIntro)}>
-                Explore eight original works. Select any photograph to view the
-                full, uncropped image at its original size.
+                {design === 'a'
+                  ? 'A closer look at four selected tattoos. Explore the rest when you are ready. Select any photograph to view the full, uncropped image.'
+                  : 'Explore eight original works. Select any photograph to view the full, uncropped image at its original size.'}
               </p>
             </m.header>
             {design === 'b' ? <p className={styles.workCount}>08 original pieces</p> : null}
           </div>
-          <ArtworkGallery layout={design} />
+          <ArtworkGallery layout={design} preview={design === 'a'} />
         </div>
       </section>
 

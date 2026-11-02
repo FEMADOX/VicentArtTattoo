@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode, RefObject } from 'react'
 import * as m from 'motion/react-m'
 import MasonryGrid from './MasonryGrid'
+import PortfolioPreview from './PortfolioRail'
 import { useDesignMotion } from './motion'
 import { ArrowDownLeft, ArrowLeft, ArrowRight, ExternalLink, Camera, UserRound, Mail, MapPin, MessageCircle, X } from 'lucide-react'
 import { address, artworks, bookingChecklist, contactChannels } from './content'
@@ -40,7 +41,7 @@ export function DesignDialog ({ title, children, open, onClose, onKeyDown, retur
   )
 }
 
-export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?: readonly number[] }) {
+export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' | 'b' | 'c', ids?: readonly number[], preview?: boolean }) {
   const collection = ids ? artworks.filter(artwork => ids.includes(artwork.id)) : artworks
   const [activeIndex, setActiveIndex] = useState(0)
   const [open, setOpen] = useState(false)
@@ -60,10 +61,10 @@ export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?
 
   const cards = collection.map((artwork, index) => (
     <m.button
-      {...reveal((index % 3) * 0.06)}
+      {...(preview && index < 4 ? {} : reveal((index % 3) * 0.06))}
       key={artwork.id}
       type="button"
-      className={designStyles.artwork}
+      className={cn(designStyles.artwork, preview && index < 4 && 'focus-visible:-outline-offset-2 [&_img]:h-[min(52svh,560px)] [&_img]:object-contain')}
       onClick={event => {
         trigger.current = event.currentTarget
         setActiveIndex(index)
@@ -79,9 +80,13 @@ export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?
 
   return (
     <>
-      <div className={layout === 'b' ? 'grid grid-cols-2 items-start gap-14 [&>:nth-child(even)]:mt-24 max-[1000px]:gap-8 max-[720px]:grid-cols-1 max-[720px]:gap-6 max-[720px]:[&>:nth-child(even)]:mt-0' : 'block'}>
-        {layout === 'a' ? <><div className={designStyles.galleryFeatured}>{cards.slice(0, 2)}</div><MasonryGrid>{cards.slice(2)}</MasonryGrid></> : layout === 'c' ? <MasonryGrid>{cards}</MasonryGrid> : cards}
-      </div>
+      {preview
+        ? <PortfolioPreview>{cards}</PortfolioPreview>
+        : (
+            <div className={layout === 'b' ? 'grid grid-cols-2 items-start gap-14 [&>:nth-child(even)]:mt-24 max-[1000px]:gap-8 max-[720px]:grid-cols-1 max-[720px]:gap-6 max-[720px]:[&>:nth-child(even)]:mt-0' : 'block'}>
+              {layout === 'a' ? <><div className={designStyles.galleryFeatured}>{cards.slice(0, 2)}</div><MasonryGrid>{cards.slice(2)}</MasonryGrid></> : layout === 'c' ? <MasonryGrid>{cards}</MasonryGrid> : cards}
+            </div>
+          )}
       {selected && (
         <DesignDialog title="Original tattoo work" open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} returnFocusRef={trigger}>
           <m.img key={selected.id} className={designStyles.lightboxImage} src={selected.src} alt={selected.alt} width={selected.width} height={selected.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />
