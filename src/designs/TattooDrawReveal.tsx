@@ -2,7 +2,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { animate, useInView, useMotionValue, useMotionValueEvent, useTransform } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 import * as m from 'motion/react-m'
-import { Maximize2, RotateCcw } from 'lucide-react'
+import { RotateCcw } from 'lucide-react'
 import { DesignDialog } from './components'
 import { Button } from '../components/ui/button'
 import { Slider } from '../components/ui/slider'
@@ -11,6 +11,9 @@ import { createInkTimeline, getActiveInkStroke, getInkPhase, getStrokeProgress, 
 import type { InkPhase, InkStrokeTiming } from './ink-timeline'
 import type { InkFillPattern } from './ink-fill-paths'
 import { useInkSnapshot } from './useInkSnapshot'
+import { useTattooViews } from './useTattooViews'
+import type { TattooImage, TattooViewSequence } from './ink-views'
+import { InkEnlargeButton, InkViewControls } from './InkViewControls'
 
 const styles = {
   study: 'group/ink min-w-0',
@@ -21,14 +24,14 @@ const styles = {
   shading: 'grayscale',
   needle: 'opacity-0',
   inkDepth: 'group-data-[ink-state=complete]/ink:opacity-100!',
-  enlarge: 'absolute right-3 bottom-3 z-4 inline-flex min-h-9 items-center gap-2 border border-border bg-background/90 px-[0.7rem] py-2 text-xs/[inherit] text-white',
   status: 'flex min-h-12 items-center justify-between gap-4 text-xs/[inherit] text-body [&>span]:whitespace-nowrap [&>span]:text-muted-foreground',
-  controls: 'flex flex-wrap gap-3 [&>button]:flex-1 [@media(width<=390px)]:flex-col',
+  controls: 'flex flex-wrap gap-3 [&>button]:basis-44 [&>button]:flex-1 [@media(width<=390px)]:flex-col',
   speedControl: 'mb-4 flex flex-wrap items-center gap-3 font-mono text-xs text-body [&>span]:whitespace-nowrap [&>span:last-child]:min-w-[4ch] [&>span:last-child]:text-right [&>span:last-child]:tabular-nums'
 }
 
 interface TattooDrawRevealProps {
-  image: { src: string, alt: string, width: number, height: number }
+  image: TattooImage
+  sequence?: TattooViewSequence | undefined
   paths: readonly string[]
   fill: InkFillPattern
 }
@@ -47,8 +50,8 @@ function DrawingStroke ({ d, clock, timing, pass, width }: { d: string, clock: M
   return <m.path d={d} data-ink-stroke={pass} fill="none" stroke={pass === 'outline' ? '#171717' : '#fff'} strokeWidth={width} vectorEffect={pass === 'outline' ? 'non-scaling-stroke' : undefined} strokeLinecap="round" strokeLinejoin="round" style={{ pathLength, opacity }} />
 }
 
-export default function TattooDrawReveal ({ image, paths, fill }: TattooDrawRevealProps) {
-  return <InkDrawing key={image.src + paths.join('|') + fill.region + fill.paths.join('|') + fill.strokeWidth} image={image} paths={paths} fill={fill} />
+export default function TattooDrawReveal ({ image, paths, fill, sequence }: TattooDrawRevealProps) {
+  return <InkDrawing key={image.src + paths.join('|') + fill.region + fill.paths.join('|') + fill.strokeWidth + JSON.stringify(sequence)} image={image} paths={paths} fill={fill} sequence={sequence} />
 }
 
 function getStatusLabel (status: string, ready: boolean, phase: InkPhase, originalOnly: boolean) {
@@ -57,7 +60,11 @@ function getStatusLabel (status: string, ready: boolean, phase: InkPhase, origin
   return phaseLabels[phase]
 }
 
-function getInkPresentation ({ enabled, ready, failed, originalVisible, status }: { enabled: boolean, ready: boolean, failed: boolean, originalVisible: boolean, status: string }) {
+function isOriginalShown (originalOnly: boolean, index: number, referenceIndex: number | undefined) {
+  return originalOnly && (referenceIndex === undefined || index === referenceIndex)
+}
+
+function getInkPresentation ({ enabled, ready, failed, originalVisible, status, referenceIndex, index }: { enabled: boolean, ready: boolean, failed: boolean, originalVisible: boolean, status: string, referenceIndex: number | undefined, index: number }) {
   const renderable = ready && !failed
   const canReplay = enabled && renderable
   const originalOnly = originalVisible || failed
@@ -66,6 +73,7 @@ function getInkPresentation ({ enabled, ready, failed, originalVisible, status }
   return {
     canReplay,
     originalOnly,
+    showOriginalDisabled: isOriginalShown(originalOnly, index, referenceIndex),
     speedDisabled: !enabled || failed,
     showSketch: drawing,
     svgVisibility: enhanced ? 'visible' : 'hidden',
@@ -73,9 +81,10 @@ function getInkPresentation ({ enabled, ready, failed, originalVisible, status }
   } as const
 }
 
-function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
+function InkDrawing ({ image, paths, fill, sequence }: TattooDrawRevealProps) {
   const { enabled } = useDesignMotion()
   const frameRef = useRef<HTMLButtonElement>(null)
+  const regionRef = useRef<HTMLDivElement>(null)
   const imageRef = useRef<HTMLImageElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const needleRef = useRef<SVGGElement>(null)
@@ -85,17 +94,22 @@ function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
   const startedRef = useRef(false)
   const initialTime = enabled ? 0 : INK_DURATION
   const clock = useMotionValue(initialTime)
-  const inView = useInView(frameRef, { amount: 0.25 })
+  const inView = useInView(regionRef, { amount: 0.25 })
   const [timings, setTimings] = useState<InkStrokeTiming[]>([])
   const [ready, setReady] = useState(false)
   const [failure, setFailure] = useState<Error | null>(null)
   const [viewerOpen, setViewerOpen] = useState(false)
+  const [viewerImage, setViewerImage] = useState<TattooImage>(image)
   const [originalVisible, setOriginalVisible] = useState(false)
   const [speed, setSpeed] = useState(1)
   const playback = useMotionValue<'waiting' | 'playing' | 'complete'>(enabled ? 'waiting' : 'complete')
   const phaseValue = useMotionValue<InkPhase>(getInkPhase(initialTime))
   const status = useInkSnapshot(playback)
   const phase = useInkSnapshot(phaseValue)
+  const views = useTattooViews({ sequence, image, visible: inView, interactive: status === 'complete' && !viewerOpen, passive: enabled })
+  const exploring = sequence !== undefined && status === 'complete'
+  const displayed = exploring ? views.frame : image
+  const depthVisibility = sequence ? 'hidden' : 'visible'
   const statusId = useId()
   const speedId = statusId + '-speed'
   const shadingMaskId = statusId + '-shading'
@@ -205,34 +219,37 @@ function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
   }
 
   function replay () {
+    views.reset()
     setOriginalVisible(false)
     play()
   }
 
   function showOriginal () {
+    views.reset()
     finish()
     setOriginalVisible(true)
   }
 
   function showViewer () {
     finish()
+    setViewerImage({ ...image, ...displayed })
     setViewerOpen(true)
   }
 
-  const { canReplay, originalOnly, speedDisabled, showSketch, overlayVisibility, svgVisibility } = getInkPresentation({ enabled, ready, failed: failure !== null, originalVisible, status })
-  const label = getStatusLabel(status, ready, phase, originalOnly)
+  const { canReplay, showOriginalDisabled, speedDisabled, showSketch, overlayVisibility, svgVisibility } = getInkPresentation({ enabled, ready, failed: failure !== null, originalVisible, status, referenceIndex: sequence?.referenceIndex, index: views.index })
+  const label = getStatusLabel(status, ready, phase, showOriginalDisabled)
 
   return (
-    <div className={styles.study} data-ink-study="" data-ink-state={status} data-ink-phase={phase}>
+    <div className={styles.study} data-ink-study="" data-ink-state={status} data-ink-phase={phase} data-ink-views={sequence ? String(views.index) : undefined}>
       <div className={styles.speedControl}>
         <span id={speedId}>Drawing speed</span>
         <Slider className="min-w-0 flex-1" aria-labelledby={speedId} min={0.25} max={2} step={0.25} value={[speed]} onValueChange={values => changeSpeed(values[0])} disabled={speedDisabled} aria-valuetext={speed + ' times normal speed'} />
         <span aria-hidden="true">{speed}×</span>
       </div>
-      <button ref={frameRef} className={styles.frame} type="button" onClick={showViewer} aria-label={'View original: ' + image.alt} aria-describedby={statusId}>
+      <div ref={regionRef} className={styles.frame} {...views.pointerHandlers} style={{ touchAction: 'pan-y pinch-zoom' }}>
         <span className={styles.paper} hidden={!showSketch} />
-        <m.img ref={imageRef} className={styles.original} src={image.src} alt={image.alt} width={image.width} height={image.height} decoding="async" style={{ opacity: photoOpacity }} />
-        <m.svg ref={svgRef} className={styles.sketch} viewBox={'0 0 ' + image.width + ' ' + image.height} preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" style={{ visibility: svgVisibility }}>
+        <m.img ref={imageRef} className={styles.original} src={displayed.src} srcSet={displayed.srcSet} sizes={image.sizes} alt={image.alt} width={image.width} height={image.height} decoding="async" draggable={false} style={{ opacity: photoOpacity }} />
+        <m.svg ref={svgRef} className={styles.sketch} viewBox={'0 0 ' + image.width + ' ' + image.height} preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" style={{ visibility: exploring ? 'hidden' : svgVisibility }}>
           <defs>
             <clipPath id={regionId} clipPathUnits="userSpaceOnUse"><path d={fill.region} data-ink-region="" /></clipPath>
             <filter id={inkDepthId} filterUnits="userSpaceOnUse" x={0} y={0} width={image.width} height={image.height} colorInterpolationFilters="sRGB">
@@ -254,9 +271,9 @@ function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
           </defs>
           <m.g data-ink-animation="" style={{ opacity: surfaceOpacity, visibility: overlayVisibility }}>
             <image data-ink-layer="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} className={styles.shading} />
-            <image data-ink-depth-pass="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} filter={'url(#' + inkDepthId + ')'} />
+            <image data-ink-depth-pass="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />
             <image data-ink-layer="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} />
-            <image data-ink-depth-pass="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} filter={'url(#' + inkDepthId + ')'} />
+            <image data-ink-depth-pass="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />
             <m.g style={{ opacity: contoursOpacity }}>
               {paths.map((d, index) => <DrawingStroke key={d} d={d} clock={clock} timing={timings[index]} pass="outline" width={2} />)}
             </m.g>
@@ -279,17 +296,18 @@ function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
             </g>
           </m.g>
           <m.g data-ink-depth="" className={styles.inkDepth} style={{ opacity: photoOpacity }}>
-            <image href={image.src} width={image.width} height={image.height} clipPath={'url(#' + regionId + ')'} filter={'url(#' + inkDepthId + ')'} />
+            <image href={image.src} width={image.width} height={image.height} clipPath={'url(#' + regionId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />
           </m.g>
         </m.svg>
-        <span className={styles.enlarge} aria-hidden="true"><Maximize2 size={16} />View original</span>
-      </button>
+        <InkEnlargeButton multiple={sequence !== undefined} buttonRef={frameRef} onClick={showViewer} statusId={statusId} alt={image.alt} />
+      </div>
+      <InkViewControls sequence={sequence} views={views} active={exploring} viewerOpen={viewerOpen} />
       <div className={styles.status}><p id={statusId} role="status">{label}</p><span>{(INK_DURATION / speed).toFixed(1)} s</span></div>
       <div className={styles.controls}>
         <Button variant="outline" onClick={replay} disabled={!canReplay}><RotateCcw data-icon="inline-start" aria-hidden="true" />Replay animation</Button>
-        <Button variant="outline" onClick={showOriginal} disabled={originalOnly}>Show original</Button>
+        <Button variant="outline" onClick={showOriginal} disabled={showOriginalDisabled}>Show original</Button>
       </div>
-      <DesignDialog title="Original photograph" image={image} open={viewerOpen} onClose={() => setViewerOpen(false)} returnFocusRef={frameRef} />
+      <DesignDialog title="Original photograph" image={viewerImage} open={viewerOpen} onClose={() => setViewerOpen(false)} returnFocusRef={frameRef} />
     </div>
   )
 }
