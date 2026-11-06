@@ -87,6 +87,11 @@ const standardTsStyle = {
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    watch: {
+      ignored: [/(^|[\\/])\.playwright-(results|report)([\\/]|$)/]
+    }
+  },
   test: {
     include: ['tests/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['tests/e2e/**']
