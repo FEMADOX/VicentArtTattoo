@@ -184,7 +184,7 @@ test('ink controls support keyboard speed, replay, original and live reduced mot
   await expect(study).toHaveAttribute('data-ink-state', 'complete')
 })
 
-test('public routes retain titles, noindex and legacy redirects', async ({ page }) => {
+test('public routes retain titles and noindex', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   await expect(page).toHaveTitle(/vicentart/i)
@@ -192,13 +192,17 @@ test('public routes retain titles, noindex and legacy redirects', async ({ page 
   await page.goto('/designs/ink-study/')
   await expect(page).toHaveTitle('Ink animation study | VicentArt')
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
-  for (const [path, hash] of [['/designs', ''], ['/designs/a/', ''], ['/designs/b', ''], ['/designs/c', ''], ['/designs/c/portfolio', '#portfolio'], ['/designs/c/about', '#about'], ['/designs/c/contact/', '#contact']]) {
+})
+
+for (const [path, hash] of [['/designs', ''], ['/designs/a/', ''], ['/designs/b', ''], ['/designs/c', ''], ['/designs/c/portfolio', '#portfolio'], ['/designs/c/about', '#about'], ['/designs/c/contact/', '#contact']]) {
+  test('public routes redirect ' + path + ' with its query and section', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto(path + '?ref=e2e')
     await expect(page).toHaveURL('http://127.0.0.1:5174/?ref=e2e' + hash)
     await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
-  }
-})
+  })
+}
 
 test('legacy autoplay pauses for focus, pointer and live reduced motion until explicitly resumed', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
