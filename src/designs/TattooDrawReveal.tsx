@@ -11,7 +11,6 @@ import { createInkTimeline, getActiveInkStroke, getInkPhase, getStrokeProgress, 
 import type { InkPhase, InkStrokeTiming } from './ink-timeline'
 import type { InkFillPattern } from './ink-fill-paths'
 import { useInkSnapshot } from './useInkSnapshot'
-import { designStyles } from './styles'
 
 const styles = {
   study: 'group/ink min-w-0',
@@ -290,7 +289,7 @@ function InkDrawing ({ image, paths, fill }: TattooDrawRevealProps) {
         <Button variant="outline" onClick={replay} disabled={!canReplay}><RotateCcw data-icon="inline-start" aria-hidden="true" />Replay animation</Button>
         <Button variant="outline" onClick={showOriginal} disabled={originalOnly}>Show original</Button>
       </div>
-      <DesignDialog title="Original photograph" open={viewerOpen} onClose={() => setViewerOpen(false)} returnFocusRef={frameRef}><img className={designStyles.lightboxImage} src={image.src} alt={image.alt} width={image.width} height={image.height} /></DesignDialog>
+      <DesignDialog title="Original photograph" image={image} open={viewerOpen} onClose={() => setViewerOpen(false)} returnFocusRef={frameRef} />
     </div>
   )
 }

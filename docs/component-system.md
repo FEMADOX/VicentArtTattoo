@@ -21,6 +21,36 @@ Use font-display, font-body, and font-mono. Local WOFF2 files include their OFL 
 
 Portal overlays use layers 80/81, above page navigation. Both entering and exiting animations last 240ms; global reduced-motion rules suppress nonessential movement. Dialog content scrolls within a mobile dynamic viewport. These are shared component responsibilities, not caller-specific patches.
 
+## Portfolio selection
+
+Design A initially mounts four works in the shared Embla Carousel. On desktop
+with a fine pointer and sufficient viewport height, scrolling down advances the
+sticky horizontal selection. Small screens and reduced motion use manual swipe
+and arrow controls. Focused artwork and manual navigation take priority over
+scroll-driven selection; there is no autoplay or wheel interception.
+
+View more projects reveals the other four works in the existing masonry layout.
+The shared Dialog can still browse the entire collection and returns focus to
+the photograph that opened it. Portfolio cards share a 3:4 image frame and an
+80px minimum caption height across the rail and expanded gallery. Images use
+object-contain against the dark canvas, preserving the complete original file.
+The rail caps card width to fit its image and controls in the viewport. The
+retained galleries and legacy carousel use the same image-frame proportions;
+the enlarged viewer retains its existing viewport-based containment.
+
+## Image viewer
+
+DesignDialog owns the image frame, caption, header and action area for both the
+portfolio and ink study. Its panel has a viewport-based height capped at 960px
+and a maximum width of 896px. A flexible image area contains each complete
+photograph, retaining its source dimensions. Captions reserve 64px and controls
+reserve at least 44px, keeping the layout stable while navigating the collection.
+Longer text can grow rather than being truncated. At narrow widths, Previous
+and Next retain their accessible names while their visual labels collapse to
+icons. Short landscape viewports place the photo beside the caption and controls
+to preserve viewing space. The single-image study viewer offers Close image in
+the same action area.
+
 ## Development catalog
 
 Run the development server and open /__ui. The nine choices are Components, Design A, Design B, Design C / Home, Design C / Portfolio, Design C / About, Design C / Contact, Legacy App, and Ink study. Only development loads this module; production keeps the public Design A entry. The catalog sets noindex/nofollow and retains view selection in the URL.

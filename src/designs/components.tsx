@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode, RefObject } from 'react'
 import * as m from 'motion/react-m'
 import MasonryGrid from './MasonryGrid'
+import PortfolioPreview from './PortfolioRail'
 import { useDesignMotion } from './motion'
 import { ArrowDownLeft, ArrowLeft, ArrowRight, ExternalLink, Camera, UserRound, Mail, MapPin, MessageCircle, X } from 'lucide-react'
 import { address, artworks, bookingChecklist, contactChannels } from './content'
@@ -11,17 +12,21 @@ import { Button } from '../components/ui/button'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '../components/ui/dialog'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion'
 
-export function DesignDialog ({ title, children, open, onClose, onKeyDown, returnFocusRef }: {
+export function DesignDialog ({ title, image, caption = image.alt, children, open, onClose, onKeyDown, returnFocusRef }: {
   title: string
-  children: ReactNode
+  image: { src: string, alt: string, width: number, height: number }
+  caption?: string
+  children?: ReactNode
   open: boolean
   onClose: () => void
   onKeyDown?: (event: KeyboardEvent<HTMLDivElement>) => void
   returnFocusRef: RefObject<HTMLButtonElement | null>
 }) {
+  const { enabled } = useDesignMotion()
   return (
     <Dialog open={open} onOpenChange={next => { if (!next) onClose() }}>
       <DialogContent
+        className={designStyles.lightbox}
         showCloseButton={false}
         onKeyDown={onKeyDown}
         onCloseAutoFocus={event => {
@@ -29,24 +34,30 @@ export function DesignDialog ({ title, children, open, onClose, onKeyDown, retur
           returnFocusRef.current?.focus({ preventScroll: true })
         }}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className={designStyles.lightboxHeader}>
           <DialogTitle>{title}</DialogTitle>
           <DialogClose asChild><Button variant="ghost" size="icon" aria-label="Close dialog"><X aria-hidden="true" /></Button></DialogClose>
         </div>
-        <DialogDescription className="sr-only">The complete original photograph. Use the gallery controls to explore the work.</DialogDescription>
-        {children}
+        <DialogDescription className="sr-only">The complete original photograph. Press Escape or use Close dialog to return to the page.</DialogDescription>
+        <div className={designStyles.lightboxFrame}>
+          <m.img key={image.src} className={designStyles.lightboxImage} src={image.src} alt={image.alt} width={image.width} height={image.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />
+        </div>
+        <div className={designStyles.lightboxFooter}>
+          <p className={designStyles.lightboxCaption} aria-live="polite">{caption}</p>
+          {children ?? <DialogClose asChild><Button variant="outline" className="justify-self-end">Close image</Button></DialogClose>}
+        </div>
       </DialogContent>
     </Dialog>
   )
 }
 
-export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?: readonly number[] }) {
+export function ArtworkGallery ({ layout, ids, preview = false }: { layout: 'a' | 'b' | 'c', ids?: readonly number[], preview?: boolean }) {
   const collection = ids ? artworks.filter(artwork => ids.includes(artwork.id)) : artworks
   const [activeIndex, setActiveIndex] = useState(0)
   const [open, setOpen] = useState(false)
   const trigger = useRef<HTMLButtonElement>(null)
   const selected = collection.at(activeIndex)
-  const { enabled, reveal } = useDesignMotion()
+  const { reveal } = useDesignMotion()
 
   function handleArrowKey (event: KeyboardEvent<HTMLDivElement>) {
     if (event.key === 'ArrowRight') {
@@ -60,10 +71,10 @@ export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?
 
   const cards = collection.map((artwork, index) => (
     <m.button
-      {...reveal((index % 3) * 0.06)}
+      {...(preview && index < 4 ? {} : reveal((index % 3) * 0.06))}
       key={artwork.id}
       type="button"
-      className={designStyles.artwork}
+      className={cn(designStyles.artwork, preview && index < 4 && 'focus-visible:-outline-offset-2')}
       onClick={event => {
         trigger.current = event.currentTarget
         setActiveIndex(index)
@@ -72,24 +83,26 @@ export function ArtworkGallery ({ layout, ids }: { layout: 'a' | 'b' | 'c', ids?
       aria-haspopup="dialog"
       aria-label={'Enlarge piece ' + artwork.id + ': ' + artwork.alt}
     >
-      <img src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
+      <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
       <span className={designStyles.artworkCaption}><span>Piece {String(artwork.id).padStart(2, '0')}</span><span>View full image <ArrowRight size={16} aria-hidden="true" /></span></span>
     </m.button>
   ))
 
   return (
     <>
-      <div className={layout === 'b' ? 'grid grid-cols-2 items-start gap-14 [&>:nth-child(even)]:mt-24 max-[1000px]:gap-8 max-[720px]:grid-cols-1 max-[720px]:gap-6 max-[720px]:[&>:nth-child(even)]:mt-0' : 'block'}>
-        {layout === 'a' ? <><div className={designStyles.galleryFeatured}>{cards.slice(0, 2)}</div><MasonryGrid>{cards.slice(2)}</MasonryGrid></> : layout === 'c' ? <MasonryGrid>{cards}</MasonryGrid> : cards}
-      </div>
+      {preview
+        ? <PortfolioPreview>{cards}</PortfolioPreview>
+        : (
+            <div className={layout === 'b' ? 'grid grid-cols-2 items-start gap-14 [&>:nth-child(even)]:mt-24 max-[1000px]:gap-8 max-[720px]:grid-cols-1 max-[720px]:gap-6 max-[720px]:[&>:nth-child(even)]:mt-0' : 'block'}>
+              {layout === 'a' ? <><div className={designStyles.galleryFeatured}>{cards.slice(0, 2)}</div><MasonryGrid>{cards.slice(2)}</MasonryGrid></> : layout === 'c' ? <MasonryGrid>{cards}</MasonryGrid> : cards}
+            </div>
+          )}
       {selected && (
-        <DesignDialog title="Original tattoo work" open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} returnFocusRef={trigger}>
-          <m.img key={selected.id} className={designStyles.lightboxImage} src={selected.src} alt={selected.alt} width={selected.width} height={selected.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />
-          <p className="text-center font-mono text-xs text-muted-foreground" aria-live="polite">Piece {selected.id}: {selected.alt}</p>
-          <div className="flex items-center justify-between gap-2">
-            <Button variant="outline" size="sm" disabled={activeIndex === 0} onClick={() => setActiveIndex(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" />Previous</Button>
-            <span className="whitespace-nowrap font-mono text-xs text-muted-foreground">{activeIndex + 1} / {collection.length}</span>
-            <Button variant="outline" size="sm" disabled={activeIndex === collection.length - 1} onClick={() => setActiveIndex(activeIndex + 1)}>Next<ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
+        <DesignDialog title="Original tattoo work" image={selected} caption={'Piece ' + selected.id + ': ' + selected.alt} open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} returnFocusRef={trigger}>
+          <div className={designStyles.lightboxControls}>
+            <Button variant="outline" size="sm" className="justify-self-start" aria-label="Previous" disabled={activeIndex === 0} onClick={() => setActiveIndex(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" /><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Previous</span></Button>
+            <span className="whitespace-nowrap font-mono text-xs text-muted-foreground tabular-nums">{activeIndex + 1} / {collection.length}</span>
+            <Button variant="outline" size="sm" className="justify-self-end" aria-label="Next" disabled={activeIndex === collection.length - 1} onClick={() => setActiveIndex(activeIndex + 1)}><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Next</span><ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
           </div>
         </DesignDialog>
       )}
