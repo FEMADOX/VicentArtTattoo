@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react'
 import './global.css'
 import DesignApp from './designs/DesignApp'
+import { CatalogSkeleton } from './components/ContentSkeleton'
 import { legacyDesignHref, resolveDesignRoute } from './designs/routes'
 
 const DevCatalog = import.meta.env.DEV ? lazy(async () => await import('./dev/UiCatalog')) : null
@@ -13,6 +14,6 @@ if (requestedRoute.type === 'redirect') {
 }
 
 export default function Entry () {
-  if (catalogRoute && DevCatalog) return <Suspense fallback={<p className="p-8" role="status">Loading UI catalog...</p>}><DevCatalog /></Suspense>
+  if (catalogRoute && DevCatalog) return <Suspense fallback={<CatalogSkeleton />}><DevCatalog /></Suspense>
   return <DesignApp route={route} />
 }
