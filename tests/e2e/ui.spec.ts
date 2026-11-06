@@ -24,6 +24,7 @@ for (const width of widths) {
       await page.goto('/__ui?view=' + view)
       await expect(page.locator('[data-catalog-preview]')).toHaveAttribute('data-catalog-preview', view)
       await expect(page.locator('#main-content, [data-catalog-preview="legacy"]').first()).toBeVisible()
+      await expect(page.locator('[data-loading-skeleton]')).toHaveCount(0, { timeout: 15_000 })
       await page.evaluate(async () => {
         const images = Array.from(document.images)
         await Promise.all(images.map(async image => {
@@ -203,6 +204,7 @@ test('legacy autoplay pauses for focus, pointer and live reduced motion until ex
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/__ui?view=legacy')
   const carousel = page.getByRole('region', { name: 'Tattoo portfolio' })
+  await expect(carousel).toBeVisible({ timeout: 15_000 })
   await expect(carousel.getByRole('button', { name: 'Pause slideshow' })).toBeVisible()
   await page.mouse.move(1, 1)
   await carousel.getByRole('button', { name: 'Next slide' }).focus()

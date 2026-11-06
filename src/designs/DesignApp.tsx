@@ -11,6 +11,7 @@ import type { DesignRoute } from './routes'
 import SinglePageDesign from './SinglePageDesign'
 import { cn } from '../lib/utils'
 import { designStyles } from './styles'
+import { ContentSkeleton } from '../components/ContentSkeleton'
 
 type SiteRoute = Exclude<DesignRoute, { type: 'redirect', section: string }>
 const InkStudyPage = lazy(async () => await import('./InkStudyPage'))
@@ -71,7 +72,7 @@ function Header ({ home }: { home: boolean }) {
 function SiteContent ({ route }: { route: SiteRoute }) {
   switch (route.type) {
     case 'home': return <SinglePageDesign design="a" />
-    case 'ink-study': return <Suspense fallback={<p className="min-h-dvh bg-background p-12 text-foreground" role="status">Loading ink animation study...</p>}><InkStudyPage /></Suspense>
+    case 'ink-study': return <Suspense fallback={<ContentSkeleton view="ink-study" />}><InkStudyPage /></Suspense>
     case 'not-found': return <main id="main-content" tabIndex={-1} className={cn(designStyles.container, 'py-24')}><h1 className="mb-6 text-[clamp(2rem,5vw,4rem)]">Page not found</h1><p className={designStyles.copy}>Explore Vicent&apos;s work and contact the artist.</p><Button asChild className="mt-8"><a href="/">Back to VicentArt</a></Button></main>
   }
 }
