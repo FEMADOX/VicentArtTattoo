@@ -1,0 +1,11 @@
+{
+  "exclude": [
+    ".agents/",
+    ".claude/",
+    ".aiassistant/",
+    ".continue/",
+    ".junie/",
+    ".stitch/",
+    ".playwright-mcp/"
+  ]
+}
