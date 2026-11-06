@@ -27,7 +27,7 @@ const styles = {
   speedControl: 'mb-4 flex flex-wrap items-center gap-3 font-mono text-xs text-body [&>span]:whitespace-nowrap [&>span:last-child]:min-w-[4ch] [&>span:last-child]:text-right [&>span:last-child]:tabular-nums'
 }
 
-interface TattooDrawRevealProps {
+type TattooDrawRevealProps = {
   image: { src: string, alt: string, width: number, height: number }
   paths: readonly string[]
   fill: InkFillPattern
