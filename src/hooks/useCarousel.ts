@@ -9,6 +9,7 @@ export const useCarousel = () => {
   useEffect(() => {
     if (!api) return
 
+    // oxlint-disable-next-line react/set-state-in-effect -- Initialize from the external Embla instance.
     setCount(api.scrollSnapList().length)
     setCurrent(api.selectedScrollSnap() + 1)
 

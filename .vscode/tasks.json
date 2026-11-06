@@ -1,0 +1,38 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Quality: all static checks",
+      "type": "process",
+      "command": "rtk",
+      "args": ["vp", "run", "check-all"],
+      "problemMatcher": []
+    },
+    {
+      "label": "TypeScript: check projects",
+      "type": "process",
+      "command": "rtk",
+      "args": ["vp", "run", "type-check"],
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Build: production",
+      "type": "process",
+      "command": "rtk",
+      "args": ["vp", "run", "build"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc"]
+    },
+    {
+      "label": "Tests: run",
+      "type": "process",
+      "command": "rtk",
+      "args": ["vp", "test"],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

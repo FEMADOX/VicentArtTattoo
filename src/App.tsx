@@ -8,7 +8,7 @@ import {
   PortfolioSection
 } from '@/components'
 
-function App() {
+function App () {
   return (
     <div className="relative bg-[url('assets/images/Background.webp')] bg-fixed bg-black min-h-screen min-w-dvw bg-no-repeat bg-center bg-size-[contain] md:bg-repeat-space">
       <div className="min-w-dvw flex flex-col items-center justify-center text-center text-white">

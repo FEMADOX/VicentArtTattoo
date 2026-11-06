@@ -189,7 +189,11 @@ Dockerfile.prod
 # Test results
 test-results/
 playwright-report/
+.playwright-mcp/
 coverage/
 
 # Generated files
 *.generated.*
+
+# Local CodeGraph index
+.codegraph/
