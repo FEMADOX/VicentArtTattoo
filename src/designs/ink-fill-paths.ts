@@ -1,4 +1,4 @@
-export interface InkFillPattern {
+export type InkFillPattern = {
   region: string
   paths: readonly string[]
   strokeWidth: number

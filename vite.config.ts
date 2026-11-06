@@ -561,7 +561,7 @@ export default defineConfig({
               objectLiteralTypeAssertions: 'never'
             }
           ],
-          'typescript/consistent-type-definitions': ['error', 'interface'],
+          'typescript/consistent-type-definitions': ['error', 'type'],
           'typescript/consistent-type-exports': [
             'error',
             {

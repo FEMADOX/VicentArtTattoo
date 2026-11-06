@@ -1,6 +1,6 @@
 import { CarouselItem } from '@/components/ui/carousel'
 
-interface PortfolioProps {
+type PortfolioProps = {
   index: number
   image: string
   alt: string

@@ -4,7 +4,7 @@ export const SHADING_END = 8
 export const COLOR_END = 11
 
 export type InkPhase = 'outline' | 'shading' | 'color' | 'photo' | 'complete'
-export interface InkStrokeTiming {
+export type InkStrokeTiming = {
   start: number
   end: number
   length: number
