@@ -1,0 +1,653 @@
+{
+  "schemaVersion": 1,
+  "status": "complete",
+  "completedAt": "2026-10-31T21:14:30.966345+00:00",
+  "projectId": "14587093072929101256",
+  "projectUrl": "https://stitch.withgoogle.com/projects/14587093072929101256",
+  "visibility": "PRIVATE",
+  "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+  "sourceReference": {
+    "manifest": "../../integration-manifest.json",
+    "sha256": "b6d1a184648b94c9779c04b3e0e521110d952732f346ee6b8b71e41e86ff69e8",
+    "assets": "asset-manifest.json"
+  },
+  "screens": [
+    {
+      "slug": "a-home-desktop",
+      "concept": "A",
+      "page": "home",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "title": "A · Galería de obra · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/16992451358060678693",
+      "screenId": "16992451358060678693",
+      "instanceId": "16992451358060678693",
+      "sourceDraft": "projects/14587093072929101256/screens/692fcf2cb9b3459c9a4eb828a96cc8c9",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 6215,
+      "files": {
+        "html": {
+          "path": "exports/a-home-desktop.html",
+          "bytes": 5499432,
+          "sha256": "789a8e45645c1af9195f9dc91e6ed459dd521e0203aab24e109703cd89e1433b"
+        },
+        "png": {
+          "path": "exports/a-home-desktop.png",
+          "bytes": 2646435,
+          "sha256": "c0766e89ab40f37192956b7336b2285aaab269315d4898783525f0166b00130c"
+        },
+        "prototype.html": {
+          "path": "exports/a-home-desktop.prototype.html",
+          "bytes": 7279546,
+          "sha256": "1ba8099c2746ca248b8513bfa102d07f9d142c67b5504eda15331df9c563cb14"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "a-home-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/16992451358060678767",
+          "bytes": 5499432,
+          "sha256": "789a8e45645c1af9195f9dc91e6ed459dd521e0203aab24e109703cd89e1433b",
+          "matchesLocal": true
+        },
+        {
+          "slug": "a-home-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/16992451358060676682",
+          "bytes": 2646435,
+          "sha256": "c0766e89ab40f37192956b7336b2285aaab269315d4898783525f0166b00130c",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "a-home-mobile",
+      "concept": "A",
+      "page": "home",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "title": "A · Galería de obra · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/11652374572401789034",
+      "screenId": "11652374572401789034",
+      "instanceId": "11652374572401789034",
+      "sourceDraft": "projects/14587093072929101256/screens/c2c35b31ede04707879d7881daac3cc5",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 8880,
+      "files": {
+        "html": {
+          "path": "exports/a-home-mobile.html",
+          "bytes": 5305671,
+          "sha256": "b8f2d6cb9fe94b86b15def801a753535898b6a4db7621d8fee3ffde7e3e9d7be"
+        },
+        "png": {
+          "path": "exports/a-home-mobile.png",
+          "bytes": 2135130,
+          "sha256": "adfe8128945c8cec509389450d2b38021cd60cc8518133272c1fcb1f73c249b4"
+        },
+        "prototype.html": {
+          "path": "exports/a-home-mobile.prototype.html",
+          "bytes": 7087779,
+          "sha256": "74925d7d1b4bb9b56d5739152bfe1e05d4a5712982063f22a17907a08176658a"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "a-home-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/11652374572401789048",
+          "bytes": 5305671,
+          "sha256": "b8f2d6cb9fe94b86b15def801a753535898b6a4db7621d8fee3ffde7e3e9d7be",
+          "matchesLocal": true
+        },
+        {
+          "slug": "a-home-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/11652374572401789041",
+          "bytes": 2135130,
+          "sha256": "adfe8128945c8cec509389450d2b38021cd60cc8518133272c1fcb1f73c249b4",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "b-home-desktop",
+      "concept": "B",
+      "page": "home",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "title": "B · El artista y su trabajo · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/17213536861456421420",
+      "screenId": "17213536861456421420",
+      "instanceId": "17213536861456421420",
+      "sourceDraft": "projects/14587093072929101256/screens/09d97ad03317437db38ae723c182f347",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 8385,
+      "files": {
+        "html": {
+          "path": "exports/b-home-desktop.html",
+          "bytes": 5322530,
+          "sha256": "bf1a70247da90da1038157e891191fe1dc4e301038ec63b51a2751463a9a25c6"
+        },
+        "png": {
+          "path": "exports/b-home-desktop.png",
+          "bytes": 4854109,
+          "sha256": "8a806312345c76497adef23d8a3e0e606e8393bdc9f0d13f047a429d3db0cd96"
+        },
+        "prototype.html": {
+          "path": "exports/b-home-desktop.prototype.html",
+          "bytes": 9143391,
+          "sha256": "38387d7afc1720fea89ae23d6f6fa980f71a01da0e9a446319098a3d4ded1b96"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "b-home-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/17213536861456421726",
+          "bytes": 5322530,
+          "sha256": "bf1a70247da90da1038157e891191fe1dc4e301038ec63b51a2751463a9a25c6",
+          "matchesLocal": true
+        },
+        {
+          "slug": "b-home-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/17213536861456421573",
+          "bytes": 4854109,
+          "sha256": "8a806312345c76497adef23d8a3e0e606e8393bdc9f0d13f047a429d3db0cd96",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "b-home-mobile",
+      "concept": "B",
+      "page": "home",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "title": "B · El artista y su trabajo · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/3456769378707669241",
+      "screenId": "3456769378707669241",
+      "instanceId": "3456769378707669241",
+      "sourceDraft": "projects/14587093072929101256/screens/ce65b551357b472f959abd0ec7b12acc",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 6129,
+      "files": {
+        "html": {
+          "path": "exports/b-home-mobile.html",
+          "bytes": 4636683,
+          "sha256": "cfe35ef8bd8380a37c19fbe424d06dff6067f8c6104a4acaac50fc3112e0dc59"
+        },
+        "png": {
+          "path": "exports/b-home-mobile.png",
+          "bytes": 1203395,
+          "sha256": "eb050b8847717f233ee51db9946461e1ad182b3bb257277ed02eb2879e3c715a"
+        },
+        "prototype.html": {
+          "path": "exports/b-home-mobile.prototype.html",
+          "bytes": 8458134,
+          "sha256": "d73ede95d3f850df8ee2c86470d9e079a3f0ab09a904165f3f0a8312d1e313e5"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "b-home-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/3456769378707670827",
+          "bytes": 4636683,
+          "sha256": "cfe35ef8bd8380a37c19fbe424d06dff6067f8c6104a4acaac50fc3112e0dc59",
+          "matchesLocal": true
+        },
+        {
+          "slug": "b-home-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/3456769378707672082",
+          "bytes": 1203395,
+          "sha256": "eb050b8847717f233ee51db9946461e1ad182b3bb257277ed02eb2879e3c715a",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-home-desktop",
+      "concept": "C",
+      "page": "home",
+      "route": "/",
+      "deviceType": "DESKTOP",
+      "title": "C · Explorar y consultar · Home · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/9684331225790825676",
+      "screenId": "9684331225790825676",
+      "instanceId": "9684331225790825676",
+      "sourceDraft": "projects/14587093072929101256/screens/62dde4e655434c8aabd6ebc652264b4d",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 3920,
+      "files": {
+        "html": {
+          "path": "exports/c-home-desktop.html",
+          "bytes": 4421632,
+          "sha256": "9754e27b6fbee63bca4820c39abe32f06162c3d9cd6e6d2142d6d24719da0d1a"
+        },
+        "png": {
+          "path": "exports/c-home-desktop.png",
+          "bytes": 1025779,
+          "sha256": "13e6fc31d5d177c216138e4da86ca3618e210b226d258b87d2dbbc3a7fe7d710"
+        },
+        "prototype.html": {
+          "path": "exports/c-home-desktop.prototype.html",
+          "bytes": 4421632,
+          "sha256": "9754e27b6fbee63bca4820c39abe32f06162c3d9cd6e6d2142d6d24719da0d1a"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-home-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/9684331225790826078",
+          "bytes": 4421632,
+          "sha256": "9754e27b6fbee63bca4820c39abe32f06162c3d9cd6e6d2142d6d24719da0d1a",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-home-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/9684331225790827925",
+          "bytes": 1025779,
+          "sha256": "13e6fc31d5d177c216138e4da86ca3618e210b226d258b87d2dbbc3a7fe7d710",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-home-mobile",
+      "concept": "C",
+      "page": "home",
+      "route": "/",
+      "deviceType": "MOBILE",
+      "title": "C · Explorar y consultar · Home · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/8913682602357850420",
+      "screenId": "8913682602357850420",
+      "instanceId": "8913682602357850420",
+      "sourceDraft": "projects/14587093072929101256/screens/7151a18d214f494889e615c04a7d7379",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 3771,
+      "files": {
+        "html": {
+          "path": "exports/c-home-mobile.html",
+          "bytes": 4328165,
+          "sha256": "802b9f536cd38f37f183364af92635c6a3b8fe2f1283e9eb6fe55958eeafb482"
+        },
+        "png": {
+          "path": "exports/c-home-mobile.png",
+          "bytes": 570374,
+          "sha256": "d4eb60a502d36c5f2923f223a3f51991382af41599ffd61a124093ac299cb5e0"
+        },
+        "prototype.html": {
+          "path": "exports/c-home-mobile.prototype.html",
+          "bytes": 4329085,
+          "sha256": "38045354f4a3ca0c87c48826509f39faed7ea43c315167ab2c657d2237b38983"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-home-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/8913682602357850154",
+          "bytes": 4328165,
+          "sha256": "802b9f536cd38f37f183364af92635c6a3b8fe2f1283e9eb6fe55958eeafb482",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-home-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/8913682602357850287",
+          "bytes": 570374,
+          "sha256": "d4eb60a502d36c5f2923f223a3f51991382af41599ffd61a124093ac299cb5e0",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-portfolio-desktop",
+      "concept": "C",
+      "page": "portfolio",
+      "route": "/portfolio",
+      "deviceType": "DESKTOP",
+      "title": "C · Explorar y consultar · Portfolio · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/15866896281994293542",
+      "screenId": "15866896281994293542",
+      "instanceId": "15866896281994293542",
+      "sourceDraft": "projects/14587093072929101256/screens/c0abdce664bd46e3b384493f5cca0a66",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 2184,
+      "files": {
+        "html": {
+          "path": "exports/c-portfolio-desktop.html",
+          "bytes": 6513015,
+          "sha256": "01829b25320a5996ee3ae29622b086779b3aadb890e2d649f42e4d366a431d24"
+        },
+        "png": {
+          "path": "exports/c-portfolio-desktop.png",
+          "bytes": 1339239,
+          "sha256": "e3bf9d74788451c730aa09992cb387efbce23e168f1792e4faa76db9ae848d31"
+        },
+        "prototype.html": {
+          "path": "exports/c-portfolio-desktop.prototype.html",
+          "bytes": 6513015,
+          "sha256": "01829b25320a5996ee3ae29622b086779b3aadb890e2d649f42e4d366a431d24"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-portfolio-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/15866896281994296760",
+          "bytes": 6513015,
+          "sha256": "01829b25320a5996ee3ae29622b086779b3aadb890e2d649f42e4d366a431d24",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-portfolio-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/15866896281994297199",
+          "bytes": 1339239,
+          "sha256": "e3bf9d74788451c730aa09992cb387efbce23e168f1792e4faa76db9ae848d31",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-portfolio-mobile",
+      "concept": "C",
+      "page": "portfolio",
+      "route": "/portfolio",
+      "deviceType": "MOBILE",
+      "title": "C · Explorar y consultar · Portfolio · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/6028925605545297506",
+      "screenId": "6028925605545297506",
+      "instanceId": "6028925605545297506",
+      "sourceDraft": "projects/14587093072929101256/screens/f96ab4be03154dbea7c9fa0011daf298",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 5364,
+      "files": {
+        "html": {
+          "path": "exports/c-portfolio-mobile.html",
+          "bytes": 7216520,
+          "sha256": "2b8ef03afc607a0ede17b1556b8cd97ee4ee1f0100753c48d282eeb4181d236e"
+        },
+        "png": {
+          "path": "exports/c-portfolio-mobile.png",
+          "bytes": 1625380,
+          "sha256": "fb2f9b7b33851554dd96c462269d1f734ce607eb2e6d7db520c7952f83b54477"
+        },
+        "prototype.html": {
+          "path": "exports/c-portfolio-mobile.prototype.html",
+          "bytes": 7216520,
+          "sha256": "2b8ef03afc607a0ede17b1556b8cd97ee4ee1f0100753c48d282eeb4181d236e"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-portfolio-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/6028925605545295960",
+          "bytes": 7216520,
+          "sha256": "2b8ef03afc607a0ede17b1556b8cd97ee4ee1f0100753c48d282eeb4181d236e",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-portfolio-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/6028925605545296733",
+          "bytes": 1625380,
+          "sha256": "fb2f9b7b33851554dd96c462269d1f734ce607eb2e6d7db520c7952f83b54477",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-about-desktop",
+      "concept": "C",
+      "page": "about",
+      "route": "/about",
+      "deviceType": "DESKTOP",
+      "title": "C · Explorar y consultar · About · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/11559291833931608345",
+      "screenId": "11559291833931608345",
+      "instanceId": "11559291833931608345",
+      "sourceDraft": "projects/14587093072929101256/screens/518d33676ab54446accb2d32c3d78bad",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 4438,
+      "files": {
+        "html": {
+          "path": "exports/c-about-desktop.html",
+          "bytes": 2941684,
+          "sha256": "874725b9d961436ccf6cab693c41b536844f935dd3cded2f02dd53facd239422"
+        },
+        "png": {
+          "path": "exports/c-about-desktop.png",
+          "bytes": 663393,
+          "sha256": "7c0d9a6d607115da4d960627bd50107ee0c348ab2a5508d4cb3169e615c7a646"
+        },
+        "prototype.html": {
+          "path": "exports/c-about-desktop.prototype.html",
+          "bytes": 2941684,
+          "sha256": "874725b9d961436ccf6cab693c41b536844f935dd3cded2f02dd53facd239422"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-about-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/11559291833931610375",
+          "bytes": 2941684,
+          "sha256": "874725b9d961436ccf6cab693c41b536844f935dd3cded2f02dd53facd239422",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-about-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/11559291833931609360",
+          "bytes": 663393,
+          "sha256": "7c0d9a6d607115da4d960627bd50107ee0c348ab2a5508d4cb3169e615c7a646",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-about-mobile",
+      "concept": "C",
+      "page": "about",
+      "route": "/about",
+      "deviceType": "MOBILE",
+      "title": "C · Explorar y consultar · About · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/16235453574135222053",
+      "screenId": "16235453574135222053",
+      "instanceId": "16235453574135222053",
+      "sourceDraft": "projects/14587093072929101256/screens/2d8bb98ef93340e9add2041e153b6f7a",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 4720,
+      "files": {
+        "html": {
+          "path": "exports/c-about-mobile.html",
+          "bytes": 2992442,
+          "sha256": "4573d27af76cff41ce901c85473bb4c9cb9567d83acd6e223322f9e69bd8230d"
+        },
+        "png": {
+          "path": "exports/c-about-mobile.png",
+          "bytes": 339459,
+          "sha256": "3e9185a7d0fd1e9d23c2eaa007aefe08fe1d1b2bfce329207b80a6e69ca3be62"
+        },
+        "prototype.html": {
+          "path": "exports/c-about-mobile.prototype.html",
+          "bytes": 2993395,
+          "sha256": "8c65aa4d49c4833657c39598d3ceab3ad93092a15450d9401deaab1e02164713"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-about-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/16235453574135220963",
+          "bytes": 2992442,
+          "sha256": "4573d27af76cff41ce901c85473bb4c9cb9567d83acd6e223322f9e69bd8230d",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-about-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/16235453574135219460",
+          "bytes": 339459,
+          "sha256": "3e9185a7d0fd1e9d23c2eaa007aefe08fe1d1b2bfce329207b80a6e69ca3be62",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-contact-desktop",
+      "concept": "C",
+      "page": "contact",
+      "route": "/contact",
+      "deviceType": "DESKTOP",
+      "title": "C · Explorar y consultar · Contact · Desktop · Original assets",
+      "screen": "projects/14587093072929101256/screens/17137940145884781717",
+      "screenId": "17137940145884781717",
+      "instanceId": "17137940145884781717",
+      "sourceDraft": "projects/14587093072929101256/screens/44ec3726fc2245629e3544c095b05cbf",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 1440,
+      "height": 2330,
+      "files": {
+        "html": {
+          "path": "exports/c-contact-desktop.html",
+          "bytes": 4334720,
+          "sha256": "b92b8ebb7bb61d1b7d3c53ede30b93df81489840316bd355abeb1ce638583179"
+        },
+        "png": {
+          "path": "exports/c-contact-desktop.png",
+          "bytes": 584500,
+          "sha256": "49d3694ed0871759bf631e0a02474348ffcfafc98b26afca73f8533eedb0bc8a"
+        },
+        "prototype.html": {
+          "path": "exports/c-contact-desktop.prototype.html",
+          "bytes": 4334720,
+          "sha256": "b92b8ebb7bb61d1b7d3c53ede30b93df81489840316bd355abeb1ce638583179"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-contact-desktop",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/17137940145884780559",
+          "bytes": 4334720,
+          "sha256": "b92b8ebb7bb61d1b7d3c53ede30b93df81489840316bd355abeb1ce638583179",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-contact-desktop",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/17137940145884781138",
+          "bytes": 584500,
+          "sha256": "49d3694ed0871759bf631e0a02474348ffcfafc98b26afca73f8533eedb0bc8a",
+          "matchesLocal": true
+        }
+      ]
+    },
+    {
+      "slug": "c-contact-mobile",
+      "concept": "C",
+      "page": "contact",
+      "route": "/contact",
+      "deviceType": "MOBILE",
+      "title": "C · Explorar y consultar · Contact · Mobile · Original assets",
+      "screen": "projects/14587093072929101256/screens/2694064510612480498",
+      "screenId": "2694064510612480498",
+      "instanceId": "2694064510612480498",
+      "sourceDraft": "projects/14587093072929101256/screens/cba8d7d3270d4a10b7d7f55f07cf3b08",
+      "designSystem": "assets/f4d12f1305024789a7246059272b3877",
+      "width": 390,
+      "height": 3752,
+      "files": {
+        "html": {
+          "path": "exports/c-contact-mobile.html",
+          "bytes": 3491676,
+          "sha256": "f7bd0cd2bf3b9b1e81bf4a1d620ea148ae1941804353c04b8898a3707d12afc1"
+        },
+        "png": {
+          "path": "exports/c-contact-mobile.png",
+          "bytes": 408728,
+          "sha256": "55d7af8687fa627978c81faaec1bf96d8dfd0c4c2acf1758c5ce334d43a9954e"
+        },
+        "prototype.html": {
+          "path": "exports/c-contact-mobile.prototype.html",
+          "bytes": 3492255,
+          "sha256": "b511ece6ca2ff243b8a3a3075d3470c1d46a659b1cd01c5ed17015bbe6bbb4b2"
+        }
+      },
+      "remoteFiles": [
+        {
+          "slug": "c-contact-mobile",
+          "kind": "html",
+          "file": "projects/14587093072929101256/files/2694064510612481260",
+          "bytes": 3491676,
+          "sha256": "f7bd0cd2bf3b9b1e81bf4a1d620ea148ae1941804353c04b8898a3707d12afc1",
+          "matchesLocal": true
+        },
+        {
+          "slug": "c-contact-mobile",
+          "kind": "png",
+          "file": "projects/14587093072929101256/files/2694064510612480879",
+          "bytes": 408728,
+          "sha256": "55d7af8687fa627978c81faaec1bf96d8dfd0c4c2acf1758c5ce334d43a9954e",
+          "matchesLocal": true
+        }
+      ]
+    }
+  ],
+  "preservation": {
+    "originalInstances": 21,
+    "currentInstances": 33,
+    "changedOriginalInstanceIds": [],
+    "existingDesignSystemUnchanged": true,
+    "originalLocalRecordsUnchanged": true,
+    "visibility": "PRIVATE",
+    "allFinalScreensPresent": true,
+    "newFinalInstances": 12
+  },
+  "validation": {
+    "offlineScreens": 12,
+    "originalAssetBindingsVerified": 122,
+    "viewportWidthsChecked": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "authenticatedRemoteFilesMatched": 24,
+    "businessCopy": "Checked against source content without adding commercial or service claims",
+    "bDesktopFinalHeadingCorrection": {
+      "change": "Location heading h4 to h3; existing classes retained",
+      "pngByteUnchanged": true
+    },
+    "reports": {
+      "browser": "review/final-bc-summary.json",
+      "aFocused": "review/a-final-focused.json",
+      "localArtifactReceipts": "../../.cache/redesign-2026-10-31/repair-*-receipt.json"
+    }
+  },
+  "limitations": [
+    "Static default-state designs and generated prototypes; production React implementation is deferred.",
+    "Full keyboard/modal interactions and external channel ownership/destinations are not validated.",
+    "No dedicated tablet frame; default layouts were checked at 768px and 320px in addition to target desktop/mobile widths.",
+    "Raw Stitch descriptions may include claims removed during review; final exports and interaction-spec.md take precedence."
+  ]
+}

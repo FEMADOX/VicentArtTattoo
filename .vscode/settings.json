@@ -27,5 +27,17 @@
   "editor.formatOnSaveMode": "file",
   "npm.scriptRunner": "vp",
   "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "tailwindCSS.classFunctions": ["cn", "cva", "clsx"],
+  "tailwindCSS.experimental": {
+    "classRegex": [
+      [
+        "\\b(?:styles|designStyles)\\s*=\\s*\\{([\\s\\S]*?)\\r?\\n\\}",
+        "'([^'\\r\\n]+)'"
+      ]
+    ]
+  },
+  "[tailwindcss]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  }
 }

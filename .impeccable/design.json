@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T18:45:07Z",
+  "title": "Design System: Vicent Art Tattoo",
+  "extensions": {
+    "motion": [
+      {
+        "name": "state",
+        "value": "150ms",
+        "purpose": "Hover, pressed and focus state changes."
+      },
+      {
+        "name": "overlay",
+        "value": "240ms",
+        "purpose": "Dialog, Sheet and Accordion enter and exit."
+      },
+      {
+        "name": "image",
+        "value": "500ms",
+        "purpose": "Photographic transitions when motion is allowed."
+      },
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Visible-to-settled transitions."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ],
+    "shadows": [
+      {
+        "name": "flat",
+        "value": "none",
+        "purpose": "Depth comes from imagery and tonal surfaces."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button: default",
+      "kind": "button",
+      "description": "Shared default action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-default\">Contact the artist</button>",
+      "css": ".ds-button-default { min-height:44px; min-width:44px; padding:12px 24px; background:transparent; color:var(--foreground); border:1px solid var(--foreground); border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; transition:background 150ms; } .ds-button-default:hover { background:color-mix(in oklab, var(--foreground) 10%, transparent); } .ds-button-default:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-default:active { background:color-mix(in oklab, var(--foreground) 20%, transparent); } .ds-button-default:disabled { opacity:0.4; }"
+    },
+    {
+      "name": "Button: outline",
+      "kind": "button",
+      "description": "Shared outline action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-outline\">Contact the artist</button>",
+      "css": ".ds-button-outline { min-height:44px; min-width:44px; padding:12px 24px; background:transparent; color:var(--foreground); border:1px solid var(--input); border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; transition:background 150ms; } .ds-button-outline:hover { border-color:var(--foreground); background:var(--accent); } .ds-button-outline:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-outline:active { background:var(--secondary); } .ds-button-outline:disabled { opacity:0.4; }"
+    },
+    {
+      "name": "Button: secondary",
+      "kind": "button",
+      "description": "Shared secondary action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-secondary\">Contact the artist</button>",
+      "css": ".ds-button-secondary { min-height:44px; min-width:44px; padding:12px 24px; background:var(--secondary); color:var(--secondary-foreground); border:1px solid var(--input); border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; transition:background 150ms; } .ds-button-secondary:hover { background:var(--accent); } .ds-button-secondary:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-secondary:active { background:var(--popover); } .ds-button-secondary:disabled { opacity:0.4; }"
+    },
+    {
+      "name": "Button: ghost",
+      "kind": "button",
+      "description": "Shared ghost action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-ghost\">Contact the artist</button>",
+      "css": ".ds-button-ghost { min-height:44px; min-width:44px; padding:12px 24px; background:transparent; color:var(--foreground); border:1px solid transparent; border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; transition:background 150ms; } .ds-button-ghost:hover { background:var(--accent); } .ds-button-ghost:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-ghost:active { background:var(--secondary); } .ds-button-ghost:disabled { opacity:0.4; }"
+    },
+    {
+      "name": "Button: link",
+      "kind": "button",
+      "description": "Shared link action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-link\">Contact the artist</button>",
+      "css": ".ds-button-link { min-height:44px; min-width:44px; padding:12px 24px; background:transparent; color:var(--link); border:1px solid transparent; border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; text-decoration:underline; text-underline-offset:4px; transition:color 150ms; } .ds-button-link:hover { color:var(--foreground); } .ds-button-link:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-link:active { color:var(--body); } .ds-button-link:disabled { opacity:0.4; }"
+    },
+    {
+      "name": "Button: destructive",
+      "kind": "button",
+      "description": "Shared destructive action with a 44px minimum hit area.",
+      "html": "<button class=\"ds-button-destructive\">Contact the artist</button>",
+      "css": ".ds-button-destructive { min-height:44px; min-width:44px; padding:12px 24px; background:transparent; color:var(--destructive); border:1px solid var(--destructive); border-radius:9999px; font:400 12px/1.4 \"JetBrains Mono\",monospace; text-transform:uppercase; letter-spacing:0.14em; transition:background 150ms; } .ds-button-destructive:hover { background:color-mix(in oklab, var(--destructive) 10%, transparent); } .ds-button-destructive:focus-visible { outline:2px solid var(--ring); outline-offset:4px; } .ds-button-destructive:active { background:color-mix(in oklab, var(--destructive) 20%, transparent); } .ds-button-destructive:disabled { opacity:0.4; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The artwork takes the room",
+    "overview": "An editorial gallery on a black canvas frames Vicent's original tattoo photography. The interface recedes: generous space, crisp rectangular imagery, and quiet outlined controls keep attention on the work. The original logo and contact channels carry the artist's identity.\n\nThe approved direction adapts the supplied monochrome editorial reference to this portfolio. It does not carry automotive names, proprietary typefaces, vehicle content, or reference-site claims into the product. The page's Experience mode and contact journey are recorded in the surface brief.",
+    "keyCharacteristics": [
+      "Original artwork and photography lead.",
+      "Black surfaces with white headings and readable gray body copy.",
+      "Three regular-weight type roles, self-hosted.",
+      "Rectangular imagery and pill controls.",
+      "Flat surfaces, restrained borders, and purposeful motion."
+    ],
+    "dos": [
+      "Do preserve the original artwork, logo, contact channels, and truthful English content.",
+      "Do let photography carry color and visual emphasis.",
+      "Do keep all three typography roles at regular weight.",
+      "Do use visible focus, adequate contrast, and 44px control targets.",
+      "Do preserve every retained design version and the public contact journey.",
+      "Do honor reduced motion and preserve usable content when animation is disabled."
+    ],
+    "donts": [
+      "Don't add invented booking, availability, prices, reviews, or credentials.",
+      "Don't introduce automotive content or proprietary reference-site assets.",
+      "Don't round artwork or add card shadows, gradients, or decorative glows.",
+      "Don't use a faint decorative divider as the only visible control boundary.",
+      "Don't add a second autoplay controller or replace accessible primitives with custom lookalikes."
+    ],
+    "rules": [
+      {
+        "name": "The Quiet Border Rule",
+        "body": "The hairline border is decorative separation. Interactive boundaries use the stronger control-border token or white; do not rely on the decorative hairline to identify a control.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Roles Rule",
+        "body": "Use family, scale, spacing, and case for hierarchy. Do not simulate bold or italic weights that are not shipped.",
+        "section": "typography"
+      }
+    ]
+  },
+  "typeScalePx": [
+    12,
+    14,
+    16,
+    18,
+    20,
+    24,
+    30
+  ]
+}

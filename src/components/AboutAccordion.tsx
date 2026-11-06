@@ -1,32 +1,17 @@
 import { accordionData } from '@/common'
-import { useAccordion } from '@/hooks'
-import { getItemClasses } from '@/utils/accordionUtils'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
-export const AboutAccordion = () => {
-  const { toggleSection, isOpen } = useAccordion()
-
-  return (
-    <div className="join join-vertical">
-      {accordionData.map(({ id, title, content }, index) => (
-        <div
-          key={id}
-          className={getItemClasses(index, isOpen(id), accordionData.length)}
-        >
-          <input
-            type="checkbox"
-            checked={isOpen(id)}
-            defaultChecked={index === 0}
-            onChange={() => toggleSection(id)}
-            className="cursor-pointer"
-          />
-          <div className="collapse-title font-semibold text-4xl font-cinzel">
-            {title}
-          </div>
-          <div className="collapse-content text-md xl:text-xl">
-            <p>{content}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
+export const AboutAccordion = () => (
+  <Accordion type="single" collapsible defaultValue="me">
+    {accordionData.map(({ id, title, content }) => (
+      <AccordionItem key={id} value={id}>
+        <AccordionTrigger className="min-h-11 font-display text-3xl uppercase tracking-wide">
+          {title}
+        </AccordionTrigger>
+        <AccordionContent className="font-body text-xl leading-relaxed text-muted-foreground">
+          <p>{content}</p>
+        </AccordionContent>
+      </AccordionItem>
+    ))}
+  </Accordion>
+)

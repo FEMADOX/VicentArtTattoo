@@ -33,6 +33,11 @@ jobs:
           run-install: false
       - run: vp install --frozen-lockfile
       - run: vp run check-all
-      # No test suite exists yet. Keep running future tests without blocking on an empty suite.
-      - run: vp test --passWithNoTests
+      - run: vp test
       - run: vp run build
+      - name: Install browser for UI checks
+        if: runner.os == 'Linux'
+        run: vpx playwright install --with-deps chromium
+      - name: Check component interactions
+        if: runner.os == 'Linux'
+        run: vpx playwright test

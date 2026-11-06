@@ -1,9 +1,9 @@
 import { PortfolioCarousel } from './PortfolioCarousel'
 
 export const PortfolioSection = () => (
-  <section id="portfolio" className="my-10">
-    <div className="bg-black min-w-dvw px-5 py-10">
-      <h2 className="text-4xl mb-10 font-bold font-cinzel">Portfolio</h2>
+  <section id="portfolio" aria-labelledby="portfolio-heading" className="scroll-mt-24 border-y border-border px-5 py-20 md:px-10 md:py-28">
+    <div className="mx-auto max-w-7xl">
+      <h2 id="portfolio-heading" className="mb-10 font-display text-4xl uppercase tracking-wide md:text-5xl">Portfolio</h2>
       <PortfolioCarousel />
     </div>
   </section>

@@ -1,0 +1,86 @@
+{
+  "assets": [
+    {
+      "path": "public/logo.svg",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/public/logo.svg",
+      "bytes": 502857,
+      "sha256": "a4f574d449e239cad8b5b63a9bd9d7b3de77cc49ef36e92331b07042d698905e",
+      "matchesLocal": false,
+      "matchesAfterLineEndingNormalization": true,
+      "localSha256": "fd3ede4a25adb52e34c87fe6ce84dc25f092818f294024c9ea91125efd768867"
+    },
+    {
+      "path": "src/assets/images/about_me_working.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/about_me_working.webp",
+      "bytes": 85494,
+      "sha256": "473bba7357613d394b1f81737dd3b9c6b6729e5c77f39a81ae274112e7abd776",
+      "matchesLocal": true,
+      "localSha256": "473bba7357613d394b1f81737dd3b9c6b6729e5c77f39a81ae274112e7abd776"
+    },
+    {
+      "path": "src/assets/images/portfolio1.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio1.webp",
+      "bytes": 195572,
+      "sha256": "113797e1436aaa311787de2add332bc9f3fd7ba66570dd9bf9a9cd53ec25d397",
+      "matchesLocal": true,
+      "localSha256": "113797e1436aaa311787de2add332bc9f3fd7ba66570dd9bf9a9cd53ec25d397"
+    },
+    {
+      "path": "src/assets/images/portfolio2.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio2.webp",
+      "bytes": 226410,
+      "sha256": "87309ca99b98212d785750a1984c33f11dd032dbb1db62a014141adae5812a26",
+      "matchesLocal": true,
+      "localSha256": "87309ca99b98212d785750a1984c33f11dd032dbb1db62a014141adae5812a26"
+    },
+    {
+      "path": "src/assets/images/portfolio3.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio3.webp",
+      "bytes": 132058,
+      "sha256": "1d10c3cdb224f7b8b29691af9d4924c3e4f19b702e33c5af5e09f9a435f938e0",
+      "matchesLocal": true,
+      "localSha256": "1d10c3cdb224f7b8b29691af9d4924c3e4f19b702e33c5af5e09f9a435f938e0"
+    },
+    {
+      "path": "src/assets/images/portfolio4.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio4.webp",
+      "bytes": 453774,
+      "sha256": "54f5022494022562210890fbbedd32656f7736b6ee4d56cbd5061955f070cdab",
+      "matchesLocal": true,
+      "localSha256": "54f5022494022562210890fbbedd32656f7736b6ee4d56cbd5061955f070cdab"
+    },
+    {
+      "path": "src/assets/images/portfolio5.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio5.webp",
+      "bytes": 56934,
+      "sha256": "a21bc12e4a6cadf98a096a62fffb445f35369a8595c213467ac750a2fb84bb81",
+      "matchesLocal": true,
+      "localSha256": "a21bc12e4a6cadf98a096a62fffb445f35369a8595c213467ac750a2fb84bb81"
+    },
+    {
+      "path": "src/assets/images/portfolio6.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio6.webp",
+      "bytes": 139708,
+      "sha256": "298b078d92e7626e630a7cb56c864a24a83f2f61112be73a02d33846eba06f80",
+      "matchesLocal": true,
+      "localSha256": "298b078d92e7626e630a7cb56c864a24a83f2f61112be73a02d33846eba06f80"
+    },
+    {
+      "path": "src/assets/images/portfolio7.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio7.webp",
+      "bytes": 48514,
+      "sha256": "84d7b8681409084cfcf9d40a091e9a6b1c7160b0394addd85092fe9a6a494228",
+      "matchesLocal": true,
+      "localSha256": "84d7b8681409084cfcf9d40a091e9a6b1c7160b0394addd85092fe9a6a494228"
+    },
+    {
+      "path": "src/assets/images/portfolio8.webp",
+      "url": "https://raw.githubusercontent.com/FEMADOX/VicentArtTattoo/main/src/assets/images/portfolio8.webp",
+      "bytes": 80800,
+      "sha256": "cfe7d00665006fb53580fd9ea0a995f28bb2cb89561cd2babfacb6ab20238130",
+      "matchesLocal": true,
+      "localSha256": "cfe7d00665006fb53580fd9ea0a995f28bb2cb89561cd2babfacb6ab20238130"
+    }
+  ],
+  "verification": "All nine photographs match public repository bytes exactly. SVG logo differs only in line endings."
+}

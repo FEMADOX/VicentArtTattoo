@@ -1,0 +1,191 @@
+@import "tailwindcss" source(".");
+@import "tw-animate-css";
+
+@font-face {
+  font-family: "Saira Condensed";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/saira-condensed-latin-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/eb-garamond-latin-400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/jetbrains-mono-latin-400.woff2") format("woff2");
+}
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: dark;
+  --radius: 0px;
+  --background: #000000;
+  --foreground: #ffffff;
+  --body: #cccccc;
+  --surface: #0d0d0d;
+  --card: #141414;
+  --card-foreground: #ffffff;
+  --popover: #1f1f1f;
+  --popover-foreground: #ffffff;
+  --primary: #ffffff;
+  --primary-foreground: #000000;
+  --secondary: #141414;
+  --secondary-foreground: #ffffff;
+  --muted: #141414;
+  --muted-foreground: #999999;
+  --accent: #1f1f1f;
+  --accent-foreground: #ffffff;
+  --destructive: #ffb4ab;
+  --border: #262626;
+  --input: #808080;
+  --ring: #ffffff;
+  --link: #c3d9f3;
+  --duration-fast: 150ms;
+  --duration-overlay: 240ms;
+  --duration-image: 500ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --design-bg: var(--background);
+  --design-surface: var(--surface);
+  --design-border: var(--border);
+  --design-muted: var(--muted-foreground);
+  --design-header-height: 5rem;
+  --font-cinzel: "Saira Condensed", "Arial Narrow", sans-serif;
+  --font-roboto: "EB Garamond", Garamond, Georgia, serif;
+}
+
+@theme inline {
+  --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
+  --font-body: "EB Garamond", Garamond, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-body: var(--body);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    background: var(--background);
+    scroll-padding-top: var(--design-header-height);
+    scrollbar-color: var(--muted-foreground) var(--background);
+    scrollbar-width: thin;
+  }
+
+  body {
+    @apply bg-background font-body text-body;
+    margin: 0;
+    font-weight: 400;
+    font-synthesis: none;
+    caret-color: var(--foreground);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display text-foreground;
+    font-weight: 400;
+    text-wrap: balance;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button,
+  a,
+  input,
+  textarea,
+  select,
+  [tabindex] {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  img {
+    max-width: 100%;
+  }
+
+  input,
+  textarea {
+    accent-color: var(--foreground);
+  }
+}
+
+@layer utilities {
+  .font-cinzel {
+    font-family: var(--font-cinzel);
+  }
+
+  .font-roboto {
+    font-family: var(--font-roboto);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

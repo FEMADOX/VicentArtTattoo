@@ -1,103 +1,33 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { navigation } from '@/common'
 
 export const useNavigation = () => {
-  const [isActive, setIsActive] = useState(-1)
-  const [currentSection, setCurrentSection] = useState('')
-  const tabsRef = useRef<Array<HTMLAnchorElement | null>>([])
+  const [currentSection, setCurrentSection] = useState('home')
 
-  // Handle active tab styling
   useEffect(() => {
-    const tabs = document.querySelectorAll('.tab')
-
-    if (isActive !== -1) {
-      navigation.forEach((_item, index) => {
-        const { [index]: tab } = tabs
-        if (index === isActive) {
-          tab.classList.add('tab-active')
-        } else {
-          tab.classList.remove('tab-active')
-        }
-      })
+    const updateFromHash = () => {
+      const section = navigation.find(({ href }) => href === window.location.hash)
+      setCurrentSection(section ? section.href.slice(1) : 'home')
     }
-  }, [isActive])
-
-  // Intersection Observer for scroll-based navigation
-  useEffect(() => {
-    const sections = navigation
-      .map(({ href }) => document.querySelector(href))
-      .filter(
-        (section): section is HTMLElement => section instanceof HTMLElement
-      )
-
-    const observerOptions = {
-      root: null,
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0
-    }
+    updateFromHash()
+    window.addEventListener('hashchange', updateFromHash)
 
     const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const sectionId = entry.target.id
-          const sectionHash = `#${sectionId}`
-
-          // Update URL hash without triggering navigation
-          if (window.location.hash !== sectionHash) {
-            window.history.replaceState(null, '', sectionHash)
-            setCurrentSection(sectionId)
-
-            // Update active tab
-            const activeIndex = navigation.findIndex(
-              ({ href }) => href === sectionHash
-            )
-            if (activeIndex !== -1) setIsActive(activeIndex)
-          }
-        }
-      })
-    }, observerOptions)
-
-    // Observe all sections
-    sections.forEach(section => {
-      observer.observe(section)
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
-  // Handle hash changes on mount and route changes
-  useEffect(() => {
-    const updateActiveTab = () => {
-      if (location.hash) {
-        const hash = location.hash.replace('#', '')
-        navigation.forEach(({ href }, index) => {
-          const tab = tabsRef.current[index]
-          if (!tab) return
-          if (href === `#${hash}`) {
-            setIsActive(index)
-            setCurrentSection(hash)
-          } else {
-            tab.classList.remove('tab-active')
-          }
-        })
-      } else {
-        // If no hash, set home as active by default
-        setIsActive(0)
-        setCurrentSection('home')
+      for (const entry of entries) {
+        if (entry.isIntersecting) setCurrentSection(entry.target.id)
       }
+    }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 })
+
+    for (const { href } of navigation) {
+      const section = document.querySelector(href)
+      if (section) observer.observe(section)
     }
 
-    updateActiveTab()
-    window.addEventListener('hashchange', updateActiveTab)
-
-    return () => window.removeEventListener('hashchange', updateActiveTab)
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('hashchange', updateFromHash)
+    }
   }, [])
 
-  return {
-    isActive,
-    currentSection,
-    tabsRef,
-    setIsActive,
-    setCurrentSection
-  }
+  return { currentSection }
 }
