@@ -71,9 +71,6 @@ storybook-static
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional eslint cache
-.eslintcache
-
 # Optional stylelint cache
 .stylelintcache
 
@@ -203,3 +200,6 @@ coverage/
 .playwright-report/
 
 .impeccable/review/
+
+# User scripts
+/scripts

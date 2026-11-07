@@ -40,7 +40,8 @@ const formatIgnorePatterns = [
   '.junie/**',
   'src/components/ui/**',
   'src/lib/**',
-  'public/**'
+  'public/**',
+  'src/assets/tattoo-video-manifest.json'
 ]
 
 // Stylistic owns JS/TS whitespace, including StandardJS's `function name ()`.
