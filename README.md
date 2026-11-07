@@ -1,132 +1,132 @@
 # VicentArt Tattoo
 
-Portafolio web de una sola página para presentar el trabajo y la información de contacto de Vicentart. La interfaz y el contenido visible del sitio están en inglés.
+A single-page portfolio website presenting VicentArt's work and contact information. The site's interface and public-facing copy are in English.
 
-## Tecnologías
+## Technology
 
-- React 19 y TypeScript
-- Vite+ como toolchain de desarrollo y build
-- Tailwind CSS v4 con DaisyUI y componentes UI locales inspirados en shadcn/ui
-- Embla Carousel para la galería
+- React 19 and TypeScript
+- Vite+ as the development and build toolchain
+- Tailwind CSS v4 with shared shadcn/Radix UI components
+- Embla Carousel for the gallery
 
-Es una aplicación estática de frontend. No contiene backend ni requiere variables de entorno para ejecutarse.
+This is a static frontend application. It has no backend and requires no environment variables to run.
 
-## Desarrollo
+## Development
 
-Requisitos fijados por el proyecto: Node.js `26.13.0` en `.node-version` y pnpm `12.16.1` en `packageManager`.
+The project pins Node.js `26.13.0` in `.node-version` and pnpm `12.16.1` in `packageManager`.
 
-Los comandos siguientes requieren [Vite+ CLI](https://viteplus.dev/guide/) y RTK disponibles en el `PATH`. VS Code incluye recomendaciones de extensiones y tareas de calidad y build en `.vscode/`.
-
-```powershell
-rtk vp install
-rtk vp dev
-```
-
-Vite muestra la dirección local en la terminal al iniciar el servidor.
-
-## Comandos
+The commands below require the [Vite+ CLI](https://viteplus.dev/guide/) and RTK on `PATH`. VS Code extension recommendations and quality/build tasks are in `.vscode/`.
 
 ```powershell
-rtk vp run check
-rtk vp run tsc
-rtk vp run check-all
-rtk vp run lint:tailwind
-rtk vp run lint:tailwind:fix
-rtk vp run test
-rtk vp run test:watch
-rtk vp run build
-rtk vp preview
+vp install
+vp dev
 ```
 
-Usa `rtk vp run <script>` para ejecutar scripts definidos por el proyecto. En particular, `rtk vp run build` ejecuta primero la compilación TypeScript y después el build de Vite; `rtk vp build` ejecuta solo el comando integrado de build. Las pruebas viven en `tests/designs/`; Vitest busca únicamente archivos `*.test.ts`, `*.test.tsx`, `*.spec.ts` y `*.spec.tsx` dentro de `tests/`. TypeScript también comprueba ese directorio. `check-all` incluye formato, lint, tipos y `tailwind-lint`.
+Vite prints the local address in the terminal when the server starts.
 
-Los diseños de `src/designs/` usan utilidades Tailwind v4 y constantes reutilizables de clases, sin hojas CSS específicas ni CSS Modules. `src/global.css` contiene la entrada de Tailwind, las fuentes locales y el tema oscuro compartido. `DESIGN.md` y [el sistema de componentes](docs/component-system.md) documentan el estándar shadcn/Radix; DaisyUI está retirado. `lint:tailwind:fix` corrige las clases canónicas; los conflictos que no tengan corrección automática se revisan manualmente. La configuración del editor incluye las constantes `styles` y `designStyles` en la extracción de clases.
-
-## Formato
-
-El estilo se configura en `vite.config.ts` y se aplica a través de Vite+. [Stylistic](https://eslint.style/) se ejecuta como plugin de Oxlint para JavaScript y TypeScript; [Oxfmt](https://viteplus.dev/guide/fmt) formatea CSS, JSON y los demás formatos habilitados.
+## Commands
 
 ```powershell
-rtk vp run format
-rtk vp run format:check
+vp run check
+vp run tsc
+vp run check-all
+vp run lint:tailwind
+vp run lint:tailwind:fix
+vp run test
+vp run test:watch
+vp run build
+vp preview
 ```
 
-El perfil `standardTsStyle` aplica un estilo inspirado en [StandardJS](https://standardjs.com/rules.html): dos espacios, comillas simples, sin punto y coma ni comas finales opcionales, espacios dentro de objetos, paréntesis opcionales en flechas y salto de línea final. Exige también `function nombre ()`, funciones anónimas y métodos con espacio antes del paréntesis. TypeScript conserva sus anotaciones de tipos; JSX utiliza comillas dobles.
+Use `vp run <script>` to run project-defined scripts. In particular, `vp run build` runs the TypeScript build before the Vite build; `vp build` runs only the built-in build command. Vitest discovers `*.test.ts`, `*.test.tsx`, `*.spec.ts` and `*.spec.tsx` files under `tests/`; TypeScript checks that directory too. `check-all` runs formatting, lint, type checks and `tailwind-lint`.
 
-Oxfmt excluye JS/TS porque su impresión eliminaría ese espacio. Cada archivo tiene un único responsable de estilo. En VS Code, guardar JS/TS aplica `source.fixAll.oxc`; para los demás formatos sigue activo el formateo de Oxc. `format` ejecuta `vp check --fix`, que aplica el formato y las correcciones seguras del linter; `format:check` valida ambos sin escribir. Los hooks y CI utilizan el mismo perfil.
+Designs in `src/designs/` use Tailwind v4 utilities and reusable class constants, without dedicated stylesheets or CSS Modules. `src/global.css` contains the Tailwind entry point, local fonts and shared dark theme. `DESIGN.md` and [the component system](docs/component-system.md) document the shadcn/Radix standard; DaisyUI has been removed. `lint:tailwind:fix` canonicalizes utility classes; conflicts without an automatic fix are reviewed manually. Editor settings include the `styles` and `designStyles` constants in class extraction.
 
-Stylistic corrige las reglas de estilo, pero no redistribuye automáticamente todas las líneas a 80 columnas como Oxfmt. El editor conserva esa guía y Oxfmt la aplica a sus formatos. El perfil no equivale a ejecutar `ts-standard`; las reglas de calidad y tipos siguen en Oxlint y TypeScript.
+## Formatting
 
-Oxlint aplica una pasada de correcciones. Si varias se solapan, puede dejar problemas corregibles y devolver un error; vuelve a ejecutar `rtk vp run format` y comprueba después con `rtk vp run format:check`. Esta [limitación de correcciones sucesivas](https://github.com/oxc-project/oxc/issues/16118) también puede afectar las acciones del editor. Los hooks y CI rechazan los problemas restantes.
+Style is configured in `vite.config.ts` and run through Vite+. [Stylistic](https://eslint.style/) runs as an Oxlint plugin for JavaScript and TypeScript; [Oxfmt](https://viteplus.dev/guide/fmt) formats CSS, JSON and the other enabled file types.
 
-`lineEnding: auto` se reproduce con CRLF en Windows y LF en los demás sistemas; Git normaliza el texto y CI configura el checkout según el sistema. Los hooks mantienen LF.
+```powershell
+vp run format
+vp run format:check
+```
 
-Las exclusiones de Biome se comparten mediante `formatIgnorePatterns`, incluidas `src/components/ui`, `src/lib` y `public`. Se usan en Oxfmt y en el override de estilo de Oxlint; las reglas de calidad mantienen su alcance anterior. HTML permanece excluido: el formato de documentos HTML completos es opt-in en Biome y no está activado en `biome.json`. Se conservan además las exclusiones de artefactos y herramientas del proyecto.
+The `standardTsStyle` profile follows a [StandardJS](https://standardjs.com/rules.html)-inspired style: two spaces, single quotes, no semicolons or optional trailing commas, spaces inside object braces, optional parentheses for arrow parameters, and a final newline. It also requires `function name ()`, anonymous functions, and a space before method parentheses. TypeScript keeps its type annotations; JSX uses double quotes.
 
-`biome.json` se conserva como referencia. Sus reglas de lint y la acción `organizeImports` pertenecen al analizador de Biome y no se trasladan como opciones del formatter. Oxfmt sigue respetando `.gitignore`, aunque Biome tenga `vcs.useIgnoreFile: false`. Los dos motores pueden distribuir algunas expresiones de forma distinta aun compartiendo preferencias.
+Oxfmt excludes JS/TS because its printer would remove that space. Each file has a single style owner. In VS Code, saving JS/TS runs `source.fixAll.oxc`; Oxc formatting remains enabled for other file types. `format` runs `vp check --fix`, applying formatting and safe lint fixes; `format:check` validates both without writing. Hooks and CI use the same profile.
+
+Stylistic enforces style rules but does not automatically wrap every line at 80 columns like Oxfmt. The editor keeps that guide, and Oxfmt applies it to the formats it owns. This profile is not equivalent to running `ts-standard`; Oxlint and TypeScript still enforce quality and type rules.
+
+Oxlint applies one fix pass. Overlapping fixes may leave fixable issues and return an error; run `vp run format` again, then check with `vp run format:check`. This [limitation on successive fixes](https://github.com/oxc-project/oxc/issues/16118) can also affect editor actions. Hooks and CI reject remaining issues.
+
+`lineEnding: auto` uses CRLF on Windows and LF on other systems; Git normalizes text, and CI configures checkout line endings by operating system. Hooks use LF.
+
+Biome exclusions are shared through `formatIgnorePatterns`, including `src/components/ui`, `src/lib` and `public`. They apply to Oxfmt and the Oxlint style override; quality rules keep their previous scope. HTML remains excluded: full-document HTML formatting is opt-in in Biome and is not enabled in `biome.json`. Project artifact and tooling exclusions are preserved as well.
+
+`biome.json` is retained as a reference. Its lint rules and `organizeImports` action belong to Biome's analyzer and are not formatter options. Oxfmt still respects `.gitignore`, even though Biome sets `vcs.useIgnoreFile: false`. The two engines may format some expressions differently despite sharing preferences.
 
 ## CodeGraph
 
-El proyecto tiene configuración de [CodeGraph](https://github.com/colbymchenry/codegraph) en `codegraph.json`. El índice local SQLite se guarda en `.codegraph/`, excluido de Git. Se utiliza el CLI y MCP globales, sin añadir dependencias al sitio.
+The project configures [CodeGraph](https://github.com/colbymchenry/codegraph) in `codegraph.json`. Its local SQLite index is stored in `.codegraph/`, which Git ignores. The global CLI and MCP are used without adding site dependencies.
 
-Para crear el índice en un nuevo clon y consultar el código:
+To create the index in a fresh clone and query the code:
 
 ```powershell
-rtk codegraph init
-rtk codegraph status
-rtk codegraph explore "App PortfolioCarousel useCarousel"
+codegraph init
+codegraph status
+codegraph explore "App PortfolioCarousel useCarousel"
 ```
 
-El MCP activo actualiza el índice cuando cambian el código o las exclusiones. También puedes sincronizar manualmente con `rtk codegraph sync` y comprobar los cambios pendientes con `rtk codegraph status`. Para consultas mediante MCP, pasa la raíz absoluta del proyecto como `projectPath` a `codegraph_explore`.
+The active MCP updates the index when source code or exclusions change. You can also sync manually with `codegraph sync` and check pending changes with `codegraph status`. For MCP queries, pass the absolute project root as `projectPath` to `codegraph_explore`.
 
-Si necesitas una reconstrucción completa con `rtk codegraph index`, cierra primero el consumidor MCP que esté escribiendo en el índice. CodeGraph admite un único escritor; conserva su bloqueo mientras siga activo.
+Before rebuilding with `codegraph index`, close the MCP client currently writing to the index. CodeGraph supports one writer; keep its lock while it is active.
 
-Se excluyen las skills y los artefactos de herramientas. Los componentes UI, utilidades y exportaciones de imágenes de la aplicación permanecen indexados; CodeGraph ya excluye dependencias y builds de forma predeterminada.
+Skills and tool artifacts are excluded. The app's UI components, utilities and image exports remain indexed; CodeGraph excludes dependencies and build outputs by default.
 
-## Guías para agentes
+## Agent guides
 
-AGENTS.md centraliza las instrucciones de trabajo, los comandos de validación y el uso de CodeGraph. Las 12 skills compartidas se conservan como referencias de solo lectura en .agents/skills/, con sus orígenes y hashes registrados en skills-lock.json.
+AGENTS.md centralizes the working instructions, validation commands and CodeGraph workflow. The 12 shared skills are kept as read-only references in `.agents/skills/`, with their sources and hashes recorded in `skills-lock.json`.
 
-Los enlaces de .claude/skills/ apuntan a esas mismas referencias. GitHub Copilot y el asistente de JetBrains tienen instrucciones que remiten a AGENTS.md mediante archivos Markdown normales, también compatibles con clones de Windows sin soporte de enlaces. En nuevos clones de Windows, los enlaces simbólicos requieren que Git y el sistema permitan conservarlos; las referencias canónicas siguen en AGENTS.md y .agents/skills/.
+Links in `.claude/skills/` point to the same references. GitHub Copilot and the JetBrains assistant use regular Markdown instruction files that refer to `AGENTS.md`, which also works in Windows clones without link support. New Windows clones need Git and system support to preserve symbolic links; the canonical references remain in `AGENTS.md` and `.agents/skills/`.
 
-## Diseño en Stitch
+## Stitch designs
 
-La [integración documentada con Stitch](.stitch/README.md) conserva nueve vistas responsivas de la web, sus estados de menú y acordeón, y el sistema de diseño extraído del código. El manifiesto fija los hashes de los 19 archivos subidos y los metadatos registran los recursos remotos verificados.
+The [documented Stitch integration](.stitch/README.md) preserves nine responsive website views, their menu and accordion states, and the design system extracted from the code. The manifest records hashes for the 19 uploaded files, and metadata lists the verified remote assets.
 
-Los HTML, PNG y respuestas temporales permanecen en .stitch/.cache/, fuera de Git. El diseño documentado y los registros de importación mantienen LF para conservar sus hashes. Consulta las diferencias de la extracción nativa de Stitch antes de utilizarla como base del rediseño.
+HTML, PNG and temporary responses stay in `.stitch/.cache/`, outside Git. The documented design and import records use LF to preserve their hashes. Review the differences in Stitch's native export before using it as a redesign baseline.
 
-## Diseño seleccionado
+## Selected design
 
-La propuesta A es la web principal en `/`, con galería adaptable, proceso de reserva, contactos y animaciones de Motion. El comparador y las propuestas B/C ya no se muestran; sus enlaces antiguos llevan al inicio o a la sección equivalente. El estudio aislado continúa en `/designs/ink-study`.
+Proposal A is the public site at `/`, with a responsive gallery, booking process, contact options and Motion animations. The comparison catalog and proposals B/C are no longer public; their legacy links go to the home page or the matching section. The standalone study remains at `/designs/ink-study`.
 
-Consulta las [rutas, interacciones y validación](docs/design-previews.md). Para verla localmente, ejecuta `rtk vp dev`.
+See [routes, interactions and validation](docs/design-previews.md). Run `vp dev` to view the site locally.
 
-## Mapa del proyecto
+## Project map
 
 ```text
-index.html                 Metadatos de la página y punto de entrada HTML
+index.html                 Page metadata and HTML entry point
 public/logo.svg            Logo
-src/main.tsx               Montaje de React
-src/Entry.tsx              Entrada pública y compatibilidad de rutas
-src/designs/DesignApp.tsx   Web seleccionada, navegación y estudio aislado
-src/designs/styles.ts      Primitivas visuales compartidas con Tailwind
-src/App.tsx                Versión anterior migrada, disponible en el catálogo local
-src/components/            Navegación, secciones y componentes de la página
-src/components/ui/         Primitivas compartidas shadcn/Radix y carrusel
-src/hooks/                 Estado de navegación y carrusel
-src/common/                Datos de navegación, textos del acordeón y tipos
-src/assets/images/         Imágenes WebP y sus exportaciones
-src/lib/                   Utilidades de clases CSS
-src/global.css             Tailwind v4, fuentes locales y tokens semánticos
-src/dev/                   Catálogo exclusivo de desarrollo /__ui
-tests/designs/             Pruebas Vitest de rutas y animación de tinta
-tests/e2e/                 Pruebas de interacción y adaptación con Playwright
+src/main.tsx               React mount
+src/Entry.tsx              Public entry point and route compatibility
+src/designs/DesignApp.tsx   Selected site, navigation and standalone study
+src/designs/styles.ts       Shared Tailwind visual primitives
+src/App.tsx                Migrated legacy version, available in the local catalog
+src/components/            Navigation, page sections and components
+src/components/ui/         Shared shadcn/Radix primitives and carousel
+src/hooks/                 Navigation and carousel state
+src/common/                Navigation data, accordion copy and types
+src/assets/images/         WebP images and their exports
+src/lib/                   CSS class utilities
+src/global.css             Tailwind v4, local fonts and semantic tokens
+src/dev/                   Development-only catalog at /__ui
+tests/designs/             Vitest route and ink animation tests
+tests/e2e/                 Playwright interaction and responsive tests
 ```
 
-Los textos de la página viven principalmente en `src/components/` y `src/common/`. Mantén esos textos en inglés salvo que se solicite explícitamente cambiar el idioma.
+Page copy lives mainly in `src/components/` and `src/common/`. Keep it in English unless a language change is explicitly requested.
 
-## Sistema de componentes
+## Component system
 
-Abre `/__ui` con `rtk vp dev` para revisar primitivas, estados y las ocho vistas conservadas. El catálogo y los módulos de C y del antiguo App se excluyen del build público; los caminos antiguos siguen redirigiendo al inicio. La variante B comparte el módulo de composición de A, aunque su ruta pública permanece retirada.
+Open `/__ui` with `vp dev` to review the shared primitives, their states and the retained views. The catalog and modules for C and the legacy App are excluded from the public build; legacy paths still redirect to the home page. Variant B shares A's composition module, though its public route remains retired.
 
-`rtk vp run check-all` valida formato, lint, tipos y las clases Tailwind de todos los TS/TSX. `rtk vp run test:e2e` compila y ejecuta Playwright; en Windows usa Chrome instalado y en Linux requiere `rtk vpx playwright install --with-deps chromium`.
+`vp run check-all` checks formatting, lint, types and Tailwind classes across TS/TSX files. `vp run test:e2e` builds the app and runs Playwright; Windows uses installed Chrome, while Linux requires `vpx playwright install --with-deps chromium`.
