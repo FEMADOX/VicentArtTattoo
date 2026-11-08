@@ -1,11 +1,27 @@
 {
-  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },
-  "typescript.preferences.importModuleSpecifier": "relative",
-  "typescript.suggest.autoImports": true,
+  "editor.formatOnSaveMode": "file",
+  "npm.scriptRunner": "vp",
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true,
+  "tailwindCSS.classFunctions": ["cn", "cva", "clsx"],
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": false
+  },
+  "tailwindCSS.experimental": {
+    "classRegex": [
+      [
+        "\\b(?:styles|designStyles)\\s*=\\s*\\{([\\s\\S]*?)\\r?\\n\\}",
+        "'([^'\\r\\n]+)'"
+      ]
+    ]
+  },
+  "oxc.disableNestedConfig": true,
+  "oxc.fmt.disableNestedConfig": true,
   "[javascript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": false
@@ -17,27 +33,5 @@
   "[typescript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": false
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode",
-    "editor.formatOnSave": false
-  },
-  "oxc.disableNestedConfig": true,
-  "oxc.fmt.disableNestedConfig": true,
-  "editor.formatOnSaveMode": "file",
-  "npm.scriptRunner": "vp",
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "tailwindCSS.classFunctions": ["cn", "cva", "clsx"],
-  "tailwindCSS.experimental": {
-    "classRegex": [
-      [
-        "\\b(?:styles|designStyles)\\s*=\\s*\\{([\\s\\S]*?)\\r?\\n\\}",
-        "'([^'\\r\\n]+)'"
-      ]
-    ]
-  },
-  "[tailwindcss]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }

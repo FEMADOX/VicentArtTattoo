@@ -71,9 +71,6 @@ storybook-static
 # TypeScript cache
 *.tsbuildinfo
 
-# Optional eslint cache
-.eslintcache
-
 # Optional stylelint cache
 .stylelintcache
 
@@ -207,3 +204,7 @@ coverage/
 # Local source videos and preparation tools
 .local-media/
 .local-tools/
+
+# User scripts
+/scripts
+.vitest/

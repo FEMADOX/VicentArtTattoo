@@ -40,7 +40,8 @@ const formatIgnorePatterns = [
   '.junie/**',
   'src/components/ui/**',
   'src/lib/**',
-  'public/**'
+  'public/**',
+  'src/assets/tattoo-video-manifest.json'
 ]
 
 // Stylistic owns JS/TS whitespace, including StandardJS's `function name ()`.
@@ -87,6 +88,11 @@ const standardTsStyle = {
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    watch: {
+      ignored: [/(^|[\\/])\.playwright-(results|report)([\\/]|$)/]
+    }
+  },
   test: {
     include: ['tests/**/*.{test,spec}.{ts,tsx}'],
     exclude: ['tests/e2e/**']
@@ -561,7 +567,7 @@ export default defineConfig({
               objectLiteralTypeAssertions: 'never'
             }
           ],
-          'typescript/consistent-type-definitions': ['error', 'interface'],
+          'typescript/consistent-type-definitions': ['error', 'type'],
           'typescript/consistent-type-exports': [
             'error',
             {

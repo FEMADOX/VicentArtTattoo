@@ -1,10 +1,12 @@
-import { useEffect, useState, type MouseEvent } from 'react'
-import App from '../App'
+import { lazy, Suspense, useEffect, useState, type MouseEvent } from 'react'
 import { DesignFrame } from '../designs/DesignApp'
 import SinglePageDesign from '../designs/SinglePageDesign'
-import MultiPageDesign from '../designs/MultiPageDesign'
-import InkStudyPage from '../designs/InkStudyPage'
-import ComponentShowcase from './ComponentShowcase'
+import { ContentSkeleton } from '../components/ContentSkeleton'
+
+const App = lazy(async () => await import('../App'))
+const MultiPageDesign = lazy(async () => await import('../designs/MultiPageDesign'))
+const InkStudyPage = lazy(async () => await import('../designs/InkStudyPage'))
+const ComponentShowcase = lazy(async () => await import('./ComponentShowcase'))
 
 const views = [
   ['components', 'Components'],
@@ -25,16 +27,25 @@ function readSelection () {
   return { view, hash: window.location.hash }
 }
 
-function Preview ({ view }: { view: View }) {
+function Preview ({ selection }: { selection: { view: View, hash: string } }) {
+  const { view } = selection
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => {
+      const target = document.getElementById(selection.hash.slice(1))
+      if (target) target.scrollIntoView()
+      else window.scrollTo(0, 0)
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [selection])
+
   if (view === 'legacy') return <App />
-  const content = view === 'components'
+  return view === 'components'
     ? <ComponentShowcase />
     : view === 'a' || view === 'b'
       ? <SinglePageDesign design={view} />
       : view === 'ink-study'
         ? <InkStudyPage />
         : <MultiPageDesign page={view === 'c-home' ? 'home' : view === 'c-portfolio' ? 'portfolio' : view === 'c-about' ? 'about' : 'contact'} />
-  return <DesignFrame key={view} home animated>{content}</DesignFrame>
 }
 
 function isPlainClick (event: MouseEvent<HTMLDivElement>) {
@@ -78,15 +89,6 @@ export default function UiCatalog () {
     }
   }, [])
 
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      const target = document.getElementById(selection.hash.slice(1))
-      if (target) target.scrollIntoView()
-      else window.scrollTo(0, 0)
-    })
-    return () => cancelAnimationFrame(frame)
-  }, [selection])
-
   function selectView (view: View, hash = '') {
     window.history.pushState(null, '', window.location.pathname + '?view=' + view + hash)
     setSelection({ view, hash })
@@ -104,6 +106,8 @@ export default function UiCatalog () {
     selectView(next.view, next.hash)
   }
 
+  const preview = <Suspense key={selection.view} fallback={<ContentSkeleton view={selection.view} />}><Preview selection={selection} /></Suspense>
+
   return (
     <div data-ui-catalog="">
       <header className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-background px-4 py-5 text-foreground sm:px-8">
@@ -116,7 +120,7 @@ export default function UiCatalog () {
           <a className="inline-flex min-h-11 items-center text-sm underline underline-offset-4" href="/">Public site</a>
         </div>
       </header>
-      <div data-catalog-preview={selection.view} onClickCapture={retainCatalogRoute}><Preview view={selection.view} /></div>
+      <div data-catalog-preview={selection.view} onClickCapture={retainCatalogRoute}>{selection.view === 'legacy' ? preview : <DesignFrame key={selection.view} home animated>{preview}</DesignFrame>}</div>
     </div>
   )
 }

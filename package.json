@@ -56,5 +56,15 @@
   "packageManager": "pnpm@12.16.1",
   "engines": {
     "node": "^22.22.1 || ^24.11.0 || >=26.0.0"
+  },
+  "workspaces": {
+    "catalog": {
+      "vite": "npm:@voidzero-dev/vite-plus-core@^1.5.0",
+      "vite-plus": "^1.5.0"
+    }
+  },
+  "overrides": {
+    "vite@*": "catalog:",
+    "@tailwindcss/language-service@0.16.0>@csstools/media-query-list-parser": "3.0.1"
   }
 }
