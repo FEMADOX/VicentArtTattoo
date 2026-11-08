@@ -6,7 +6,7 @@ import {
 } from './ink-views'
 import type { TattooImage, TattooViewFrame, TattooViewSequence } from './ink-views'
 
-interface ViewOptions {
+type ViewOptions = {
   sequence?: TattooViewSequence | undefined
   image: TattooImage
   visible: boolean
@@ -14,7 +14,7 @@ interface ViewOptions {
   passive: boolean
 }
 
-interface ViewState {
+type ViewState = {
   key: string
   frame: TattooViewFrame
   index: number
@@ -23,7 +23,7 @@ interface ViewState {
   error: string | null
 }
 
-interface Drag {
+type Drag = {
   id: number
   target: HTMLElement
   x: number

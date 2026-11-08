@@ -1,7 +1,7 @@
 import type { InkFillPattern } from './ink-fill-paths'
 import type { TattooImage, TattooViewSequence } from './ink-views'
 
-interface VideoManifest {
+type VideoManifest = {
   id: string
   source: string
   width: number
@@ -10,19 +10,19 @@ interface VideoManifest {
   frames: Array<{ small: string, large: string, width: number, height: number }>
 }
 
-interface Drawing {
+type Drawing = {
   title: string
   alt: string
   paths: string[]
   fill: InkFillPattern
 }
 
-interface VideoStudy extends Drawing {
+type VideoStudy = {
   id: string
   source: string
   image: TattooImage
   sequence: TattooViewSequence
-}
+} & Drawing
 
 const manifests: Partial<Record<string, VideoManifest>> = import.meta.glob<VideoManifest>('../assets/ink-views/*/manifest.json', { eager: true, import: 'default' })
 const drawings = import.meta.glob<Drawing>('../assets/ink-views/*/drawing.json', { eager: true, import: 'default' })

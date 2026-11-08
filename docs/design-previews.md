@@ -1,65 +1,65 @@
-# Diseño seleccionado: A
+# Selected design: A
 
-La propuesta A es la web principal en `/`. Inicia la aplicación con `rtk vp dev` y abre esa dirección. La galería, el artista, el proceso y los contactos siguen en una sola página con sus fotografías originales y textos comerciales en inglés.
+Proposal A is the public site at `/`. Start the app with `rtk vp dev` and open the displayed address. The gallery, artist, booking process and contact options remain on one page with the original photographs and English public-facing copy.
 
-| Ruta                                                 | Comportamiento actual                                 |
-| ---------------------------------------------------- | ----------------------------------------------------- |
-| `/`                                                  | Web principal A, indexable y sin barra de comparación |
-| `/#portfolio`                                        | Galería completa                                      |
-| `/#about`                                            | Artista y filosofía                                   |
-| `/#process`                                          | Proceso y condiciones de reserva                      |
-| `/#contact`                                          | Canales de contacto                                   |
-| `/designs/ink-study`                                 | Estudio aislado de animación de tinta, con noindex    |
-| `/designs`, `/designs/a`, `/designs/b`, `/designs/c` | Inicio de la web seleccionada                         |
-| `/designs/c/portfolio`                               | `/#portfolio`                                         |
-| `/designs/c/about`                                   | `/#about`                                             |
-| `/designs/c/contact`                                 | `/#contact`                                           |
+| Route                                                | Current behavior                                     |
+| ---------------------------------------------------- | ---------------------------------------------------- |
+| `/`                                                  | Public site A, indexable, without the design catalog |
+| `/#portfolio`                                        | Full gallery                                         |
+| `/#about`                                            | Artist and philosophy                                |
+| `/#process`                                          | Booking process and policies                         |
+| `/#contact`                                          | Contact options                                      |
+| `/designs/ink-study`                                 | Standalone ink animation study, marked noindex       |
+| `/designs`, `/designs/a`, `/designs/b`, `/designs/c` | Home page for the selected site                      |
+| `/designs/c/portfolio`                               | `/#portfolio`                                        |
+| `/designs/c/about`                                   | `/#about`                                            |
+| `/designs/c/contact`                                 | `/#contact`                                          |
 
-La compatibilidad local sustituye la URL mediante History API, conserva los parámetros de consulta y da prioridad al fragmento existente, por ejemplo `/designs/c/about?source=shared#booking` pasa a `/?source=shared#booking`. Las rutas desconocidas muestran una página para volver al inicio, con noindex. El comparador y B/C no se cargan en la aplicación; se conservan sus fuentes y las referencias de Stitch.
+Local route compatibility replaces the URL through the History API, preserves query parameters and prioritizes the existing hash; for example, `/designs/c/about?source=shared#booking` becomes `/?source=shared#booking`. Unknown routes show a page with a link back to the home page and are marked noindex. The design catalog and B/C do not load in the public app; their source and Stitch references are retained.
 
-## Implementación e interacciones
+## Implementation and interactions
 
-- `src/Entry.tsx` monta la web seleccionada y mantiene la importación de `App.css`, que aporta Tailwind, fuentes y tokens.
-- `src/designs/DesignApp.tsx` compone la navegación, A y el pie. El estudio se carga bajo demanda; solo el estudio y la página desconocida reciben noindex y títulos de uso interno.
-- `SinglePageDesign.tsx` conserva la composición A; `content.ts` reutiliza la biografía y filosofía existentes y centraliza fotografías y contactos.
-- `components.tsx` conserva galería, diálogo, proceso y contactos. La cuadrícula compacta mantiene la proporción original de cada fotografía y el orden del DOM y del teclado, con tres, dos o una columna.
-- Se mantienen las entradas escalonadas, revelados de fotografías, efectos al hacer scroll, respuestas al cursor y pulsación, progreso de lectura y transiciones de los diálogos con Motion. La preferencia de movimiento reducido funciona tanto al cargar como al cambiarla con la página abierta.
-- El visor conserva las imágenes completas, navegación manual con botones y flechas, Escape y retorno del foco. Durante la salida animada se mantiene el bloqueo modal hasta el cierre nativo.
-- El menú móvil es un diálogo nativo y las preguntas utilizan details/summary. Se conserva el enlace para saltar al contenido y el foco visible.
-- Las condiciones de depósito aparecen antes de los canales. Los enlaces reutilizan los usuarios, correo y teléfono del proyecto. Su titularidad social sigue pendiente de confirmación antes de publicar.
-- `vercel.json` configura redirecciones permanentes de las cuatro rutas base antiguas al inicio. El estudio y las rutas antiguas de secciones se sirven mediante la reescritura existente; estas últimas se normalizan en la entrada para conservar sus fragmentos. Véase la [configuración de Vercel](https://vercel.com/docs/project-configuration/vercel-json#redirects). Esta configuración no despliega el sitio.
+- `src/Entry.tsx` mounts the selected site and imports `global.css`, which provides Tailwind, fonts and theme tokens.
+- `src/designs/DesignApp.tsx` composes the navigation, A and footer. The study loads on demand; only the study and not-found page receive noindex metadata and internal-use titles.
+- `SinglePageDesign.tsx` contains composition A; `content.ts` reuses the existing biography and philosophy and centralizes photographs and contact details.
+- `components.tsx` contains the gallery, dialog, booking process and contact options. The compact grid preserves each photograph's aspect ratio and DOM/keyboard order, with three, two or one column.
+- Motion provides staggered entrances, image reveals, scroll effects, cursor and press responses, reading progress and dialog transitions. Reduced-motion preference is respected on load and when changed while the page is open.
+- The image viewer preserves full images, manual button and arrow-key navigation, Escape to close, and focus restoration. During its exit animation, the modal remains active until the native dialog closes.
+- The mobile menu uses a native dialog, and booking questions use `details/summary`. The skip-to-content link and visible focus are retained.
+- Deposit policies appear before the contact options. Links reuse the project's account names, email and phone number. Social account ownership still needs confirmation before publication.
+- `vercel.json` configures permanent redirects from the four legacy base paths to the home page. The study and legacy section paths use the existing rewrite; section paths are normalized at entry so their hashes are preserved. See [Vercel project configuration](https://vercel.com/docs/project-configuration/vercel-json#redirects). This configuration does not deploy the site.
 
-## Estilos y pruebas
+## Styling and tests
 
-Todos los diseños conservados en `src/designs/`, incluidos B/C y el estudio, usan utilidades Tailwind v4. `styles.ts` reúne las primitivas compartidas; las composiciones particulares mantienen sus constantes de clases junto al componente. Se eliminaron `designs.css` y los cinco CSS Modules. La hoja `App.css` sigue siendo la entrada de Tailwind y de los tokens del proyecto. Los valores animados de Motion y la geometría SVG continúan calculándose en ejecución.
+All retained designs in `src/designs/`, including B/C and the study, use Tailwind v4 utilities. `styles.ts` groups shared primitives; individual compositions keep their class constants beside the component. `designs.css` and the five CSS Modules were removed. `global.css` is the Tailwind entry point and contains the project tokens. Motion values and SVG geometry are still calculated at runtime.
 
-Los tests se encuentran en `tests/designs/`. La configuración de Vitest limita el descubrimiento a `tests/` y TypeScript incluye ese directorio. `rtk vp run lint:tailwind` revisa todo `src/`, y `rtk vp run lint:tailwind:fix` aplica las correcciones automáticas. `check-all` incluye esa revisión. La extracción del editor cubre las constantes `styles` y `designStyles` además de `className` y `cn`.
+Vitest tests live under `tests/designs/`. Vitest discovery is limited to `tests/`, and TypeScript includes that directory. `rtk vp run lint:tailwind` checks all of `src/`; `rtk vp run lint:tailwind:fix` applies automatic fixes. `check-all` includes this check. Editor class extraction covers the `styles` and `designStyles` constants as well as `className` and `cn`.
 
-El parser transitivo de `tailwind-lint` 0.16.0 se alinea con sus dependencias v3 mediante una sustitución limitada a la versión 0.16.0 de `@tailwindcss/language-service` en `pnpm-workspace.yaml`; `pnpm peers check` verifica que no queden incompatibilidades.
+The transitive parser used by `tailwind-lint` 0.16.0 is aligned with its v3 dependencies through a version-scoped override for `@tailwindcss/language-service` in `pnpm-workspace.yaml`; `pnpm peers check` verifies that no peer conflicts remain.
 
-## Validación de la migración a Tailwind
+## Tailwind migration validation
 
-La revisión final de `tailwind-lint` 0.16.0 terminó con 0 errores y 0 avisos en 46 archivos, sin archivos omitidos. `check-all` y el build de producción terminaron correctamente. La suite actual ejecuta 40 casos desde dos archivos en `tests/designs/`; CI requiere que exista la suite.
+The final `tailwind-lint` 0.16.0 review reported zero errors and zero warnings across 46 files, with none omitted. `check-all` and the production build passed. At that point, the suite ran 40 cases across two files under `tests/designs/`; CI requires the suite to be present.
 
-Chrome comprobó 28 combinaciones: A, el estudio, B y las cuatro páginas conservadas de C, a 320, 390, 768 y 1440 píxeles. B/C se montaron en un visor local de prueba sin cambiar las rutas públicas. No aparecieron imágenes rotas, desbordamiento horizontal ni errores de ejecución. Se verificaron header sticky, menú, visor, flechas y Escape, retorno del foco, preguntas, anclas, velocidad de dibujo, repetición, original, redimensionamiento y cambio de movimiento reducido en directo. Las 884 comparaciones de geometría y tipografía de A y del estudio coincidieron con la referencia previa. Los datos, trazados y helpers de comportamiento se conservaron. Firefox y Safari no se comprobaron.
+Chrome checked 28 combinations: A, the study, B and C's four retained pages at 320, 390, 768 and 1440 pixels. B/C ran in a local preview without changing public routes. There were no broken images, horizontal overflow or runtime errors. Checks covered the sticky header, menu, viewer, arrow keys and Escape, focus restoration, disclosures, anchors, drawing speed, replay, original image, resizing and live reduced-motion changes. All 884 geometry and typography comparisons for A and the study matched the previous reference. Data, paths and behavior helpers were preserved. Firefox and Safari were not checked.
 
-## Estudio de animación de tinta
+## Ink animation study
 
-`/designs/ink-study` reutiliza las fotografías originales del gorila y del ojo de búho, sin recortarlas. La navegación y el pie enlazan a la web principal y a sus secciones. El estudio no forma parte de la navegación comercial. La página y sus trazados se cargan bajo demanda, con título propio y `noindex, nofollow`.
+`/designs/ink-study` presents four tattoos with an initial drawing animation, followed by exploration of their original videos using the cursor, touch drag or keyboard. It also retains the uncropped gorilla and owl-eye photo studies. The earlier 3D viewer has been removed from the project. Navigation and the footer link back to the public site and its sections. The study is not part of the commercial navigation. Its page and drawing paths load on demand, with a dedicated title and `noindex, nofollow`. Preparation steps and footage limitations are documented in [tattoo-videos.md](tattoo-videos.md).
 
-A velocidad normal (1×), la secuencia dura 12 segundos: de 0 a 3 s se dibujan los contornos; de 3 a 8 s la misma máquina rellena las sombras y detalles con la fotografía en blanco y negro; de 8 a 11 s realiza una segunda pasada para completar el color; de 11 a 12 s aparece la fotografía original completa. Las imágenes de las pasadas se revelan mediante máscaras SVG alrededor de la obra: la aguja sigue el extremo del trazo que descubre cada zona y se oculta al saltar al siguiente. Los contornos desaparecen progresivamente durante el sombreado. Los archivos de fotografía se conservan intactos; la vista final aplica un refuerzo suave de negros dentro de la región del tatuaje. Los límites y recorridos son aproximados y no representan el proceso real de tatuar. Simular piel inicialmente sin tinta queda fuera de este prototipo.
+At normal speed (1×), the sequence lasts 12 seconds: contours draw from 0–3 s; the same machine adds shading and detail over a black-and-white photo from 3–8 s; a second pass adds color from 8–11 s; and the complete original photo appears from 11–12 s. SVG masks reveal each pass within the artwork: the needle follows the endpoint that uncovers each area and hides between strokes. Contours fade during shading. Source photos remain unchanged; the final view applies a subtle black enhancement inside the tattoo region. The paths and timing are approximate and do not represent the real tattooing process. Simulating bare skin before the ink appears is outside this prototype.
 
-El refuerzo de negros usa una capa SVG limitada por la región de cada pieza y favorece los tonos oscuros neutros frente a piel cálida y reflejos de color. Durante la animación acompaña las pasadas de sombras y color; al terminar se mantiene en la vista final. «Show original» termina la animación y retira el refuerzo para comparar; Replay vuelve a activarlo. El visor abre siempre la fotografía original. La región es aproximada y el criterio de color no sustituye una segmentación exacta de piel y tinta.
+Black enhancement uses an SVG layer clipped to each piece's region and favors neutral dark tones over warm skin and color reflections. It follows the shading and color passes, then remains in the final view. “Show original” ends the animation and removes the enhancement for comparison; Replay restores it. The viewer always opens the original photo. The region is approximate, and color filtering is not a precise skin-and-ink segmentation.
 
-Cada fotografía tiene un control «Drawing speed» de 0,25× a 2×, ajustable antes de empezar, durante la reproducción o después de terminar. Cambiarlo conserva el punto actual del dibujo y sincroniza contornos, máquina, sombras y color. Replay utiliza la velocidad seleccionada y la duración indicada se actualiza con ella. El control es accesible con el teclado y se deshabilita si hay movimiento reducido o falla la preparación del efecto.
+Each photo has a “Drawing speed” control from 0.25× to 2×. It can be changed before, during or after playback. Changing it preserves the current drawing position and synchronizes contours, machine, shading and color. Replay uses the selected speed, and the displayed duration updates accordingly. The control supports keyboard input and is disabled when reduced motion is enabled or effect preparation fails.
 
-La reproducción automática empieza una sola vez por fotografía, después de cargarla y cuando al menos el 25 % del marco está visible. Cada fotografía permite abrir el visor existente, repetir la animación incluso durante su reproducción o mostrar el original directamente. El movimiento reducido inicial o activado en directo detiene el efecto y muestra el original; desactivarlo no inicia otra reproducción. Si falla la preparación de los trazos, queda la fotografía estática. El estudio presenta dos columnas en escritorio y una hasta 720 píxeles.
+Playback starts once per photo after it loads and at least 25% of its frame is visible. Each photo can be opened in the existing viewer; its animation can be replayed even while it is running, or the original can be shown immediately. Reduced motion, whether enabled at load or changed live, stops the effect and shows the original; turning it off does not start playback again. If path preparation fails, the static photo remains visible. The study uses two columns on desktop and one column at widths up to 720 pixels.
 
-## Validación de la selección de A
+## Validation of selected design A
 
-check-all y build terminaron correctamente y pasaron los 50 tests existentes y de migración. La revisión del build de producción en Chrome comprobó la página principal a 320, 390, 768 y 1440 píxeles, las siete rutas antiguas y dos casos con parámetros y fragmentos, ausencia del comparador y de noindex en el inicio, fotografías sin deformación, menú y visor por teclado con retorno del foco, movimiento reducido, estudio conservado y su navegación de vuelta, y páginas desconocidas con noindex. No hubo errores de ejecución. Las redirecciones de Vercel quedaron configuradas y comprobadas por tests, sin desplegar; los saltos locales de URL se comprobaron en navegador.
+`check-all` and the build passed, along with the 50 existing and migration tests. A Chrome production-build review checked the home page at 320, 390, 768 and 1440 pixels; all seven legacy routes and two query/hash cases; the absence of the comparison catalog and noindex on the home page; undistorted photos; keyboard use of the menu and viewer with focus restoration; reduced motion; the retained study and its return navigation; and noindex on unknown pages. There were no runtime errors. Vercel redirects were configured and test-checked without deploying; local URL transitions were checked in the browser.
 
-## Validación
+## Validation
 
 ```powershell
 
@@ -71,20 +71,20 @@ rtk vp run build
 
 ```
 
-Los tests de rutas cubren la página principal, el estudio aislado, las siete rutas antiguas y sus barras finales, parámetros y fragmentos, rutas desconocidas y coherencia con la configuración de alojamiento.
+Route tests cover the home page, standalone study, seven legacy routes and their trailing slashes, query parameters and hashes, unknown routes, and consistency with hosting configuration.
 
-Como validación anterior, tras la mejora de A y C, check-all y build terminaron correctamente y los nueve tests de rutas pasaron. La revisión en Chrome cubrió 24 combinaciones de ruta y tamaño (320, 390, 768 y 1440 píxeles), incluidos B como referencia y las cuatro páginas de C. Se comprobaron proporciones originales, separaciones compactas, orden del teclado, ajuste al redimensionar, visor y menú con cierre animado, Escape y retorno del foco, preguntas por teclado, enlaces con fragmentos, inicio y fin de la animación real, y movimiento reducido tanto inicial como al cambiar la preferencia con la página abierta. No hubo errores de ejecución ni bucles de ResizeObserver. Firefox y Safari no se probaron.
+An earlier validation after the A/C refinements passed `check-all`, the build and all nine route tests. Chrome covered 24 route-and-size combinations (320, 390, 768 and 1440 pixels), including B as a reference and C's four pages. Checks included original aspect ratios, compact spacing, keyboard order, resizing, viewer and menu exit animations, Escape and focus restoration, keyboard-operated questions, hash links, the start and completion of the actual drawing animation, and reduced motion both on load and when changed while the page was open. There were no runtime errors or ResizeObserver loops. Firefox and Safari were not tested.
 
-Para el estudio, `check-all`, `test` y `build` terminaron correctamente: 50 tests de la suite. Chrome cubrió ambas fotografías a 320, 390, 768 y 1440 píxeles, las tres etapas y el final, la posición de la aguja, proporciones y capas al redimensionar, repetición durante la reproducción, cancelación, movimiento reducido inicial y en directo, teclado, visor y retorno del foco. También se comprobaron trazos vacíos o sin longitud, carga lenta con cancelación antes de terminar y carga que termina fuera de pantalla. Se comprobó mediante las máscaras rasterizadas que el relleno de sombras y color avanza por donde pasa la aguja y cubre la región al terminar cada pasada. El comparador, la carga directa, la recarga y la barra final funcionan. No hubo errores de ejecución. Firefox y Safari no se probaron.
+For the photo study, `check-all`, `test` and `build` passed with 50 tests. Chrome covered both photos at 320, 390, 768 and 1440 pixels; all three stages and the final state; needle position; image proportions and layer alignment while resizing; replay during playback; cancellation; reduced motion at load and live; keyboard input; the viewer and focus restoration. Empty or zero-length paths, slow loads canceled before completion, and loads finishing off-screen were also checked. Rasterized masks confirmed that shading and color advance with the needle and cover the target region at the end of each pass. The catalog, direct load, reload and trailing slash worked. There were no runtime errors. Firefox and Safari were not tested.
 
-La revisión del refuerzo comparó todos los píxeles de ambas fotografías: ninguno fuera de la máscara cambió. Las muestras de tinta se oscurecieron y las muestras interiores de piel, iris rojo y reflejo azul permanecieron iguales. Se comprobaron la comparación con el original, Replay, movimiento reducido inicial y en directo, visor y retorno del foco, fallback y cuatro anchos de pantalla. Esta revisión se realizó en Chrome.
+The enhancement review compared every pixel in both photos: none outside the mask changed. Ink samples darkened while interior skin, the red iris and blue reflection stayed unchanged. The original comparison, Replay, reduced motion at load and live, the viewer, focus restoration, fallback and four viewport widths were checked in Chrome.
 
-Las referencias visuales y exportaciones originales siguen en [las propuestas de Stitch](../.stitch/designs/redesign-2026-10-31/README.md).
+Visual references and original exports remain in [the Stitch proposals](../.stitch/designs/redesign-2026-10-31/README.md).
 
-## Component-system migration
+## Ink angle studies
 
-All retained versions now share the VicentArt dark theme and shadcn/Radix primitives. Use the development-only `/__ui` catalog to compare A, B, C's four pages, the legacy App, the ink study and component states. Public redirects remain unchanged. Current validation:40 Vitest tests,42 full Playwright tests,34 subsequent layout/state checks and5 focused C About/navigation checks passed. Final check-all (49 Tailwind source files) and build passed. A Chrome production smoke confirmed local fonts, no public catalog and reduced-motion ink behavior. Independent visual review disposition:ship for the supplied desktop/mobile captures. See [the component standard](component-system.md).
+The earlier frame sequences remain in the [ink angle study](ink-angle-study.md). The four prepared video studies are documented in [tattoo videos](tattoo-videos.md).
 
-## Recorded views after drawing
+## Component system migration
 
-The ink study also supports four locally prepared video sequences. See [preparation, source intervals and interaction details](ink-angle-study.md). The original gorilla/owl studies remain available, and portfolio galleries keep their current behavior.
+All retained versions share the VicentArt dark theme and shadcn/Radix primitives. The development-only `/__ui` catalog contains A, B, C's four pages, the legacy App, the ink study and component states. Public redirects remain unchanged. The latest local checks, run November 6, 2026, passed: `check-all`, the production build, 64 Vitest tests and all 92 Playwright tests. Earlier Chrome review confirmed local fonts, no public catalog and reduced-motion behavior for the ink study; the supplied desktop/mobile captures were marked ready in an independent visual review. See [the component standard](component-system.md).

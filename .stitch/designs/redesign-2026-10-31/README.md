@@ -1,26 +1,26 @@
-# VicentArt: tres propuestas de rediseño
+# VicentArt: Three Redesign Proposals
 
-Las **12 pantallas finales** están en el [proyecto privado de Stitch](https://stitch.withgoogle.com/projects/14587093072929101256). Sus títulos terminan en **Original assets**. La web React sigue pendiente de la elección del diseño.
+The **12 final screens** are in the [private Stitch project](https://stitch.withgoogle.com/projects/14587093072929101256). Their titles end with **Original assets**. The React site is still awaiting a design selection.
 
-Se mantienen el logo, las ocho fotografías de tatuajes, la fotografía del artista y el contenido comercial de origen en inglés. Los 21 elementos que ya existían en el lienzo, el sistema de diseño y los cuatro registros locales de la referencia anterior permanecen intactos.
+The logo, eight tattoo photographs, artist photo and original English commercial copy are retained. The 21 pre-existing canvas elements, design system and four local records from the earlier reference remain intact.
 
-## Comparativa y recomendación
+## Comparison and recommendation
 
-| Propuesta | Experiencia | Ventaja principal | Límite |
+| Proposal | Experience | Main advantage | Limitation |
 | --- | --- | --- | --- |
-| A: Galería de obra | Una página: obra protagonista, ocho piezas, artista, proceso y contacto | El trabajo es la primera impresión y el contacto tiene un recorrido directo | Es una página larga en móvil al mostrar las ocho fotografías completas |
-| B: El artista y su trabajo | Una página con artista y pieza terminada juntos, biografía y galería | Explica quién está detrás del trabajo desde el comienzo | La presentación personal compite con la galería y añade lectura |
-| C: Explorar y consultar | Inicio, Portfolio, About y Contact separados | El portfolio tiene un espacio propio y las tareas se separan con claridad | Requiere navegar entre páginas; Contact dedica más lectura a preparar la consulta |
+| A: Artwork Gallery | One page: featured artwork, eight pieces, artist, process and contact | The work makes the first impression and leads directly to contact | The page is long on mobile when all eight photos are shown in full |
+| B: The Artist and His Work | One page with the artist and a finished piece together, biography and gallery | Introduces the person behind the work from the start | The personal introduction competes with the gallery and adds reading |
+| C: Explore and Contact | Separate Home, Portfolio, About and Contact pages | Gives the portfolio its own space and separates tasks clearly | Requires moving between pages; Contact takes more reading to prepare an inquiry |
 
-**Recomiendo A como punto de partida**: prioriza la obra y conserva una ruta sencilla desde la primera impresión hasta la elección de contacto. B encaja si se quiere dar más protagonismo a la relación con Vicent. C encaja si se prefiere un portfolio independiente y se van a mantener cuatro páginas.
+**I recommend A as the starting point**: it prioritizes the artwork and keeps a simple path from the first impression to choosing a contact channel. B fits if Vicent's story should take a larger role. C fits if a standalone portfolio and four separate pages are preferred.
 
-Esta es una recomendación de diseño basada en la revisión de las propuestas, sin datos de conversión de visitantes.
+This design recommendation is based on reviewing the proposals; no visitor conversion data is available.
 
-## Pantallas y archivos
+## Screens and files
 
-Las capturas son de página completa. Los HTML estáticos incorporan estilos, fuentes e imágenes y funcionan sin conexión. Los archivos .prototype.html conservan el comportamiento generado y pueden necesitar recursos de estilo externos; no constituyen una implementación aprobada.
+The screenshots show full pages. Static HTML files include their styles, fonts and images and work offline. The `.prototype.html` files retain generated behavior and may need external style resources; they are not an approved implementation.
 
-| Pantalla | Tamaño de captura | Archivos locales | ID final en Stitch |
+| Screen | Screenshot size | Local files | Final Stitch ID |
 | --- | --- | --- | --- |
 | A / Home / Desktop | 1440 × 6215 | [PNG](exports/a-home-desktop.png) · [HTML](exports/a-home-desktop.html) · [Prototype](exports/a-home-desktop.prototype.html) | 16992451358060678693 |
 | A / Home / Mobile | 390 × 8880 | [PNG](exports/a-home-mobile.png) · [HTML](exports/a-home-mobile.html) · [Prototype](exports/a-home-mobile.prototype.html) | 11652374572401789034 |
@@ -35,24 +35,24 @@ Las capturas son de página completa. Los HTML estáticos incorporan estilos, fu
 | C / Contact / Desktop | 1440 × 2330 | [PNG](exports/c-contact-desktop.png) · [HTML](exports/c-contact-desktop.html) · [Prototype](exports/c-contact-desktop.prototype.html) | 17137940145884781717 |
 | C / Contact / Mobile | 390 × 3752 | [PNG](exports/c-contact-mobile.png) · [HTML](exports/c-contact-mobile.html) · [Prototype](exports/c-contact-mobile.prototype.html) | 2694064510612480498 |
 
-Las exportaciones grandes y la evidencia de navegador están ignoradas por Git en exports/ y review/. Permanecen en este equipo y sus HTML/PNG finales están guardados también en Stitch. En otro clon pueden recuperarse mediante los recursos de [manifest.json](manifest.json) usando el MCP autenticado.
+Large exports and browser evidence under `exports/` and `review/` are ignored by Git. They remain on this machine, and their final HTML/PNG files are also stored in Stitch. In another clone, they can be retrieved from the resources in [manifest.json](manifest.json) using the authenticated MCP.
 
-## Revisión realizada
+## Review completed
 
-- 12 diseños finales con el sistema oscuro existente, sin modificarlo.
-- 122 posiciones de imagen comprobadas contra los bytes de los diez archivos originales, contando repeticiones de logo, hero y visor.
-- HTML estático sin solicitudes externas, imágenes rotas ni errores de página.
-- Comprobaciones de disposición a 320, 390, 768 y 1440 píxeles según el tipo de pantalla.
-- Correcciones de desbordamiento en tablet/móvil, CTA móvil, etiquetas técnicas y contenido comercial inventado.
-- 24 archivos descargados de Stitch mediante MCP y verificados con SHA-256 contra los HTML/PNG finales.
-- Los 21 elementos originales del lienzo, el sistema de diseño, los hashes de la referencia local y la visibilidad privada conservados.
+- 12 final designs using the existing dark system without changing it.
+- 122 image placements checked against the bytes of the ten source files, including repeated logo, hero and viewer images.
+- Static HTML with no external requests, broken images or page errors.
+- Layout checked at 320, 390, 768 and 1440 pixels, according to screen type.
+- Fixed tablet/mobile overflow, mobile CTA, technical labels and invented commercial copy.
+- 24 files downloaded from Stitch through MCP and verified with SHA-256 against the final HTML/PNG files.
+- Preserved the 21 original canvas elements, design system, local reference hashes and private visibility.
 
-La importación utiliza DOCUMENT como entrada HTML, siguiendo el [uploader del SDK oficial de Stitch](https://github.com/google-labs-code/stitch-sdk/blob/main/packages/sdk/src/upload-handler.ts). Stitch devuelve las pantallas vinculadas como DESIGN. Se conservan los borradores originales y sus respuestas en la caché local; los recursos finales están identificados en el manifiesto.
+The import uses DOCUMENT as its HTML input, following the [official Stitch SDK uploader](https://github.com/google-labs-code/stitch-sdk/blob/main/packages/sdk/src/upload-handler.ts). Stitch returns linked screens as DESIGN. Original drafts and their responses remain in the local cache; the manifest identifies the final resources.
 
-## Para la implementación posterior
+## For later implementation
 
-[interaction-spec.md](interaction-spec.md) define menú abierto, visor manual, preguntas desplegables, elección de canal y navegación. [prompts/](prompts/) conserva los doce prompts; [asset-manifest.json](asset-manifest.json) registra los originales; [stitch-feedback.json](stitch-feedback.json) conserva las descripciones y sugerencias originales de Stitch.
+[interaction-spec.md](interaction-spec.md) defines the open menu, manual image viewer, expandable questions, channel selection and navigation. [prompts/](prompts/) contains the 12 prompts; [asset-manifest.json](asset-manifest.json) records the source assets; [stitch-feedback.json](stitch-feedback.json) retains Stitch's original descriptions and suggestions.
 
-Las descripciones automáticas no son pruebas: algunas incluían afirmaciones o marcadores que se retiraron. Prevalecen las exportaciones revisadas y la especificación de interacción.
+Automated descriptions are not evidence: some contained claims or placeholders that were removed. The reviewed exports and interaction specification take precedence.
 
-No se ha implementado el rediseño en React. Quedan para esa fase la comprobación completa de teclado y foco, estados interactivos, contraste, ampliación de texto, pruebas en otros navegadores y verificación de los destinos externos. No se activaron canales de contacto ni se simularon reservas o pagos.
+The redesign has not been implemented in React. That phase still needs full keyboard and focus checks, interactive states, contrast, text enlargement, testing in other browsers and verification of external destinations. No contact channels were activated, and no bookings or payments were simulated.

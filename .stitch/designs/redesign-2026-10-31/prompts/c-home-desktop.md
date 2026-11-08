@@ -1,4 +1,4 @@
-Proposal C — Explorar y consultar, Home. This is the introductory route of a four-page artist website. Its purpose is to let a visitor choose between exploring real tattoos, learning about Vicent and contacting him, without placing the entire portfolio and policy text on the homepage.
+Proposal C — Explore and Contact, Home. This is the introductory route of a four-page artist website. Its purpose is to let a visitor choose between exploring real tattoos, learning about Vicent and contacting him, without placing the entire portfolio and policy text on the homepage.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 

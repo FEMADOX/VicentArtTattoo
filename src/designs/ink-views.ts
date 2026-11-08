@@ -1,4 +1,4 @@
-export interface TattooImage {
+export type TattooImage = {
   src: string
   srcSet?: string
   sizes?: string
@@ -7,14 +7,14 @@ export interface TattooImage {
   height: number
 }
 
-export interface TattooViewFrame {
+export type TattooViewFrame = {
   src: string
   srcSet?: string
   width: number
   height: number
 }
 
-export interface TattooViewSequence {
+export type TattooViewSequence = {
   referenceIndex: number
   frames: readonly TattooViewFrame[]
 }

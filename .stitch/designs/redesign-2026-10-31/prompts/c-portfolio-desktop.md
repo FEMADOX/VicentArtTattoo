@@ -1,4 +1,4 @@
-Proposal C — Explorar y consultar, Portfolio. This is the dedicated /portfolio route of the same four-page artist website. Its purpose is to examine all existing work at useful scale and then reach channel selection. Match the structure and navigation of C Home; do not turn this page into another marketing homepage.
+Proposal C — Explore and Contact, Portfolio. This is the dedicated /portfolio route of the same four-page artist website. Its purpose is to examine all existing work at useful scale and then reach channel selection. Match the structure and navigation of C Home; do not turn this page into another marketing homepage.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 

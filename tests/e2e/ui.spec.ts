@@ -156,7 +156,7 @@ test('C links and browser history stay inside the catalog, including process has
 test('ink controls support keyboard speed, replay, original and live reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await page.goto('/designs/ink-study')
-  const study = page.locator('[data-ink-study]').first()
+  const study = page.getByRole('region', { name: 'Gorilla and mountain', exact: true }).locator('[data-ink-study]')
   const slider = study.getByRole('slider', { name: 'Drawing speed' })
   const replay = study.getByRole('button', { name: 'Replay animation' })
   await expect(replay).toBeEnabled()

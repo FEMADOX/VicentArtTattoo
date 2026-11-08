@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "studies": [
+    {
+      "id": "ghostface",
+      "label": "Ghostface",
+      "reel": "https://www.instagram.com/vicentart/reel/CugRUrrrDlc/",
+      "image": {
+        "src": "/videos/tattoos/ghostface-poster.jpg",
+        "alt": "Ghostface mask, gloved hand and red accents tattooed on a forearm, recorded in the studio.",
+        "width": 720,
+        "height": 1280
+      },
+      "drawingUrl": "/videos/tattoos/ghostface-drawing.json",
+      "video": {
+        "sources": [
+          {
+            "src": "/videos/tattoos/ghostface-480.mp4",
+            "width": 480,
+            "height": 854,
+            "bytes": 1998431
+          },
+          {
+            "src": "/videos/tattoos/ghostface-720.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 3644996
+          }
+        ],
+        "referenceTime": 4.5,
+        "duration": 9,
+        "fps": 30,
+        "cuts": [
+          6.5
+        ]
+      },
+      "provenance": {
+        "source": "CugRUrrrDlc.mp4",
+        "sourceSha256": "1f653204e908736af6c4859e61095b6b56089cb2307938f0d50d20e77ab7e09b",
+        "sourceDuration": 64.478957,
+        "sourceDimensions": [
+          720,
+          1280
+        ],
+        "segments": [
+          {
+            "start": 11.1,
+            "end": 17.6,
+            "reverse": true
+          },
+          {
+            "start": 30,
+            "end": 32.5,
+            "reverse": false
+          }
+        ],
+        "orientation": "Original image orientation; temporal reversal only. No horizontal mirroring.",
+        "transforms": "Uniform downscale and letterbox only; original background and recorded color retained.",
+        "referenceFrame": 135,
+        "drawing": "Longest connected edge contours extracted from the final encoded poster inside the manually reviewed tattoo region; serpentine fill clipped to that region. Interpreted sketch, not the real tattooing order.",
+        "limitations": "The second shot reveals the cord and red edge from another camera height. The original contains limited lateral coverage and a visible change in arm tilt between shots. No rear surface is shown.",
+        "editing": "Sections ordered by visible lateral coverage; hard joins declared in cuts for the 240ms web transition. No generated perspectives."
+      }
+    },
+    {
+      "id": "portrait",
+      "label": "Portrait",
+      "reel": "https://www.instagram.com/vicentart/reel/DQHuFwWDmzR/",
+      "image": {
+        "src": "/videos/tattoos/portrait-poster.jpg",
+        "alt": "Black-and-grey portrait and trident tattoo on the shoulder and upper arm, recorded in the studio.",
+        "width": 720,
+        "height": 1280
+      },
+      "drawingUrl": "/videos/tattoos/portrait-drawing.json",
+      "video": {
+        "sources": [
+          {
+            "src": "/videos/tattoos/portrait-480.mp4",
+            "width": 480,
+            "height": 854,
+            "bytes": 2263646
+          },
+          {
+            "src": "/videos/tattoos/portrait-720.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 3868424
+          }
+        ],
+        "referenceTime": 4.3,
+        "duration": 7.2,
+        "fps": 30,
+        "cuts": [
+          5.3
+        ]
+      },
+      "provenance": {
+        "source": "DQHuFwWDmzR.mp4",
+        "sourceSha256": "c4c2e3d5376aac2f9961ae8757bd969002fe2f80f032ea08a93134785e841afd",
+        "sourceDuration": 60.113605,
+        "sourceDimensions": [
+          720,
+          1280
+        ],
+        "segments": [
+          {
+            "start": 8.5,
+            "end": 13.8,
+            "reverse": true
+          },
+          {
+            "start": 1.5,
+            "end": 3.4,
+            "reverse": true
+          }
+        ],
+        "orientation": "Original image orientation; temporal reversal only. No horizontal mirroring.",
+        "transforms": "Uniform downscale and letterbox only; original background and recorded color retained.",
+        "referenceFrame": 129,
+        "drawing": "Longest connected edge contours extracted from the final encoded poster inside the manually reviewed tattoo region; serpentine fill clipped to that region. Interpreted sketch, not the real tattooing order.",
+        "limitations": "The wider trident-side shot is followed by another wide shot exposing the radial portrait edge. The second shot is reversed to move toward that right edge; the closer 33-second shot is excluded because it repeats this surface at a larger scale. The lower-arm tattoo at 47 seconds and later is excluded because it is a different piece. There is still a small change in body position between shots.",
+        "editing": "Sections ordered by visible lateral coverage; hard joins declared in cuts for the 240ms web transition. No generated perspectives."
+      }
+    },
+    {
+      "id": "flowers",
+      "label": "Flowers",
+      "reel": "https://www.instagram.com/vicentart/reel/DfL3ikluRzc/",
+      "image": {
+        "src": "/videos/tattoos/flowers-poster.jpg",
+        "alt": "Flowers, olive branches and a ribbon around a column tattooed on the inner forearm.",
+        "width": 720,
+        "height": 1280
+      },
+      "drawingUrl": "/videos/tattoos/flowers-drawing.json",
+      "video": {
+        "sources": [
+          {
+            "src": "/videos/tattoos/flowers-480.mp4",
+            "width": 480,
+            "height": 854,
+            "bytes": 1356298
+          },
+          {
+            "src": "/videos/tattoos/flowers-720.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 2389067
+          }
+        ],
+        "referenceTime": 1.1,
+        "duration": 3.9,
+        "fps": 30,
+        "cuts": [
+          2.6
+        ]
+      },
+      "provenance": {
+        "source": "DfL3ikluRzc.mp4",
+        "sourceSha256": "c107bc51428b3753ab3cae61281c6891075bfe902aa06f49dfe151e09bc07b92",
+        "sourceDuration": 35.593333,
+        "sourceDimensions": [
+          720,
+          1280
+        ],
+        "segments": [
+          {
+            "start": 4.1,
+            "end": 6.7,
+            "reverse": false
+          },
+          {
+            "start": 7,
+            "end": 8.3,
+            "reverse": true
+          }
+        ],
+        "orientation": "Original image orientation; temporal reversal only. No horizontal mirroring.",
+        "transforms": "Uniform downscale and letterbox only; original background and recorded color retained.",
+        "referenceFrame": 33,
+        "drawing": "Longest connected edge contours extracted from the final encoded poster inside the manually reviewed tattoo region; serpentine fill clipped to that region. Interpreted sketch, not the real tattooing order.",
+        "limitations": "The footage records a shallow forearm roll, not a full orbit. The second section retains another real side view and the existing watermark. Closeup-only repetitions and the paper design from 32 seconds onward are excluded.",
+        "editing": "Sections ordered by visible lateral coverage; hard joins declared in cuts for the 240ms web transition. No generated perspectives."
+      }
+    },
+    {
+      "id": "color",
+      "label": "Color sleeve",
+      "reel": "https://www.instagram.com/vicentart/reel/DURo4dTjc6g/",
+      "image": {
+        "src": "/videos/tattoos/color-poster.jpg",
+        "alt": "Red, black and green tattoo sleeve from the shoulder to the wrist, recorded in the studio.",
+        "width": 720,
+        "height": 1280
+      },
+      "drawingUrl": "/videos/tattoos/color-drawing.json",
+      "video": {
+        "sources": [
+          {
+            "src": "/videos/tattoos/color-480.mp4",
+            "width": 480,
+            "height": 854,
+            "bytes": 564190
+          },
+          {
+            "src": "/videos/tattoos/color-720.mp4",
+            "width": 720,
+            "height": 1280,
+            "bytes": 945913
+          }
+        ],
+        "referenceTime": 1,
+        "duration": 1.9,
+        "fps": 30,
+        "cuts": []
+      },
+      "provenance": {
+        "source": "DURo4dTjc6g.mp4",
+        "sourceSha256": "a89722ba4a805584ec0bcbfd0d52c81711608cc69b77f997ab68b28fbbe04e85",
+        "sourceDuration": 33.224898,
+        "sourceDimensions": [
+          720,
+          1280
+        ],
+        "segments": [
+          {
+            "start": 0.3,
+            "end": 2.2,
+            "reverse": false
+          }
+        ],
+        "orientation": "Original image orientation; temporal reversal only. No horizontal mirroring.",
+        "transforms": "Uniform downscale and letterbox only; original background and recorded color retained.",
+        "referenceFrame": 30,
+        "drawing": "Longest connected edge contours extracted from the final encoded poster inside the manually reviewed tattoo region; serpentine fill clipped to that region. Interpreted sketch, not the real tattooing order.",
+        "limitations": "Only a narrow side-to-front sweep is recorded with the full sleeve visible. Later sections largely repeat that view or crop the sleeve through zoom; they add no reliable opposite side. Logo outro excluded.",
+        "editing": "Sections ordered by visible lateral coverage; hard joins declared in cuts for the 240ms web transition. No generated perspectives."
+      }
+    }
+  ]
+}

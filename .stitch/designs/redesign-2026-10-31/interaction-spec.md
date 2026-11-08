@@ -12,9 +12,9 @@ Keep public copy in English. Preserve the source street address and four visible
 
 | Experience | Navigation destinations | Primary contact destination |
 | --- | --- | --- |
-| A: Galería de obra | Home #home; Portfolio #portfolio; About #about; Process #process; Contact #contact | #contact |
-| B: El artista y su trabajo | Home #home; About #about; Portfolio #portfolio; Process #process; Contact #contact | #contact |
-| C: Explorar y consultar | Home /; Portfolio /portfolio; About /about; Contact /contact | /contact |
+| A: Artwork Gallery | Home #home; Portfolio #portfolio; About #about; Process #process; Contact #contact | #contact |
+| B: The Artist and His Work | Home #home; About #about; Portfolio #portfolio; Process #process; Contact #contact | #contact |
+| C: Explore and Contact | Home /; Portfolio /portfolio; About /about; Contact /contact | /contact |
 | C process detail | /about#process | /contact |
 
 A and B are alternative single-page designs, not routes that coexist in a live app. C is an alternative four-page design. A future implementation selects a proposal before adding routes; it must not ship all three as competing public sites.

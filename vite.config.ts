@@ -90,7 +90,15 @@ const standardTsStyle = {
 export default defineConfig({
   server: {
     watch: {
-      ignored: [/(^|[\\/])\.playwright-(results|report)([\\/]|$)/]
+      ignored: [
+        /(^|[\\/])\.playwright-(results|report)([\\/]|$)/,
+        '**/.local-media/**',
+        '**/.local-tools/**',
+        '**/.playwright-results/**',
+        '**/.playwright-report/**',
+        '**/.prepare-ink-views-*',
+        '**/.prepare-ink-views-*/**'
+      ]
     }
   },
   test: {
@@ -801,19 +809,6 @@ export default defineConfig({
         }
       }
     ]
-  },
-  // Watching preparation folders can block atomic publication on Windows.
-  server: {
-    watch: {
-      ignored: [
-        '**/.local-media/**',
-        '**/.local-tools/**',
-        '**/.playwright-results/**',
-        '**/.playwright-report/**',
-        '**/.prepare-ink-views-*',
-        '**/.prepare-ink-views-*/**'
-      ]
-    }
   },
   plugins: lazyPlugins(() => [react({ compiler: true }), tailwindcss()]),
   resolve: {
