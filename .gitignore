@@ -203,3 +203,4 @@ coverage/
 
 # User scripts
 /scripts
+.vitest/
