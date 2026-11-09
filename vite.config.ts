@@ -1,10 +1,10 @@
 // vp migrate: merged .oxlintrc.json (22c9e5c4fb2530def4d98a25bbea732b).
 
-import { fileURLToPath } from 'node:url'
 import stylistic from '@stylistic/eslint-plugin'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import globals from 'globals'
+import { fileURLToPath } from 'node:url'
 import { defineConfig, lazyPlugins } from 'vite-plus'
 import type { OxlintConfig } from 'vite-plus/lint'
 
@@ -95,9 +95,7 @@ export default defineConfig({
         '**/.local-media/**',
         '**/.local-tools/**',
         '**/.playwright-results/**',
-        '**/.playwright-report/**',
-        '**/.prepare-ink-views-*',
-        '**/.prepare-ink-views-*/**'
+        '**/.playwright-report/**'
       ]
     }
   },

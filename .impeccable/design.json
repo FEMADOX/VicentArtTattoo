@@ -1,8 +1,26 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-02T18:45:07Z",
+  "generatedAt": "2026-11-09T18:07:24Z",
   "title": "Design System: Vicent Art Tattoo",
   "extensions": {
+    "colorMeta": {
+      "canvas": { "role": "neutral", "displayName": "Black Canvas", "canonical": "#000000", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "foreground": { "role": "neutral", "displayName": "White Foreground", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "body": { "role": "neutral", "displayName": "Body Gray", "canonical": "#cccccc", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "muted": { "role": "neutral", "displayName": "Muted Gray", "canonical": "#999999", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "surface": { "role": "neutral", "displayName": "Deep Surface", "canonical": "#0d0d0d", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "card": { "role": "neutral", "displayName": "Card Surface", "canonical": "#141414", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "popover": { "role": "neutral", "displayName": "Popover Surface", "canonical": "#1f1f1f", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "border": { "role": "neutral", "displayName": "Quiet Border", "canonical": "#262626", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "control-border": { "role": "neutral", "displayName": "Control Border", "canonical": "#808080", "tonalRamp": ["oklch(15% 0 0)", "oklch(25% 0 0)", "oklch(35% 0 0)", "oklch(45% 0 0)", "oklch(55% 0 0)", "oklch(65% 0 0)", "oklch(75% 0 0)", "oklch(95% 0 0)"] },
+      "link": { "role": "primary", "displayName": "Pale Blue Link", "canonical": "#c3d9f3", "tonalRamp": ["oklch(15% 0.043 252.7)", "oklch(25% 0.043 252.7)", "oklch(35% 0.043 252.7)", "oklch(45% 0.043 252.7)", "oklch(55% 0.043 252.7)", "oklch(65% 0.043 252.7)", "oklch(75% 0.043 252.7)", "oklch(95% 0.043 252.7)"] },
+      "destructive": { "role": "semantic", "displayName": "Soft Coral Destructive", "canonical": "#ffb4ab", "tonalRamp": ["oklch(15% 0.089 26.8)", "oklch(25% 0.089 26.8)", "oklch(35% 0.089 26.8)", "oklch(45% 0.089 26.8)", "oklch(55% 0.089 26.8)", "oklch(65% 0.089 26.8)", "oklch(75% 0.089 26.8)", "oklch(95% 0.089 26.8)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Condensed Display", "purpose": "Portfolio headings and display text." },
+      "body": { "displayName": "Editorial Serif", "purpose": "Longer portfolio copy." },
+      "label": { "displayName": "Monospace Label", "purpose": "Controls, labels, and captions." }
+    },
     "motion": [
       {
         "name": "state",

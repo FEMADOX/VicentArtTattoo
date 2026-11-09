@@ -1,8 +1,8 @@
 # Recorded tattoo views
 
-The active `/designs/ink-study` and its development catalog view use the four original Instagram recordings. Gorilla and owl photograph studies remain below the video tabs.
+The public portfolio has twelve independent works: the eight existing photographs and four projects that use the original Instagram recordings for recorded-view exploration. The separate animation study remains in the development catalog at `/__ui?view=ink-study`; `/designs/ink-study` redirects to `/#portfolio` and preserves its query string.
 
-Each selected piece draws once per visit, then hands off to a paused video at its chosen frontal frame. Replay returns to that frame and keeps drawing speed. Reopening a previously started tab shows the finished piece at the front. Page copy remains English and the study remains `noindex, nofollow`.
+Cards and the dialog start on the finished poster; only the opened project's paused video loads. Visitors can opt in to the drawing animation. Its data is fetched after Play drawing, speed and Skip drawing appear during playback, and it returns to the frontal view when complete. The original photo stays in the same dialog. A drawing failure leaves recorded views available with a retry action. The public portfolio remains indexable, while the development catalog stays `noindex, nofollow`.
 
 ## Prepared recordings
 
@@ -13,31 +13,11 @@ Each selected piece draws once per visit, then hands off to a paused video at it
 | Flowers      | DfL3ikluRzc |   3.9 s | 1.1 s | 2.6 s | 1,356,298 / 2,389,067 |
 | Color sleeve | DURo4dTjc6g |   1.9 s |   1 s | None  |     564,190 / 945,913 |
 
-The public manifest is [public/videos/tattoos/manifest.json](../public/videos/tattoos/manifest.json). It records source hashes, source intervals, temporal reversal, final reference frame, transfer sizes and coverage limits. Preparation with the default output also updates a generated copy under `src/assets/` for bundling; a test checks that the copies agree. The generated copy is excluded from manual formatting. Originals stay outside this checkout, public assets and Git.
+The public manifest is [public/videos/tattoos/manifest.json](../public/videos/tattoos/manifest.json). It records source hashes, source intervals, temporal reversal, final reference frame, transfer sizes and coverage limits. A bundled copy under `src/assets/` is checked against the public manifest by a test. The generated copy is excluded from manual formatting. Originals stay outside this checkout, public assets and Git.
 
 All outputs use H.264, 30 fps, YUV420p, no audio, a six-frame closed GOP, no B-frames and MP4 faststart. Variants are 720 x 1280 and 480 x 854; uniform scaling and letterboxing preserve the artwork. All files meet the 3 MiB / 8 MiB targets. Footage backgrounds, orientation and color are retained. Temporal reversal never mirrors an image.
 
 The montages prioritize additional observed surface. Ghostface joins another camera height and arm tilt. Portrait uses two wide shots of the same upper-arm piece, avoiding the later closeup's scale jump; its unrelated lower-arm tattoo is excluded. Flowers records a shallow forearm roll and retains the original watermark. Source scene-boundary flashes were trimmed from Portrait and Flowers. Color sleeve has only a narrow useful sweep: later zooms repeat the same surface, so they are excluded. These are recorded views, not a calibrated orbit or a guarantee of 180 degrees.
-
-## Rebuilding or adding a piece
-
-The existing FFmpeg and FFprobe executables are preparation tools only. No browser dependency was added. Source files must be named `<reel-id>.mp4`, with the reviewed 720 x 1280 dimensions.
-
-```powershell
-rtk vp run prepare:tattoo-videos -- --source-dir "C:/path/to/originals" --ffmpeg "C:/path/to/ffmpeg.exe" --ffprobe "C:/path/to/ffprobe.exe"
-```
-
-Use `FFMPEG` and `FFPROBE` when configured, or put the executables on PATH. `--output-dir` defaults to `public/videos/tattoos`. The command replaces prepared outputs, never original recordings. Its timing/region self-check does not process media:
-
-```powershell
-rtk vp run prepare:tattoo-videos -- --self-check
-```
-
-1. Review the full original. Select sections of the same tattoo that expose new lateral surface; exclude blur, obscuring glare, unrelated tattoos, repeated zooms and end cards.
-2. Add an entry to [scripts/tattoo-video/edits.json](../scripts/tattoo-video/edits.json). Record source intervals, whether each plays in reverse, a frontal reference in montage time and an English coverage limitation. Intervals must align to 30 fps.
-3. Define the tattoo region in the final 720 x 1280 reference coordinates. Inspect its alignment after encoding and revise it if needed. Preserve original pixels; do not synthesize missing skin or perspectives.
-4. Run preparation. It trims, reverses and concatenates sections; generates both resolutions; extracts the poster from the final encoded 720 px reference frame; and derives connected edge contours inside the selected region. Longer contours draw first; clipped alternating fill strokes reveal shading and color. The sketch is an interpretation, not the real tattooing order.
-5. Review the first, frontal and last views plus both sides of every join. Regenerate after changing intervals or the reference. Drawing masks prepared for a different source frame must not be reused.
 
 ## Browser interaction and lifecycle
 
@@ -49,11 +29,11 @@ The native video stays paused. Visibility gates its source assignment. Pointer w
 
 The montage contains hard joins identified in `cuts`. When a seek crosses one, a canvas snapshot keeps the last valid view visible while the destination decodes, then fades out over 240 ms. That fade completes even when input stops; a paused cursor does not leave a permanent blended tattoo. Wide jumps seek directly to their destination. The native video, poster and snapshot share the same frame proportions.
 
-Reduced motion skips drawing and passive mouse following, and removes cut fades. Deliberate Slider and drag input remain. Slow or failed media leaves a photograph and retry action. Changing tabs disposes media, queued seeks, callbacks and transition timers. Original photo uses the shared dialog and returns focus to its button.
+Reduced motion disables drawing and passive mouse following, and removes cut fades. Deliberate Slider and drag input remain. Slow or failed media leaves a photograph and retry action. Changing works disposes media, queued seeks, callbacks and transition timers. In the public portfolio, Original photo stays in the same dialog and can return to recorded views; closing restores focus to the card. The development study retains its standalone original-photo viewer.
 
 ## Validation
 
-Vitest covers preparation timing, manifest boundaries, front/extreme mapping, invalid input and the existing drawing clock. Playwright covers the full interaction, cancellation, failures, reduced motion, keyboard/touch controls and the four responsive widths. Run:
+Vitest covers manifest boundaries, front/extreme mapping, invalid input and the existing drawing clock. Playwright covers the full interaction, cancellation, failures, reduced motion, keyboard/touch controls and the four responsive widths. Run:
 
 ```powershell
 rtk vp run check-all
@@ -62,7 +42,7 @@ rtk vp run build
 rtk vp run test:e2e
 ```
 
-Revalidated after removing the 3D implementation on 2026-11-06: `check-all` passed with zero Tailwind diagnostics; Vitest passed 64 tests in six files; the production build passed; and the complete Chromium suite passed all 92 tests. The preparation self-check and FFprobe verification of all eight MP4s had passed on 2026-11-03.
+Revalidated after removing the 3D implementation on 2026-11-06: `check-all` passed with zero Tailwind diagnostics; Vitest passed 64 tests in six files; the production build passed; and the complete Chromium suite passed all 92 tests.
 
 The visual review on 2026-11-03 covered 48 decoded-view captures: four pieces at 320, 390, 768 and 1440 px, each at the left, frontal and right positions. Completed controls were also inspected at 390 and 1440 px. The browser regressions include cut-fade completion after input stops, latest-position seeking, and the fallback without media-completion events or video-frame callbacks. Multi-step media cases have a 60-second total budget; decoded-frame assertions still wait at most 20 seconds. Vite excludes generated Playwright reports and traces from file watching.
 

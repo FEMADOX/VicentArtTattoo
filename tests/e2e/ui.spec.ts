@@ -25,6 +25,7 @@ for (const width of widths) {
       await expect(page.locator('[data-catalog-preview]')).toHaveAttribute('data-catalog-preview', view)
       await expect(page.locator('#main-content, [data-catalog-preview="legacy"]').first()).toBeVisible()
       await expect(page.locator('[data-loading-skeleton]')).toHaveCount(0, { timeout: 15_000 })
+      if (view === 'a') await expect(page.locator('[data-catalog-preview="a"]').getByText('4 of 8 original works')).toBeVisible()
       await page.evaluate(async () => {
         const images = Array.from(document.images)
         await Promise.all(images.map(async image => {
@@ -116,7 +117,7 @@ test('gallery keyboard navigation preserves selection bounds and returns focus',
   const firstSource = await dialog.getByRole('img').getAttribute('src')
   await page.keyboard.press('ArrowRight')
   await expect(dialog.getByRole('img')).not.toHaveAttribute('src', firstSource ?? '')
-  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 2:')
+  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 9:')
   await page.keyboard.press('ArrowLeft')
   await expect(dialog.getByRole('img')).toHaveAttribute('src', firstSource ?? '')
   await expectFocusTrap(page, dialog)
@@ -155,10 +156,10 @@ test('C links and browser history stay inside the catalog, including process has
 
 test('ink controls support keyboard speed, replay, original and live reduced motion', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await page.goto('/designs/ink-study')
+  await page.goto('/__ui?view=ink-study')
   const study = page.getByRole('region', { name: 'Gorilla and mountain', exact: true }).locator('[data-ink-study]')
   const slider = study.getByRole('slider', { name: 'Drawing speed' })
-  const replay = study.getByRole('button', { name: 'Replay animation' })
+  const replay = study.getByRole('button', { name: 'Animation' })
   await expect(replay).toBeEnabled()
   await slider.focus()
   await slider.press('ArrowRight')
@@ -184,13 +185,19 @@ test('ink controls support keyboard speed, replay, original and live reduced mot
   await expect(study).toHaveAttribute('data-ink-state', 'complete')
 })
 
-test('public routes retain titles and noindex', async ({ page }) => {
+test('the public ink study route redirects to the portfolio and the dev study stays noindex', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   await expect(page).toHaveTitle(/vicentart/i)
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
-  await page.goto('/designs/ink-study/')
-  await expect(page).toHaveTitle('Ink animation study | VicentArt')
+
+  await page.goto('/designs/ink-study/?ref=e2e#about')
+  await expect(page).toHaveURL('http://127.0.0.1:5174/?ref=e2e#portfolio')
+  await expect(page).toHaveTitle(/vicentart/i)
+  await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
+
+  await page.goto('/__ui?view=ink-study')
+  await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible()
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
 })
 

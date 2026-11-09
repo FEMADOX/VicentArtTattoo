@@ -10,7 +10,8 @@ const requestedRoute = resolveDesignRoute(window.location.pathname)
 const route = requestedRoute.type === 'redirect' ? { type: 'home' as const } : requestedRoute
 
 if (requestedRoute.type === 'redirect') {
-  window.history.replaceState(null, '', legacyDesignHref(requestedRoute.section, window.location.search, window.location.hash))
+  const oldInkStudy = /^\/designs\/ink-study\/?$/.test(window.location.pathname)
+  window.history.replaceState(null, '', legacyDesignHref(requestedRoute.section, window.location.search, oldInkStudy ? '' : window.location.hash))
 }
 
 export default function Entry () {

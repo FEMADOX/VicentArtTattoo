@@ -97,7 +97,7 @@ HTML, PNG and temporary responses stay in `.stitch/.cache/`, outside Git. The do
 
 ## Selected design
 
-Proposal A is the public site at `/`, with a responsive gallery, booking process, contact options and Motion animations. The comparison catalog and proposals B/C are no longer public; their legacy links go to the home page or the matching section. The standalone study remains at `/designs/ink-study`.
+Proposal A is the public site at `/`, with a responsive gallery, booking process, contact options and Motion animations. Its portfolio contains the eight existing photographs and four recorded-view projects. The comparison catalog and proposals B/C are no longer public; their legacy links go to the home page or the matching section. The ink animation study remains development-only at `/__ui?view=ink-study`; `/designs/ink-study` redirects to `/#portfolio`.
 
 See [routes, interactions and validation](docs/design-previews.md). Run `vp dev` to view the site locally.
 
@@ -108,7 +108,7 @@ index.html                 Page metadata and HTML entry point
 public/logo.svg            Logo
 src/main.tsx               React mount
 src/Entry.tsx              Public entry point and route compatibility
-src/designs/DesignApp.tsx   Selected site, navigation and standalone study
+src/designs/DesignApp.tsx   Public site, navigation and legacy-route handling
 src/designs/styles.ts       Shared Tailwind visual primitives
 src/App.tsx                Migrated legacy version, available in the local catalog
 src/components/            Navigation, page sections and components

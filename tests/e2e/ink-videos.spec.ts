@@ -8,7 +8,7 @@ const widths = [320, 390, 768, 1440] as const
 
 async function openStudy (page: Page, reducedMotion = false) {
   await page.emulateMedia({ reducedMotion: reducedMotion ? 'reduce' : 'no-preference' })
-  await page.goto('/designs/ink-study')
+  await page.goto('/__ui?view=ink-study')
   const panel = page.getByRole('tabpanel', { name: 'Ghostface', exact: true })
   await panel.scrollIntoViewIfNeeded()
   await panel.locator('[data-ink-state]').scrollIntoViewIfNeeded()
@@ -76,7 +76,7 @@ test('drawing finishes at the front, then replay preserves speed and resets expl
   await page.keyboard.press('End')
   await expect(frame).toHaveAttribute('data-video-position', '100')
   await expect.poll(async () => await readVideoTime(frame)).toBeGreaterThan(frontTime)
-  await panel.getByRole('button', { name: 'Replay animation', exact: true }).click()
+  await panel.getByRole('button', { name: 'Animation', exact: true }).click()
   await expect(panel.locator('[data-drawing-state]')).toHaveAttribute('data-drawing-state', 'playing')
   await expect(speed).toHaveAttribute('aria-valuenow', '2')
   await expect(angle).toHaveAttribute('aria-valuenow', '0')

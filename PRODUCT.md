@@ -1,11 +1,54 @@
 # Vicent Art Tattoo
 
-Vicent Art Tattoo is a static React and TypeScript portfolio for a tattoo artist in New Port Richey, Florida. Page copy is English.
+<!-- impeccable:product-schema 1 -->
 
-The site lets visitors explore the original tattoo artwork, learn about the artist, and use the existing contact channels to contact the artist. The primary journey is **explore the work â†’ Contact the artist**. Existing logo, photography, artwork, and contact destinations are product evidence and must be preserved.
+## Platform
 
-Design A is the public portfolio. The retained alternatives are available only in the development catalog at /__ui: nine choices comprise Components plus eight views (A, B, four C pages, Legacy App, and Ink study). The catalog is excluded from the production entry and marked noindex/nofollow when used in development. It is reference material, not a new customer service.
+web
 
-There is no backend, appointment booking service, payment flow, account system, or required environment variable. Do not invent availability, prices, credentials, reviews, guarantees, booking confirmations, or new contact channels.
+## Users
 
-The approved visual direction is a black editorial gallery with original imagery, regular-weight display/serif/monospace typography, restrained outlines, and generous space. The selected direction is pinned; implementation does not reopen a visual competition. Accessible keyboard interaction, legible contrast, touch targets, and reduced motion remain requirements.
+Portfolio visitors who want to explore Vicent's tattoo work, learn about the artist, and contact the artist through the existing channels.
+
+## Product Purpose
+
+Vicent Art Tattoo is a portfolio for a tattoo artist in New Port Richey, Florida. It presents the artist's work and information, then helps interested visitors make contact through the established channels. Success means visitors can review the work and reach the artist.
+
+## Positioning
+
+The public portfolio pairs finished tattoo photography with recorded views of selected works and optional drawing reveals. Visitors can explore a piece's process without animation being required to see the finished tattoo.
+
+## Operating Context
+
+Visitors use the portfolio in a browser on desktop or mobile. Each artwork opens on its finished front photograph. Visitors deliberately choose recorded views or a drawing animation when available.
+
+## Capabilities and Constraints
+
+- The public collection has twelve works: the eight existing photographic works plus Ghostface, Portrait, Flowers, and Color sleeve.
+- Four works include recorded views. Six supported works offer an optional drawing reveal, loaded only when the visitor chooses to play it.
+- All works use the shared viewer with previous, next, and close controls. The original photograph remains available if optional media fails.
+- Only the opened work's video is loaded. A drawing failure does not block its recorded views; a video failure preserves the photo and retry action.
+- The public legacy route `/designs/ink-study`, with or without a trailing slash, redirects to `/#portfolio` while preserving query parameters. The ink-study demo remains in the development catalog at `/__ui?view=ink-study`.
+- The site has no backend, appointment booking service, payment flow, account system, or required environment variable. Do not invent availability, prices, credentials, reviews, guarantees, booking confirmations, or new contact channels.
+
+## Brand Commitments
+
+- Public page copy is in English.
+- Preserve the Vicent Art Tattoo name, original logo, photography, artwork, and existing contact destinations.
+- Existing assets are the source of truth for the artist's work and identity.
+
+## Evidence on Hand
+
+The project contains eight existing tattoo photographs, four recorded-view videos, and drawing data for the supported works. Use these assets as the portfolio evidence; do not fabricate artwork or testimonials.
+
+## Product Principles
+
+- Show the completed tattoo before any optional motion.
+- Keep recorded views and drawing reveals deliberate and optional.
+- Preserve the original photograph when optional media fails.
+- Keep the existing contact journey and make no unsupported service claims.
+- Keep keyboard, touch, and reduced-motion access usable.
+
+## Accessibility & Inclusion
+
+Viewer controls support keyboard and touch interaction, closing returns focus to the opener, and reduced motion disables nonessential and passive motion. Visitors can still choose a view deliberately.

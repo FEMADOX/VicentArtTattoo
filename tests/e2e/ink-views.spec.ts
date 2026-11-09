@@ -184,7 +184,7 @@ test('replay preserves speed and Show original returns to the reference angle', 
 
   await angle.press('End')
   await expect(study).toHaveAttribute('data-ink-views', '3')
-  await study.getByRole('button', { name: 'Replay animation' }).click()
+  await study.getByRole('button', { name: 'Animation' }).click()
   await expect(study).toHaveAttribute('data-ink-state', 'playing')
   await expect(study).toHaveAttribute('data-ink-views', '1')
   await expect(speed).toHaveAttribute('aria-valuenow', '2')
