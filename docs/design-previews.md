@@ -34,7 +34,7 @@ Local route compatibility replaces the URL through the History API and preserves
 
 All retained designs in `src/designs/`, including B/C and the development study, use Tailwind v4 utilities. `styles.ts` groups shared primitives; individual compositions keep their class constants beside the component. `designs.css` and the five CSS Modules were removed. `global.css` is the Tailwind entry point and contains the project tokens. Motion values and SVG geometry are still calculated at runtime.
 
-Vitest tests live under `tests/designs/`. Vitest discovery is limited to `tests/`, and TypeScript includes that directory. `rtk vp run lint:tailwind` checks all of `src/`; `rtk vp run lint:tailwind:fix` applies automatic fixes. `check-all` includes this check. Editor class extraction covers the `styles` and `designStyles` constants as well as `className` and `cn`.
+Vitest tests live under `tests/designs/`. Vitest discovery is limited to `tests/`, and TypeScript includes that directory. `rtk vpr lint:tailwind` checks all of `src/`; `rtk vpr lint:tailwind:fix` applies automatic fixes. `check-all` includes this check. Editor class extraction covers the `styles` and `designStyles` constants as well as `className` and `cn`.
 
 The transitive parser used by `tailwind-lint` 0.16.0 is aligned with its v3 dependencies through a version-scoped override for `@tailwindcss/language-service` in `pnpm-workspace.yaml`; `pnpm peers check` verifies that no peer conflicts remain.
 
@@ -68,11 +68,11 @@ In the development demo, playback starts once per photo after it loads and at le
 
 ```powershell
 
-rtk vp run check-all
+rtk vpr check-all
 
 rtk vp test
 
-rtk vp run build
+rtk vpr build
 
 ```
 

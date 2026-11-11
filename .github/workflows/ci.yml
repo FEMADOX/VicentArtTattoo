@@ -32,9 +32,9 @@ jobs:
           cache: true
           run-install: false
       - run: vp install --frozen-lockfile
-      - run: vp run check-all
+      - run: vpr check-all
       - run: vp test
-      - run: vp run build
+      - run: vpr build
       - name: Install browser for UI checks
         if: runner.os == 'Linux'
         run: vpx playwright install --with-deps chromium

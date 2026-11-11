@@ -26,8 +26,10 @@ async function openWarmTwelveAngleStudy (page: Page) {
   await angle.focus()
   await angle.press('Home')
   await expect(study).toHaveAttribute('data-ink-views', '0')
+  await expect(angle).toHaveAttribute('aria-valuetext', 'View 1 of 12')
   await angle.press('End')
   await expect(study).toHaveAttribute('data-ink-views', '11')
+  await expect(angle).toHaveAttribute('aria-valuetext', 'View 12 of 12')
   for (let index = 10; index >= 4; index--) {
     await angle.press('ArrowLeft')
     await expect(study).toHaveAttribute('data-ink-views', String(index))
@@ -164,6 +166,11 @@ test('replay preserves speed and Show original returns to the reference angle', 
   const image = study.locator('img').first()
 
   await speed.focus()
+  await speed.press('ArrowRight')
+  await expect(speed).toHaveAttribute('aria-valuenow', '1.25')
+  await expect(speed).toHaveAttribute('aria-valuetext', '1.25 times normal speed')
+  await speed.press('Home')
+  await expect(speed).toHaveAttribute('aria-valuenow', '0.25')
   await speed.press('End')
   await expect(speed).toHaveAttribute('aria-valuenow', '2')
   await study.getByRole('button', { name: 'Show original' }).click()
@@ -230,6 +237,7 @@ test('a live reduced-motion change stops drawing and still permits manual select
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expectDrawingComplete(study)
   await expect(speed).toBeDisabled()
+  await expect(study.getByRole('button', { name: 'Animation' })).toBeDisabled()
   await waitForViews(study)
   await angle.focus()
   await angle.press('End')
@@ -238,6 +246,8 @@ test('a live reduced-motion change stops drawing and still permits manual select
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   await expectDrawingComplete(study)
   await expect(angle).toBeEnabled()
+  await expect(speed).toBeEnabled()
+  await expect(study.getByRole('button', { name: 'Animation' })).toBeEnabled()
 })
 
 test('touch drag selects angles and cancellation keeps the last completed selection', async ({ page }) => {
@@ -413,23 +423,6 @@ test('an invalid reference is reported while preserving the original photograph'
   await expect(study.locator('[data-ink-views-status]')).toHaveText('The original view index is invalid.')
   await expect(image).toHaveAttribute('src', referenceSource)
   await expect(study.getByRole('slider', { name: 'Viewing angle' })).toBeDisabled()
-})
-
-test('twelve angles decode and keep Home and End within their bounds', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-  const study = await openStudy(page, '12frames')
-  const angle = study.getByRole('slider', { name: 'Viewing angle' })
-
-  await expectDrawingComplete(study)
-  await waitForViews(study)
-  await expect(study).toHaveAttribute('data-ink-views', '1')
-  await angle.focus()
-  await angle.press('Home')
-  await expect(study).toHaveAttribute('data-ink-views', '0')
-  await expect(angle).toHaveAttribute('aria-valuetext', 'View 1 of 12')
-  await angle.press('End')
-  await expect(study).toHaveAttribute('data-ink-views', '11')
-  await expect(angle).toHaveAttribute('aria-valuetext', 'View 12 of 12')
 })
 
 test('synthetic views retain their image ratio without horizontal overflow', async ({ page }) => {

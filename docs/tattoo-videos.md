@@ -36,10 +36,10 @@ Reduced motion disables drawing and passive mouse following, and removes cut fad
 Vitest covers manifest boundaries, front/extreme mapping, invalid input and the existing drawing clock. Playwright covers the full interaction, cancellation, failures, reduced motion, keyboard/touch controls and the four responsive widths. Run:
 
 ```powershell
-rtk vp run check-all
+rtk vpr check-all
 rtk vp test
-rtk vp run build
-rtk vp run test:e2e
+rtk vpr build
+rtk vpr test:e2e
 ```
 
 Revalidated after removing the 3D implementation on 2026-11-06: `check-all` passed with zero Tailwind diagnostics; Vitest passed 64 tests in six files; the production build passed; and the complete Chromium suite passed all 92 tests.

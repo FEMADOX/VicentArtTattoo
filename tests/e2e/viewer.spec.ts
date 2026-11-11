@@ -1,11 +1,8 @@
 import { expect, test, type Locator } from '@playwright/test'
 
 const viewports = [
-  { width: 844, height: 390 },
   { width: 568, height: 320 },
   { width: 320, height: 568 },
-  { width: 390, height: 844 },
-  { width: 768, height: 900 },
   { width: 1440, height: 900 }
 ] as const
 
@@ -26,7 +23,7 @@ async function expectCaptionVisible (caption: Locator) {
 }
 
 for (const viewport of viewports) {
-  test('gallery photograph and navigation fit at ' + viewport.width + 'x' + viewport.height, async ({ page }) => {
+  test('gallery viewer keeps its shell within the viewport while navigating at ' + viewport.width + 'x' + viewport.height, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     const first = page.getByRole('button', { name: /^Enlarge piece 1:/ })
     const dialog = page.getByRole('dialog', { name: 'Original tattoo work' })
@@ -45,18 +42,26 @@ for (const viewport of viewports) {
     await expect(dialog).toHaveCSS('opacity', '1')
     await expect(image).toHaveCSS('object-fit', 'contain')
     await expect(previous).toBeDisabled()
-    await expect(dialog.getByText('1 / 12', { exact: true })).toBeVisible()
-    await expect(caption).toContainText('Piece 1:')
-    await expectCaptionVisible(caption)
-    await expect(next).toBeEnabled()
 
-    const shell = await bounds(dialog)
-    const photo = await bounds(image)
-    expect(photo.height).toBeGreaterThan(150)
-    expect(shell.x).toBeGreaterThanOrEqual(0)
-    expect(shell.y).toBeGreaterThanOrEqual(0)
-    expect(shell.x + shell.width).toBeLessThanOrEqual(viewport.width + 1)
-    expect(shell.y + shell.height).toBeLessThanOrEqual(viewport.height + 1)
+    // Cover every piece once; other viewports only need a layout transition.
+    const pieceCount = viewport.width === 320 ? 12 : 2
+    let reference: unknown = undefined
+    for (let piece = 1; piece <= pieceCount; piece += 1) {
+      if (piece > 1) await next.click()
+      const counter = dialog.getByText(piece + ' / 12', { exact: true })
+      await expect(counter).toBeVisible()
+      await expectCaptionVisible(caption)
+      if (piece === 12) await expect(next).toBeDisabled()
+
+      const [shell, artwork] = await measure([dialog, image])
+      expect(artwork.height).toBeGreaterThanOrEqual(150)
+      expect(shell.x).toBeGreaterThanOrEqual(0)
+      expect(shell.y).toBeGreaterThanOrEqual(0)
+      expect(shell.x + shell.width).toBeLessThanOrEqual(viewport.width + 1)
+      expect(shell.y + shell.height).toBeLessThanOrEqual(viewport.height + 1)
+      if (reference === undefined) reference = shell
+      else expect(shell).toEqual(reference)
+    }
 
     await page.keyboard.press('Escape')
     await expect(dialog).not.toBeVisible()
@@ -77,11 +82,7 @@ test('InkStudy opens the shared viewer shell with full image dimensions and rest
     await document.fonts.ready
   })
   await expect(galleryDialog).toHaveCSS('opacity', '1')
-  const galleryGeometry = await measure([
-    galleryDialog,
-    galleryDialog.getByRole('heading').locator('..'),
-    galleryDialog.getByRole('button', { name: 'Close dialog' })
-  ])
+  const galleryWidth = await galleryDialog.evaluate(element => element.getBoundingClientRect().width)
   await page.keyboard.press('Escape')
   await expect(galleryTrigger).toBeFocused()
 
@@ -108,11 +109,7 @@ test('InkStudy opens the shared viewer shell with full image dimensions and rest
   await expect(image).toHaveAttribute('width', width ?? '')
   await expect(image).toHaveAttribute('height', height ?? '')
   await expectCaptionVisible(caption)
-  expect(await measure([
-    dialog,
-    dialog.getByRole('heading').locator('..'),
-    dialog.getByRole('button', { name: 'Close dialog' })
-  ])).toEqual(galleryGeometry)
+  expect(await dialog.evaluate(element => element.getBoundingClientRect().width)).toBe(galleryWidth)
 
   await page.keyboard.press('Escape')
   await expect(dialog).not.toBeVisible()

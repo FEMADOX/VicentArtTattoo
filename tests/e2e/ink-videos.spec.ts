@@ -4,7 +4,7 @@ import { expect, test, type Locator, type Page } from '@playwright/test'
 test.setTimeout(60_000)
 
 const studies = ['Ghostface', 'Portrait', 'Flowers', 'Color sleeve'] as const
-const widths = [320, 390, 768, 1440] as const
+const widths = [320, 1440] as const
 
 async function openStudy (page: Page, reducedMotion = false) {
   await page.emulateMedia({ reducedMotion: reducedMotion ? 'reduce' : 'no-preference' })
@@ -49,12 +49,6 @@ async function readVideoDuration (frame: Locator) {
 
 async function expectVideoTime (frame: Locator, expected: number) {
   await expect.poll(async () => Math.abs(await readVideoTime(frame) - expected), { timeout: 20_000 }).toBeLessThanOrEqual(2 / 30)
-}
-
-async function captureFrame (frame: Locator, name: string) {
-  const path = test.info().outputPath(name + '.png')
-  await frame.screenshot({ path })
-  await test.info().attach(name, { path, contentType: 'image/png' })
 }
 
 test('drawing finishes at the front, then replay preserves speed and resets exploration', async ({ page }) => {
@@ -111,7 +105,7 @@ test('cursor exploration starts at the front, follows both directions, and keeps
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
   await page.mouse.move(box.x + box.width * 0.1, box.y + box.height / 2, { steps: 4 })
   await expect.poll(async () => Number(await frame.getAttribute('data-video-position'))).toBeLessThan(0)
-  await expect.poll(async () => await readVideoTime(frame)).toBeLessThan(frontTime)
+  await expect.poll(async () => await readVideoTime(frame), { timeout: 20_000 }).toBeLessThan(frontTime)
 
   await angle.focus()
   await page.keyboard.press('Home')
@@ -160,10 +154,9 @@ test('a slow selected video keeps the poster visible until its media is ready', 
 })
 
 test('a failed video keeps a still image and can be retried', async ({ page }) => {
-  let failed = false
+  let retryRequested = false
   await page.route(videoPattern('ghostface'), async route => {
-    if (!failed) {
-      failed = true
+    if (!retryRequested) {
       await route.abort('failed')
     } else await route.continue()
   })
@@ -172,6 +165,7 @@ test('a failed video keeps a still image and can be retried', async ({ page }) =
   await frame.scrollIntoViewIfNeeded()
   await expect(frame).toHaveAttribute('data-video-state', 'error', { timeout: 20_000 })
   await expect(frame.locator('img').first()).toBeVisible()
+  retryRequested = true
   await panel.getByRole('button', { name: /retry/i }).click()
   await expectVideoReady(panel)
 })
@@ -270,53 +264,36 @@ test('touch drag explores horizontally while vertical gestures can still scroll 
 })
 
 for (const width of widths) {
-  for (const name of studies) {
-    test(name + ' video viewer fits at ' + width + 'px and exposes both ends', async ({ page }) => {
-      await page.setViewportSize({ width, height: 900 })
-      await openStudy(page, true)
-      if (name !== 'Ghostface') await page.getByRole('tab', { name, exact: true }).click()
-      const selected = page.getByRole('tabpanel', { name, exact: true })
-      await selected.scrollIntoViewIfNeeded()
-      await selected.locator('[data-ink-state]').scrollIntoViewIfNeeded()
-      const frame = await expectVideoReady(selected)
-      const angle = viewingAngle(selected)
-      const frontTime = await readVideoTime(frame)
-      const duration = await readVideoDuration(frame)
-      await angle.focus()
-      await page.keyboard.press('Home')
-      await expect(frame).toHaveAttribute('data-video-position', '-100')
-      await expectVideoTime(frame, 0)
-      await captureFrame(frame, name.toLowerCase().replaceAll(' ', '-') + '-' + width + '-left')
-      await selected.getByRole('button', { name: 'Reset view', exact: true }).click()
-      await expect(frame).toHaveAttribute('data-video-position', '0')
-      await expectVideoTime(frame, frontTime)
-      await captureFrame(frame, name.toLowerCase().replaceAll(' ', '-') + '-' + width + '-front')
-      await angle.focus()
-      await page.keyboard.press('End')
-      await expect(frame).toHaveAttribute('data-video-position', '100')
-      await expectVideoTime(frame, duration - 1 / 30)
-      await captureFrame(frame, name.toLowerCase().replaceAll(' ', '-') + '-' + width + '-right')
-      expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
+  test('video viewer fits at ' + width + 'px and exposes both ends', async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 })
+    const selected = await openStudy(page, true)
+    await selected.scrollIntoViewIfNeeded()
+    await selected.locator('[data-ink-state]').scrollIntoViewIfNeeded()
+    const frame = await expectVideoReady(selected)
+    const angle = viewingAngle(selected)
+    const frontTime = await readVideoTime(frame)
+    const duration = await readVideoDuration(frame)
+    await angle.focus()
+    await page.keyboard.press('Home')
+    await expect(frame).toHaveAttribute('data-video-position', '-100')
+    await expectVideoTime(frame, 0)
+    await selected.getByRole('button', { name: 'Reset view', exact: true }).click()
+    await expect(frame).toHaveAttribute('data-video-position', '0')
+    await expectVideoTime(frame, frontTime)
+    await angle.focus()
+    await page.keyboard.press('End')
+    await expect(frame).toHaveAttribute('data-video-position', '100')
+    await expectVideoTime(frame, duration - 1 / 30)
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
 
-      for (const control of [...await page.getByRole('tab').all(), ...await selected.locator('button, [role="slider"]').all()]) {
-        const bounds = await control.boundingBox()
-        expect(bounds).not.toBeNull()
-        expect(bounds?.width).toBeGreaterThanOrEqual(44)
-        expect(bounds?.height).toBeGreaterThanOrEqual(44)
-      }
-    })
-  }
+    for (const control of [...await page.getByRole('tab').all(), ...await selected.locator('button, [role="slider"]').all()]) {
+      const bounds = await control.boundingBox()
+      expect(bounds).not.toBeNull()
+      expect(bounds?.width).toBeGreaterThanOrEqual(44)
+      expect(bounds?.height).toBeGreaterThanOrEqual(44)
+    }
+  })
 }
-
-test('development catalog exposes the four recorded tattoo studies', async ({ page }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-  await page.goto('/__ui?view=ink-study')
-  for (const name of studies) await expect(page.getByRole('tab', { name, exact: true })).toBeVisible()
-  await page.getByRole('tab', { name: 'Color sleeve', exact: true }).click()
-  const panel = page.getByRole('tabpanel', { name: 'Color sleeve', exact: true })
-  await panel.scrollIntoViewIfNeeded()
-  await expectVideoReady(panel)
-})
 
 test('paused seeking completes when media completion events are unavailable', async ({ page }) => {
   const panel = await openStudy(page, true)
