@@ -191,7 +191,7 @@ test('replay preserves speed and Show original returns to the reference angle', 
 
   await angle.press('End')
   await expect(study).toHaveAttribute('data-ink-views', '3')
-  await study.getByRole('button', { name: 'Replay animation' }).click()
+  await study.getByRole('button', { name: 'Animation' }).click()
   await expect(study).toHaveAttribute('data-ink-state', 'playing')
   await expect(study).toHaveAttribute('data-ink-views', '1')
   await expect(speed).toHaveAttribute('aria-valuenow', '2')
@@ -237,7 +237,7 @@ test('a live reduced-motion change stops drawing and still permits manual select
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await expectDrawingComplete(study)
   await expect(speed).toBeDisabled()
-  await expect(study.getByRole('button', { name: 'Replay animation' })).toBeDisabled()
+  await expect(study.getByRole('button', { name: 'Animation' })).toBeDisabled()
   await waitForViews(study)
   await angle.focus()
   await angle.press('End')
@@ -247,7 +247,7 @@ test('a live reduced-motion change stops drawing and still permits manual select
   await expectDrawingComplete(study)
   await expect(angle).toBeEnabled()
   await expect(speed).toBeEnabled()
-  await expect(study.getByRole('button', { name: 'Replay animation' })).toBeEnabled()
+  await expect(study.getByRole('button', { name: 'Animation' })).toBeEnabled()
 })
 
 test('touch drag selects angles and cancellation keeps the last completed selection', async ({ page }) => {

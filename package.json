@@ -12,9 +12,7 @@
     "preview": "vp preview",
     "prepare": "vp config && vp fmt --no-error-on-unmatched-pattern AGENTS.md",
     "check-all": "vpr check && vpr tsc && vpr lint:tailwind",
-    "test:watch": "vp test watch",
-    "prepare:ink-views": "vpx scripts/prepare-tattoo-views.ts",
-    "prepare:tattoo-videos": "vpx scripts/tattoo-video/prepare.ts"
+    "test:watch": "vp test watch"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.5.0",

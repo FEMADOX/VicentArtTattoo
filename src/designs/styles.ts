@@ -14,7 +14,7 @@ export const designStyles = {
   checklist: 'mt-6 grid list-none gap-4 p-0 [&_li]:flex [&_li]:items-start [&_li]:gap-3 [&_li]:text-lg [&_svg]:mt-1 [&_svg]:text-muted-foreground',
   lightbox: 'h-[min(92dvh,960px)] max-w-4xl grid-rows-[auto_minmax(0,1fr)_auto] gap-4 p-4 sm:p-6 min-[480px]:[@media(height<=500px)]:grid-cols-[minmax(0,1fr)_minmax(16rem,0.65fr)] min-[480px]:[@media(height<=500px)]:grid-rows-[auto_minmax(0,1fr)] min-[480px]:[@media(height<=500px)]:gap-3 min-[480px]:[@media(height<=500px)]:p-4',
   lightboxHeader: 'grid min-h-20 grid-cols-[minmax(0,1fr)_auto] items-start gap-4 sm:min-h-11 min-[480px]:[@media(height<=500px)]:col-span-full min-[480px]:[@media(height<=500px)]:min-h-11',
-  lightboxFrame: 'relative min-h-0 min-w-0 bg-background',
+  lightboxFrame: 'relative min-h-0 min-w-0 overflow-y-auto bg-background',
   lightboxImage: 'absolute inset-0 size-full object-contain',
   lightboxFooter: 'grid gap-3 min-[480px]:[@media(height<=500px)]:self-end',
   lightboxCaption: 'min-h-16 text-center font-mono text-xs/5 text-muted-foreground',

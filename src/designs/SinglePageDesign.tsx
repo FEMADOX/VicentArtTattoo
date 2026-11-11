@@ -6,6 +6,7 @@ import { cn } from '../lib/utils'
 import { designStyles } from './styles'
 import { Button } from '../components/ui/button'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion'
+import type { PortfolioWork } from './portfolio-works'
 
 const styles = {
   page: 'bg-background text-foreground',
@@ -130,95 +131,77 @@ function ArtistBiography ({ design }: { design: 'a' | 'b' }) {
   )
 }
 
-export default function SinglePageDesign ({ design }: { design: 'a' | 'b' }) {
-  const featured = artworks[0]
-  const { image, reveal } = useDesignMotion()
+function HeroArtwork ({ design, featured }: { design: 'a' | 'b', featured: typeof artworks[number] }) {
+  const { image } = useDesignMotion()
+
+  if (design === 'a') {
+    return (
+      <m.figure {...image(0.16)} className={styles.featuredWork}>
+        <img src={featured.src} alt={featured.alt} width={featured.width} height={featured.height} fetchPriority="high" decoding="async" />
+        <figcaption><span>Original tattoo work</span><span>New Port Richey, FL</span></figcaption>
+      </m.figure>
+    )
+  }
 
   return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className={styles.page}
-    >
-      <section id="home" aria-label="VicentArt tattoo artist" className={cn(styles.hero, design === 'b' && styles.heroB)}>
-        <div className={cn(designStyles.container, styles.heroInner, design === 'b' && styles.heroInnerB)}>
-          <Identity design={design} />
-          {design === 'a'
-            ? (
-                <m.figure {...image(0.16)} className={styles.featuredWork}>
-                  <img
-                    src={featured.src}
-                    alt={featured.alt}
-                    width={featured.width}
-                    height={featured.height}
-                    fetchPriority="high"
-                    decoding="async"
-                  />
-                  <figcaption><span>Original tattoo work</span><span>New Port Richey, FL</span></figcaption>
-                </m.figure>
-              )
-            : (
-                <div className="min-w-0">
-                  <div className={styles.pairedImages}>
-                    <figure className={styles.practiceCard}>
-                      <img
-                        src={artistImage}
-                        alt="Vicent concentrating on a tattoo at work"
-                        width={955}
-                        height={960}
-                        fetchPriority="high"
-                        decoding="async"
-                      />
-                      <figcaption>
-                        <p className={styles.cardLabel}>The artist at work</p>
-                        <h2>Vicent in practice</h2>
-                        <p>Over 15 years of tattoo experience.</p>
-                      </figcaption>
-                    </figure>
-                    <figure className={styles.tattooCard}>
-                      <img
-                        src={featured.src}
-                        alt={featured.alt}
-                        width={featured.width}
-                        height={featured.height}
-                        fetchPriority="high"
-                        decoding="async"
-                      />
-                      <figcaption>
-                        <p className={styles.cardLabel}>Finished tattoo</p>
-                        <h2>Tattoo work</h2>
-                        <p>Original tattoo work by Vicent.</p>
-                      </figcaption>
-                    </figure>
-                  </div>
-                  <p className={styles.pairCaption}>The artist and the work</p>
-                </div>
-              )}
-        </div>
-      </section>
+    <div className="min-w-0">
+      <div className={styles.pairedImages}>
+        <figure className={styles.practiceCard}>
+          <img src={artistImage} alt="Vicent concentrating on a tattoo at work" width={955} height={960} fetchPriority="high" decoding="async" />
+          <figcaption><p className={styles.cardLabel}>The artist at work</p><h2>Vicent in practice</h2><p>Over 15 years of tattoo experience.</p></figcaption>
+        </figure>
+        <figure className={styles.tattooCard}>
+          <img src={featured.src} alt={featured.alt} width={featured.width} height={featured.height} fetchPriority="high" decoding="async" />
+          <figcaption><p className={styles.cardLabel}>Finished tattoo</p><h2>Tattoo work</h2><p>Original tattoo work by Vicent.</p></figcaption>
+        </figure>
+      </div>
+      <p className={styles.pairCaption}>The artist and the work</p>
+    </div>
+  )
+}
 
+function Hero ({ design }: { design: 'a' | 'b' }) {
+  const featured = artworks[0]
+
+  return (
+    <section id="home" aria-label="VicentArt tattoo artist" className={cn(styles.hero, design === 'b' && styles.heroB)}>
+      <div className={cn(designStyles.container, styles.heroInner, design === 'b' && styles.heroInnerB)}>
+        <Identity design={design} />
+        <HeroArtwork design={design} featured={featured} />
+      </div>
+    </section>
+  )
+}
+
+function DesignPortfolio ({ design, works }: { design: 'a' | 'b', works?: readonly PortfolioWork[] | undefined }) {
+  const { reveal } = useDesignMotion()
+  return (
+    <section id="portfolio" aria-labelledby="portfolio-heading" className={cn(designStyles.section, styles.portfolio, design === 'b' && 'bg-background')}>
+      <div className={designStyles.container}>
+        <div className={styles.portfolioHeading}>
+          <m.header {...reveal()}>
+            <h2 className={designStyles.heading} id="portfolio-heading">{design === 'a' ? 'Portfolio' : 'Selected work'}</h2>
+            <p className={cn(designStyles.copy, styles.portfolioIntro)}>
+              {design === 'a'
+                ? 'Explore four selected works. Open a photograph to view it in full, or explore recorded views where available.'
+                : 'Explore eight original works. Select any photograph to view the full, uncropped image at its original size.'}
+            </p>
+          </m.header>
+          {design === 'b' ? <p className={styles.workCount}>08 original pieces</p> : null}
+        </div>
+        <ArtworkGallery layout={design} preview={design === 'a'} works={works} />
+      </div>
+    </section>
+  )
+}
+
+export default function SinglePageDesign ({ design, works }: { design: 'a' | 'b', works?: readonly PortfolioWork[] | undefined }) {
+  return (
+    <main id="main-content" tabIndex={-1} className={styles.page}>
+      <Hero design={design} />
       {design === 'b' ? <ArtistBiography design={design} /> : null}
-
-      <section id="portfolio" aria-labelledby="portfolio-heading" className={cn(designStyles.section, styles.portfolio, design === 'b' && 'bg-background')}>
-        <div className={designStyles.container}>
-          <div className={styles.portfolioHeading}>
-            <m.header {...reveal()}>
-
-              <h2 className={designStyles.heading} id="portfolio-heading">{design === 'a' ? 'Portfolio' : 'Selected work'}</h2>
-              <p className={cn(designStyles.copy, styles.portfolioIntro)}>
-                {design === 'a'
-                  ? 'A closer look at four selected tattoos. Explore the rest when you are ready. Select any photograph to view the full, uncropped image.'
-                  : 'Explore eight original works. Select any photograph to view the full, uncropped image at its original size.'}
-              </p>
-            </m.header>
-            {design === 'b' ? <p className={styles.workCount}>08 original pieces</p> : null}
-          </div>
-          <ArtworkGallery layout={design} preview={design === 'a'} />
-        </div>
-      </section>
-
+      <DesignPortfolio design={design} works={works} />
       {design === 'a' ? <ArtistBiography design={design} /> : null}
-
       <BookingSection id="process" />
       <ContactSection id="contact" />
     </main>

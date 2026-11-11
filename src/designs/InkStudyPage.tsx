@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
 import { tattooVideoStudies } from './tattoo-video-studies'
-import { videoStudies } from './ink-video-studies'
 import { artworks } from './content'
 import { gorillaSketch, owlSketch } from './ink-sketches'
 import { gorillaFill, owlFill } from './ink-fill-paths'
@@ -54,15 +53,6 @@ export default function InkStudyPage () {
       </section>
       <p className="mb-8 max-w-3xl text-lg text-body">Earlier frame sequences and the gorilla and owl photograph studies remain below.</p>
       <div className={styles.studies}>
-        {videoStudies.map(study => (
-          <section key={study.id} aria-labelledby={study.id + '-study-heading'} className={styles.study}>
-            <header className={styles.studyHeading}>
-              <h2 id={study.id + '-study-heading'}>{study.title}</h2>
-              <p className={designStyles.copy}>After the drawing finishes, move the pointer or drag to explore the recorded views.</p>
-            </header>
-            <TattooDrawReveal image={study.image} paths={study.paths} fill={study.fill} sequence={study.sequence} />
-          </section>
-        ))}
         <section aria-labelledby="gorilla-study-heading" className={styles.study}>
           <header className={styles.studyHeading}>
             <h2 id="gorilla-study-heading">Gorilla and mountain</h2>

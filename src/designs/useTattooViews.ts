@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { PointerEvent as ReactPointerEvent } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import type { TattooImage, TattooViewFrame, TattooViewSequence } from './ink-views'
 import {
   getViewIndex,
   validateTattooSequence
 } from './ink-views'
-import type { TattooImage, TattooViewFrame, TattooViewSequence } from './ink-views'
 
 type ViewOptions = {
   sequence?: TattooViewSequence | undefined
@@ -78,6 +78,7 @@ export function useTattooViews (options: ViewOptions) {
     const current = latest.current
     const { image: base, sequence: views } = current.options
     const reference = views?.referenceIndex ?? 0
+
     const update = (patch: Partial<ViewState>) => setState(previous => {
       const next = { ...previous, ...patch }
       return previous.key === next.key && previous.frame === next.frame &&
@@ -86,6 +87,7 @@ export function useTattooViews (options: ViewOptions) {
         ? previous
         : next
     })
+
     if (!visible || !views || current.validation) {
       if (current.key !== key) return
       setState(previous => ({
@@ -100,7 +102,9 @@ export function useTattooViews (options: ViewOptions) {
       return
     }
 
-    let cancelled = false
+    const abortController = new AbortController()
+    const { signal } = abortController
+
     let failed = false
     let wanted = displayed.current.key === key ? displayed.current.index : reference
     let wantedPassive = false
@@ -120,6 +124,7 @@ export function useTattooViews (options: ViewOptions) {
         if (oldest !== undefined) cache.delete(oldest)
       }
     }
+
     const show = (index: number) => {
       const current = latest.current
       if (!current.options.visible || current.key !== key) return
@@ -130,6 +135,7 @@ export function useTattooViews (options: ViewOptions) {
       touch(index, element)
       update({ key, index, frame: views.frames[index] })
     }
+
     const stop = () => {
       for (const element of active.values()) {
         element.removeAttribute('srcset')
@@ -139,6 +145,7 @@ export function useTattooViews (options: ViewOptions) {
       cache.clear()
       queue.length = 0
     }
+
     const load = (index: number) => {
       const frame = views.frames[index]
       const element = new Image()
@@ -148,7 +155,7 @@ export function useTattooViews (options: ViewOptions) {
       if (frame.srcSet) element.srcset = frame.srcSet
       element.src = frame.src
       void element.decode().then(() => {
-        if (cancelled || failed) return
+        if (signal.aborted || failed) return
         if (!decodedDimensionsMatch(element, frame)) {
           throw new Error('The view image dimensions do not match the original.')
         }
@@ -158,7 +165,7 @@ export function useTattooViews (options: ViewOptions) {
         if (wanted === index) show(index)
         pump()
       }).catch(() => {
-        if (cancelled || failed) return
+        if (signal.aborted || failed) return
         failed = true
         stop()
         update({
@@ -171,8 +178,9 @@ export function useTattooViews (options: ViewOptions) {
         })
       })
     }
+
     const pump = () => {
-      if (cancelled || failed) return
+      if (signal.aborted || failed) return
       while (active.size < 2 && queue.length) {
         const index = queue.shift()
         if (index === undefined || active.has(index) || cache.has(index)) continue
@@ -183,8 +191,9 @@ export function useTattooViews (options: ViewOptions) {
         loading: active.size > 0 || queue.length > 0
       })
     }
+
     const request = (index: number, isPassive?: boolean, isDrag?: boolean) => {
-      if (cancelled || failed || !Number.isInteger(index) ||
+      if (signal.aborted || failed || !Number.isInteger(index) ||
         !views.frames[index]) return
       wanted = index
       wantedPassive = isPassive === true
@@ -212,6 +221,7 @@ export function useTattooViews (options: ViewOptions) {
         wantedInteractive = false
       }
     }
+
     setState(previous => ({
       ...previous,
       ...(previous.key !== key ? { key, frame: base, index: reference } : {}),
@@ -219,9 +229,11 @@ export function useTattooViews (options: ViewOptions) {
       loading: true,
       error: null
     }))
+
     pump()
+
     return () => {
-      cancelled = true
+      abortController.abort()
       controller.current = null
       cancelPointer()
       clearDrag()

@@ -86,13 +86,18 @@ test('C links and browser history stay inside the catalog, including process has
   await expect(page.locator('#process')).toBeInViewport()
 })
 
-test('public routes retain titles and noindex', async ({ page }) => {
+test('the public ink study route redirects and the development study stays noindex', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   await expect(page).toHaveTitle(/vicentart/i)
   await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
-  await page.goto('/designs/ink-study/')
-  await expect(page).toHaveTitle('Ink animation study | VicentArt')
+  await page.goto('/designs/ink-study/?ref=e2e#about')
+  await expect(page).toHaveURL('http://127.0.0.1:5174/?ref=e2e#portfolio')
+  await expect(page).toHaveTitle(/vicentart/i)
+  await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0)
+
+  await page.goto('/__ui?view=ink-study')
+  await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible()
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, nofollow')
 })
 

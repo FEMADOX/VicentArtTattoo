@@ -15,11 +15,14 @@ test('portfolio starts with four pieces and expands and collapses the rest', asy
   const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
 
   await expect(gallery).toBeVisible()
-  await expect(portfolio.getByRole('button', { name: /^Enlarge piece/ })).toHaveCount(4)
+  const works = portfolio.getByRole('button', { name: /^(Enlarge piece|Explore recorded views for piece)/ })
+  await expect(works).toHaveCount(4)
+  await expect(portfolio.getByText('4 of 12 original works')).toBeVisible()
   await portfolio.getByRole('button', { name: 'View more projects' }).click()
-  await expect(portfolio.getByRole('button', { name: /^Enlarge piece/ })).toHaveCount(8)
+  await expect(works).toHaveCount(12)
+  await expect(portfolio.getByText('12 of 12 original works')).toBeVisible()
   await portfolio.getByRole('button', { name: 'Show fewer projects' }).click()
-  await expect(portfolio.getByRole('button', { name: /^Enlarge piece/ })).toHaveCount(4)
+  await expect(works).toHaveCount(4)
 })
 
 test('portfolio arrows and arrow keys move through the selected pieces', async ({ page }) => {
@@ -42,7 +45,7 @@ test('portfolio arrows and arrow keys move through the selected pieces', async (
   await expect(previous).toBeDisabled()
 })
 
-test('lightbox supports keyboard navigation, traps focus and restores each opener', async ({ page }) => {
+test('lightbox navigates all twelve pieces, traps focus and restores each opener', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
@@ -61,7 +64,7 @@ test('lightbox supports keyboard navigation, traps focus and restores each opene
   await expect(lightboxImage).toHaveCSS('object-fit', 'contain')
   await expect(lightboxImage).toHaveAttribute('width', originalWidth)
   await expect(lightboxImage).toHaveAttribute('height', originalHeight)
-  await expect(dialog.getByText('1 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('1 / 12', { exact: true })).toBeVisible()
   await expect(dialog.getByRole('button', { name: 'Previous', exact: true })).toBeDisabled()
   const firstSource = await lightboxImage.getAttribute('src')
   for (let index = 0; index < 10; index += 1) {
@@ -69,16 +72,16 @@ test('lightbox supports keyboard navigation, traps focus and restores each opene
     expect(await dialog.evaluate(element => element.contains(document.activeElement))).toBe(true)
   }
   await page.keyboard.press('ArrowRight')
-  await expect(dialog.getByText('2 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('2 / 12', { exact: true })).toBeVisible()
   await expect(lightboxImage).not.toHaveAttribute('src', firstSource ?? '')
-  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 2:')
+  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 9: Ghostface')
   await page.keyboard.press('ArrowLeft')
   await expect(lightboxImage).toHaveAttribute('src', firstSource ?? '')
   await page.keyboard.press('ArrowRight')
-  for (let piece = 3; piece <= 8; piece += 1) {
+  for (let piece = 3; piece <= 12; piece += 1) {
     await dialog.getByRole('button', { name: 'Next', exact: true }).click()
   }
-  await expect(dialog.getByText('8 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('12 / 12', { exact: true })).toBeVisible()
   await expect(dialog.getByRole('button', { name: 'Next', exact: true })).toBeDisabled()
   await page.keyboard.press('Escape')
   await expect(dialog).not.toBeVisible()
@@ -87,9 +90,9 @@ test('lightbox supports keyboard navigation, traps focus and restores each opene
   await portfolio.getByRole('button', { name: 'View more projects' }).click()
   const eighth = portfolio.getByRole('button', { name: /^Enlarge piece 8:/ })
   await eighth.click()
-  await expect(dialog.getByText('8 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('10 / 12', { exact: true })).toBeVisible()
   await dialog.getByRole('button', { name: 'Previous', exact: true }).click()
-  await expect(dialog.getByText('7 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('9 / 12', { exact: true })).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(eighth).toBeFocused()
 })
@@ -101,7 +104,7 @@ test('desktop scroll drives the gallery to its end and back without losing focus
   const rail = portfolio.locator('[data-scroll-gallery]')
   const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
   const first = gallery.getByRole('button', { name: /^Enlarge piece 1:/ })
-  const last = gallery.getByRole('button', { name: /^Enlarge piece 4:/ })
+  const last = gallery.getByRole('button', { name: /^(Enlarge piece|Explore recorded views for piece)/ }).last()
   const next = gallery.getByRole('button', { name: 'Next slide' })
 
   await expect(rail).toHaveAttribute('data-scroll-gallery', 'linked')

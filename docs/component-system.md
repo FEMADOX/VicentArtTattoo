@@ -77,6 +77,6 @@ The design detector ran once. Its font advisories were addressed through the sha
 
 The implementation adds no backend or new user claims. Local fonts cover normal Latin weight 400; add an explicitly licensed subset or weight only if future content requires it.
 
-### Final production smoke
+### Historical production smoke before the public portfolio integration
 
-Chrome checked the final production build: the public homepage renders Design A and loads all three local fonts without failed resources; `/__ui` and `/__ui/` render the noindex not-found page, with no catalog; the ink study retains noindex and completes immediately with reduced motion while disabling speed/replay. No browser errors occurred. Evidence is local at `.impeccable/review/production-smoke.json`; QA servers were stopped without touching the user's development server. Firefox and WebKit were not tested.
+The November 6 Chrome check covered the production build before the ink projects joined the public portfolio. At that revision, `/__ui` and `/__ui/` rendered the noindex not-found page and the ink study was a separate noindex route. The public homepage rendered Design A and loaded all three local fonts without failed resources. No browser errors occurred. Evidence is local at `.impeccable/review/production-smoke.json`; QA servers were stopped without touching the user's development server. Firefox and WebKit were not tested.

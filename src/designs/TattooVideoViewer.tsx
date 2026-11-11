@@ -107,70 +107,79 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
     const element = videoRef.current
     const frame = frameRef.current
     if (!visible || !element || !frame) return
-    let disposed = false
+    const abortController = new AbortController()
+    const { signal } = abortController
     if (!isTattooVideoConfig(video)) {
       queueMicrotask(() => {
-        if (!disposed) setState(new Error('Invalid recorded views configuration'))
+        if (!signal.aborted) setState(new Error('Invalid recorded views configuration'))
       })
-      return () => {
-        disposed = true
-      }
+      return () => abortController.abort()
     }
-    let blocked = false
-    let busy = false
-    let hasFrame = false
-    let requested = positionRef.current
-    let applied = video.referenceTime
-    let decodeRequest = 0
-    let frameRequest = 0
-    let fallbackTimer: ReturnType<typeof setTimeout> | undefined = undefined
-    let timeout: ReturnType<typeof setTimeout> | undefined = undefined
-    let fadeTimer: ReturnType<typeof setTimeout> | undefined = undefined
-    let holding = false
+
+    const playback = {
+      blocked: false,
+      busy: false,
+      hasFrame: false,
+      requested: positionRef.current,
+      applied: video.referenceTime,
+      decodeRequest: 0,
+      frameRequest: 0,
+      fallbackTimer: undefined as ReturnType<typeof setTimeout> | undefined,
+      timeout: undefined as ReturnType<typeof setTimeout> | undefined,
+      fadeTimer: undefined as ReturnType<typeof setTimeout> | undefined,
+      holding: false
+    }
     const sortedSources = [...video.sources].sort((first, second) => first.width - second.width)
     const preferredWidth = window.matchMedia('(max-width: 639px)').matches ? 480 : 720
     const source = sortedSources.find(candidate => candidate.width >= preferredWidth) ?? sortedSources[sortedSources.length - 1]
 
     function cancelDecode () {
-      if (decodeRequest) element?.cancelVideoFrameCallback(decodeRequest)
-      decodeRequest = 0
-      if (frameRequest) cancelAnimationFrame(frameRequest)
-      frameRequest = 0
-      clearTimeout(fallbackTimer)
+      if (playback.decodeRequest) element?.cancelVideoFrameCallback(playback.decodeRequest)
+      playback.decodeRequest = 0
+
+      if (playback.frameRequest) cancelAnimationFrame(playback.frameRequest)
+      playback.frameRequest = 0
+
+      clearTimeout(playback.fallbackTimer)
     }
 
     function clearTransition () {
-      holding = false
-      clearTimeout(fadeTimer)
-      if (!disposed) setTransition('idle')
+      playback.holding = false
+      clearTimeout(playback.fadeTimer)
+
+      if (!signal.aborted) setTransition('idle')
     }
 
     function fail (cause: unknown) {
-      if (disposed || blocked) return
-      blocked = true
-      busy = false
+      if (signal.aborted || playback.blocked) return
+
+      playback.blocked = true
+      playback.busy = false
       cancelDecode()
-      clearTimeout(timeout)
+      clearTimeout(playback.timeout)
       clearTransition()
       setState(new Error('Recorded views unavailable', { cause }))
     }
 
     function watchTimeout () {
-      clearTimeout(timeout)
-      timeout = setTimeout(() => fail(new Error('Recorded views loading timed out')), 30_000)
+      clearTimeout(playback.timeout)
+      playback.timeout = setTimeout(() => fail(new Error('Recorded views loading timed out')), 30_000)
     }
 
     function snapshot () {
-      if (!hasFrame || !completeRef.current || reducedRef.current) return
+      if (!playback.hasFrame || !completeRef.current || reducedRef.current) return
+
       const canvas = overlayRef.current
       const context = canvas?.getContext('2d')
+
       if (!canvas || !context || !element?.videoWidth) return
+
       try {
         canvas.width = element.videoWidth
         canvas.height = element.videoHeight
         context.drawImage(element, 0, 0)
-        clearTimeout(fadeTimer)
-        holding = true
+        clearTimeout(playback.fadeTimer)
+        playback.holding = true
         setTransition('holding')
       } catch (error) {
         fail(error)
@@ -178,53 +187,67 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
     }
 
     function finishSeek () {
-      if (disposed || blocked || !element || element.seeking || element.readyState < 2) return
+      if (signal.aborted || playback.blocked || !element || element.seeking || element.readyState < 2) return
+
       cancelDecode()
-      clearTimeout(timeout)
-      busy = false
-      hasFrame = true
-      applied = element.currentTime
-      setTime(applied)
+      clearTimeout(playback.timeout)
+      playback.busy = false
+      playback.hasFrame = true
+      playback.applied = element.currentTime
+      setTime(playback.applied)
       setState('ready')
-      if (holding) {
-        holding = false
+
+      if (playback.holding) {
+        playback.holding = false
         if (reducedRef.current) clearTransition()
         else {
           setTransition('fading')
-          fadeTimer = setTimeout(clearTransition, 240)
+          playback.fadeTimer = setTimeout(clearTransition, 240)
         }
       }
-      if (Math.abs(getVideoTime(requested, video) - applied) >= 0.5 / video.fps) seek(requested)
+
+      if (Math.abs(getVideoTime(playback.requested, video) - playback.applied) >= 0.5 / video.fps) seek(playback.requested)
     }
 
     function decoded () {
-      if (disposed || blocked || !busy || !element || element.seeking || element.readyState < 2) return
+      if (signal.aborted || playback.blocked || !playback.busy || !element || element.seeking || element.readyState < 2) return
+
       cancelDecode()
+
       if (typeof element.requestVideoFrameCallback === 'function') {
-        decodeRequest = element.requestVideoFrameCallback(finishSeek)
+        playback.decodeRequest = element.requestVideoFrameCallback(finishSeek)
       }
+
       // Paused seeks may not schedule a video callback in every browser.
-      fallbackTimer = setTimeout(() => {
-        frameRequest = requestAnimationFrame(() => {
-          frameRequest = requestAnimationFrame(finishSeek)
+      playback.fallbackTimer = setTimeout(() => {
+        playback.frameRequest = requestAnimationFrame(() => {
+          playback.frameRequest = requestAnimationFrame(finishSeek)
         })
       }, 100)
     }
 
     function seek (value: number) {
-      requested = clampVideoPosition(value)
-      if (unavailable() || busy || !element || element.readyState < 1) return
-      const target = getVideoTime(requested, video)
-      if (hasFrame && Math.abs(target - applied) < 0.5 / video.fps) return
-      if (crossesVideoCut(applied, target, video.cuts)) snapshot()
-      if (blocked) return
+      playback.requested = clampVideoPosition(value)
+
+      if (unavailable() || playback.busy || !element || element.readyState < 1) return
+
+      const target = getVideoTime(playback.requested, video)
+
+      if (playback.hasFrame && Math.abs(target - playback.applied) < 0.5 / video.fps) return
+
+      if (crossesVideoCut(playback.applied, target, video.cuts)) snapshot()
+
+      if (playback.blocked) return
+
       requestFrame(target)
     }
 
     function requestFrame (target: number) {
       if (!element) return
-      busy = true
+
+      playback.busy = true
       watchTimeout()
+
       try {
         element.currentTime = target
         pollSeek()
@@ -234,27 +257,31 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
     }
 
     function pollSeek () {
-      if (unavailable() || !busy || !element) return
+      if (unavailable() || !playback.busy || !element) return
+
       if (!element.seeking && element.readyState >= 2) decoded()
-      else fallbackTimer = setTimeout(pollSeek, 50)
+      else playback.fallbackTimer = setTimeout(pollSeek, 50)
     }
 
     function unavailable () {
-      return disposed || blocked
+      return signal.aborted || playback.blocked
     }
 
     function metadata () {
-      if (!element || disposed || blocked) return
+      if (!element || signal.aborted || playback.blocked) return
+
       const aspectDifference = Math.abs(element.videoWidth / element.videoHeight / (image.width / image.height) - 1)
+
       if (!Number.isFinite(element.duration) || element.duration + 1 / video.fps < video.duration || aspectDifference > 0.01) {
         fail(new Error('Recorded views have incompatible dimensions or duration'))
         return
       }
-      seek(requested)
+
+      seek(playback.requested)
     }
 
     function loading () {
-      if (!disposed) setState('loading')
+      if (!signal.aborted) setState('loading')
     }
 
     clearTransition()
@@ -270,12 +297,12 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
     watchTimeout()
 
     return () => {
-      disposed = true
+      abortController.abort()
       seekRef.current = null
       clearTransitionRef.current = null
       cancelDecode()
-      clearTimeout(timeout)
-      clearTimeout(fadeTimer)
+      clearTimeout(playback.timeout)
+      clearTimeout(playback.fadeTimer)
       element.removeEventListener('loadstart', loading)
       element.removeEventListener('loadedmetadata', metadata)
       element.removeEventListener('loadeddata', decoded)
