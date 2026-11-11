@@ -126,7 +126,16 @@ function getInkPresentation ({ enabled, ready, failed, originalVisible, status, 
   } as const
 }
 
-function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = false, onAnimationStart }: TattooDrawRevealProps) {
+function useInkPlayback (enabled: boolean, initialComplete = false) {
+  const startedRef = useRef(initialComplete)
+  const initialTime = enabled && !initialComplete ? 0 : INK_DURATION
+  const clock = useMotionValue(initialTime)
+  const playback = useMotionValue<'waiting' | 'playing' | 'complete'>(initialTime === 0 ? 'waiting' : 'complete')
+  const phaseValue = useMotionValue<InkPhase>(getInkPhase(initialTime))
+  return { startedRef, clock, playback, phaseValue }
+}
+
+function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onAnimationStart }: TattooDrawRevealProps) {
   const { enabled } = useDesignMotion()
   const frameRef = useRef<HTMLDivElement>(null)
   const originalRef = useRef<HTMLButtonElement>(null)
@@ -136,9 +145,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
   const geometryRef = useRef<SVGPathElement[]>([])
   const timingsRef = useRef<InkStrokeTiming[]>([])
   const animationRef = useRef<{ stop: () => void, speed: number } | null>(null)
-  const startedRef = useRef(initialComplete)
-  const initialTime = enabled && !initialComplete ? 0 : INK_DURATION
-  const clock = useMotionValue(initialTime)
+  const { startedRef, clock, playback, phaseValue } = useInkPlayback(enabled, initialComplete)
   const inView = useInView(frameRef, { amount: 0.25 })
   const [timings, setTimings] = useState<InkStrokeTiming[]>([])
   const [ready, setReady] = useState(false)
@@ -148,8 +155,6 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
   const [originalVisible, setOriginalVisible] = useState(false)
   const [speed, setSpeed] = useState(1)
   const [resetKey, setResetKey] = useState(0)
-  const playback = useMotionValue<'waiting' | 'playing' | 'complete'>(initialTime === 0 ? 'waiting' : 'complete')
-  const phaseValue = useMotionValue<InkPhase>(getInkPhase(initialTime))
   const status = useInkSnapshot(playback)
   const phase = useInkSnapshot(phaseValue)
   const views = useTattooViews({ sequence, image, visible: inView, interactive: status === 'complete' && !viewerOpen, passive: enabled })
@@ -178,7 +183,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
     startedRef.current = true
     clock.set(INK_DURATION)
     playback.set('complete')
-  }, [clock, playback])
+  }, [clock, playback, startedRef])
 
   const play = useCallback(() => {
     if (!enabled || !ready || failure) return
@@ -196,7 +201,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
       }
     })
     animationRef.current.speed = speed
-  }, [clock, enabled, failure, playback, ready, speed])
+  }, [clock, enabled, failure, playback, ready, speed, startedRef])
 
   useMotionValueEvent(clock, 'change', time => {
     phaseValue.set(getInkPhase(time))
@@ -263,7 +268,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
   useEffect(() => {
     if (!enabled) finish()
     else if (ready && inView && !startedRef.current) play()
-  }, [enabled, finish, inView, play, ready])
+  }, [enabled, finish, inView, play, ready, startedRef])
 
   function changeSpeed (nextSpeed: number) {
     setSpeed(nextSpeed)
@@ -284,7 +289,6 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete = fa
   }
 
   function showViewer () {
-    views.reset()
     finish()
     setViewerImage({ ...image, ...displayed })
     setViewerOpen(true)
