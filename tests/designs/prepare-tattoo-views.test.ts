@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { spawnSync } from 'node:child_process'
 import { mkdtemp, readdir, readFile, rm, stat } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

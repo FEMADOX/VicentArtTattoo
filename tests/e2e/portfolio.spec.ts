@@ -42,7 +42,7 @@ test('portfolio arrows and arrow keys move through the selected pieces', async (
   await expect(previous).toBeDisabled()
 })
 
-test('lightbox navigates all eight pieces and restores focus to each opener', async ({ page }) => {
+test('lightbox supports keyboard navigation, traps focus and restores each opener', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
@@ -54,21 +54,34 @@ test('lightbox navigates all eight pieces and restores focus to each opener', as
   expect(originalWidth).not.toBe('')
   expect(originalHeight).not.toBe('')
 
-  await first.click()
+  await first.focus()
+  await first.press('Enter')
   const dialog = page.getByRole('dialog', { name: 'Original tattoo work' })
   const lightboxImage = dialog.getByRole('img')
   await expect(lightboxImage).toHaveCSS('object-fit', 'contain')
   await expect(lightboxImage).toHaveAttribute('width', originalWidth)
   await expect(lightboxImage).toHaveAttribute('height', originalHeight)
   await expect(dialog.getByText('1 / 8', { exact: true })).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Previous', exact: true })).toBeDisabled()
+  const firstSource = await lightboxImage.getAttribute('src')
+  for (let index = 0; index < 10; index += 1) {
+    await page.keyboard.press('Tab')
+    expect(await dialog.evaluate(element => element.contains(document.activeElement))).toBe(true)
+  }
   await page.keyboard.press('ArrowRight')
   await expect(dialog.getByText('2 / 8', { exact: true })).toBeVisible()
+  await expect(lightboxImage).not.toHaveAttribute('src', firstSource ?? '')
+  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 2:')
+  await page.keyboard.press('ArrowLeft')
+  await expect(lightboxImage).toHaveAttribute('src', firstSource ?? '')
+  await page.keyboard.press('ArrowRight')
   for (let piece = 3; piece <= 8; piece += 1) {
     await dialog.getByRole('button', { name: 'Next', exact: true }).click()
   }
   await expect(dialog.getByText('8 / 8', { exact: true })).toBeVisible()
   await expect(dialog.getByRole('button', { name: 'Next', exact: true })).toBeDisabled()
   await page.keyboard.press('Escape')
+  await expect(dialog).not.toBeVisible()
   await expect(first).toBeFocused()
 
   await portfolio.getByRole('button', { name: 'View more projects' }).click()

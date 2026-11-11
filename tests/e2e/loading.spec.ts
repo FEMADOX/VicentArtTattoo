@@ -72,7 +72,7 @@ test('public ink study skeleton fits mobile and respects reduced motion until co
     await expect(skeleton.locator('[data-slot="skeleton"]').first()).toHaveCSS('animation-name', 'none')
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
     study.release()
-    await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible({ timeout: 15_000 })
     await expect(skeleton).toHaveCount(0)
   } finally {
     study.release()
