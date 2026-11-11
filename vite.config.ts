@@ -19,6 +19,16 @@ const browserGlobals = Object.fromEntries(
 
 const scriptFiles = ['**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}']
 
+const sourceInputs = [
+  'src/**',
+  'tests/**',
+  'scripts/**',
+  'public/**',
+  '*.{ts,tsx,js,jsx,mjs,cjs,mts,cts,json,html}',
+  'pnpm-lock.yaml',
+  'pnpm-workspace.yaml'
+]
+
 const formatIgnorePatterns = [
   'build',
   'coverage',
@@ -814,6 +824,53 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
+    }
+  },
+  run: {
+    tasks: {
+      build: {
+        command: 'tsc -b && vp build && vpx scripts/check-production-build.ts',
+        cache: {
+          input: sourceInputs,
+          output: [{ auto: true }, '!node_modules/.tmp/**', '!.playwright-results/**', '!.playwright-report/**']
+        }
+      },
+      check: {
+        command: 'vp check --deny-warnings',
+        cache: true
+      },
+      tsc: {
+        command: 'tsc --build --noEmit',
+        cache: {
+          input: sourceInputs,
+          output: [{ auto: true }, '!node_modules/.tmp/**', '!.playwright-results/**', '!.playwright-report/**']
+        }
+      },
+      test: {
+        command: 'vp test',
+        cache: {
+          input: sourceInputs,
+          env: ['FFMPEG_PATH', 'FFPROBE_PATH']
+        }
+      },
+      'test:e2e': {
+        command: 'vpr build && playwright test',
+        cache: {
+          input: sourceInputs,
+          env: ['CI'],
+          // Playwright artifacts are disposable. Replaying the cached terminal
+          // output is enough; restoring stale reports would only confuse runs.
+          output: []
+        }
+      },
+      lint: {
+        command: 'vp lint . --report-unused-disable-directives --max-warnings 0',
+        cache: { input: sourceInputs }
+      },
+      'lint:tailwind': {
+        command: 'vpx tailwind-lint --config ./src/global.css "src/**/*.{ts,tsx}"',
+        cache: { input: sourceInputs }
+      }
     }
   }
 })

@@ -24,13 +24,13 @@ The montages prioritize additional observed surface. Ghostface joins another cam
 The existing FFmpeg and FFprobe executables are preparation tools only. No browser dependency was added. Source files must be named `<reel-id>.mp4`, with the reviewed 720 x 1280 dimensions.
 
 ```powershell
-rtk vp run prepare:tattoo-videos -- --source-dir "C:/path/to/originals" --ffmpeg "C:/path/to/ffmpeg.exe" --ffprobe "C:/path/to/ffprobe.exe"
+rtk vpr prepare:tattoo-videos -- --source-dir "C:/path/to/originals" --ffmpeg "C:/path/to/ffmpeg.exe" --ffprobe "C:/path/to/ffprobe.exe"
 ```
 
 Use `FFMPEG` and `FFPROBE` when configured, or put the executables on PATH. `--output-dir` defaults to `public/videos/tattoos`. The command replaces prepared outputs, never original recordings. Its timing/region self-check does not process media:
 
 ```powershell
-rtk vp run prepare:tattoo-videos -- --self-check
+rtk vpr prepare:tattoo-videos -- --self-check
 ```
 
 1. Review the full original. Select sections of the same tattoo that expose new lateral surface; exclude blur, obscuring glare, unrelated tattoos, repeated zooms and end cards.
@@ -56,10 +56,10 @@ Reduced motion skips drawing and passive mouse following, and removes cut fades.
 Vitest covers preparation timing, manifest boundaries, front/extreme mapping, invalid input and the existing drawing clock. Playwright covers the full interaction, cancellation, failures, reduced motion, keyboard/touch controls and the four responsive widths. Run:
 
 ```powershell
-rtk vp run check-all
+rtk vpr check-all
 rtk vp test
-rtk vp run build
-rtk vp run test:e2e
+rtk vpr build
+rtk vpr test:e2e
 ```
 
 Revalidated after removing the 3D implementation on 2026-11-06: `check-all` passed with zero Tailwind diagnostics; Vitest passed 64 tests in six files; the production build passed; and the complete Chromium suite passed all 92 tests. The preparation self-check and FFprobe verification of all eight MP4s had passed on 2026-11-03.

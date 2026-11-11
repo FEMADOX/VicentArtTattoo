@@ -27,18 +27,18 @@ Vite prints the local address in the terminal when the server starts.
 ## Commands
 
 ```powershell
-vp run check
-vp run tsc
-vp run check-all
-vp run lint:tailwind
-vp run lint:tailwind:fix
-vp run test
-vp run test:watch
-vp run build
+vpr check
+vpr tsc
+vpr check-all
+vpr lint:tailwind
+vpr lint:tailwind:fix
+vpr test
+vpr test:watch
+vpr build
 vp preview
 ```
 
-Use `vp run <script>` to run project-defined scripts. In particular, `vp run build` runs the TypeScript build before the Vite build; `vp build` runs only the built-in build command. Vitest discovers `*.test.ts`, `*.test.tsx`, `*.spec.ts` and `*.spec.tsx` files under `tests/`; TypeScript checks that directory too. `check-all` runs formatting, lint, type checks and `tailwind-lint`.
+Use `vpr <script>` to run project-defined scripts. In particular, `vpr build` runs the TypeScript build before the Vite build; `vp build` runs only the built-in build command. Vitest discovers `*.test.ts`, `*.test.tsx`, `*.spec.ts` and `*.spec.tsx` files under `tests/`; TypeScript checks that directory too. `check-all` runs formatting, lint, type checks and `tailwind-lint`.
 
 Designs in `src/designs/` use Tailwind v4 utilities and reusable class constants, without dedicated stylesheets or CSS Modules. `src/global.css` contains the Tailwind entry point, local fonts and shared dark theme. `DESIGN.md` and [the component system](docs/component-system.md) document the shadcn/Radix standard; DaisyUI has been removed. `lint:tailwind:fix` canonicalizes utility classes; conflicts without an automatic fix are reviewed manually. Editor settings include the `styles` and `designStyles` constants in class extraction.
 
@@ -47,8 +47,8 @@ Designs in `src/designs/` use Tailwind v4 utilities and reusable class constants
 Style is configured in `vite.config.ts` and run through Vite+. [Stylistic](https://eslint.style/) runs as an Oxlint plugin for JavaScript and TypeScript; [Oxfmt](https://viteplus.dev/guide/fmt) formats CSS, JSON and the other enabled file types.
 
 ```powershell
-vp run format
-vp run format:check
+vpr format
+vpr format:check
 ```
 
 The `standardTsStyle` profile follows a [StandardJS](https://standardjs.com/rules.html)-inspired style: two spaces, single quotes, no semicolons or optional trailing commas, spaces inside object braces, optional parentheses for arrow parameters, and a final newline. It also requires `function name ()`, anonymous functions, and a space before method parentheses. TypeScript keeps its type annotations; JSX uses double quotes.
@@ -57,7 +57,7 @@ Oxfmt excludes JS/TS because its printer would remove that space. Each file has 
 
 Stylistic enforces style rules but does not automatically wrap every line at 80 columns like Oxfmt. The editor keeps that guide, and Oxfmt applies it to the formats it owns. This profile is not equivalent to running `ts-standard`; Oxlint and TypeScript still enforce quality and type rules.
 
-Oxlint applies one fix pass. Overlapping fixes may leave fixable issues and return an error; run `vp run format` again, then check with `vp run format:check`. This [limitation on successive fixes](https://github.com/oxc-project/oxc/issues/16118) can also affect editor actions. Hooks and CI reject remaining issues.
+Oxlint applies one fix pass. Overlapping fixes may leave fixable issues and return an error; run `vpr format` again, then check with `vpr format:check`. This [limitation on successive fixes](https://github.com/oxc-project/oxc/issues/16118) can also affect editor actions. Hooks and CI reject remaining issues.
 
 `lineEnding: auto` uses CRLF on Windows and LF on other systems; Git normalizes text, and CI configures checkout line endings by operating system. Hooks use LF.
 
@@ -129,4 +129,4 @@ Page copy lives mainly in `src/components/` and `src/common/`. Keep it in Englis
 
 Open `/__ui` with `vp dev` to review the shared primitives, their states and the retained views. The catalog and modules for C and the legacy App are excluded from the public build; legacy paths still redirect to the home page. Variant B shares A's composition module, though its public route remains retired.
 
-`vp run check-all` checks formatting, lint, types and Tailwind classes across TS/TSX files. `vp run test:e2e` builds the app and runs Playwright; Windows uses installed Chrome, while Linux requires `vpx playwright install --with-deps chromium`.
+`vpr check-all` checks formatting, lint, types and Tailwind classes across TS/TSX files. `vpr build` also checks that development-only code stays out of the generated JavaScript. `vpr test:e2e` builds the app and runs Playwright; Windows uses installed Chrome, while Linux requires `vpx playwright install --with-deps chromium`.

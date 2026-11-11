@@ -77,8 +77,8 @@ Pure tests cover sequence validation/indexing and preparation input/dimensions/s
 Playwright covers completion, pointer/touch/keyboard selection, replay, original, speed, loading failure, cancelled deferred frames, reduced motion, resize and dialog focus. Review actual artwork separately at 320, 390, 768 and 1440 pixels.
 
 ```powershell
-rtk vp run check-all
+rtk vpr check-all
 rtk vp test
-rtk vp run build
-rtk vp run test:e2e
+rtk vpr build
+rtk vpr test:e2e
 ```

@@ -33,5 +33,8 @@
   "[typescript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode",
     "editor.formatOnSave": false
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
   }
 }
