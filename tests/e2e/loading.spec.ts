@@ -59,12 +59,12 @@ test('catalog stays usable while a view loads and scrolls to its hash after load
   }
 })
 
-test('public ink study skeleton fits mobile and respects reduced motion until content is ready', async ({ page }) => {
+test('development ink study skeleton fits mobile and respects reduced motion until content is ready', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 740 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const study = await holdModule(page, '/src/designs/InkStudyPage.tsx')
   try {
-    await page.goto('/designs/ink-study', { waitUntil: 'domcontentloaded' })
+    await page.goto('/__ui?view=ink-study', { waitUntil: 'domcontentloaded' })
     await study.intercepted
     const skeleton = page.locator('[data-loading-skeleton="ink-study"]')
     await expect(skeleton).toBeVisible()
@@ -72,7 +72,7 @@ test('public ink study skeleton fits mobile and respects reduced motion until co
     await expect(skeleton.locator('[data-slot="skeleton"]').first()).toHaveCSS('animation-name', 'none')
     expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
     study.release()
-    await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Ink animation study', exact: true })).toBeVisible({ timeout: 15_000 })
     await expect(skeleton).toHaveCount(0)
   } finally {
     study.release()

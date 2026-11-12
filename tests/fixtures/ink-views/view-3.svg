@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="768" viewBox="0 0 512 768" role="img" aria-labelledby="title description">
+  <title id="title">Synthetic view 3</title>
+  <desc id="description">Geometric test artwork with a violet triangle, rose rings and white blocks.</desc>
+  <rect width="512" height="768" fill="#eee5f4"/>
+  <rect x="112" y="212" width="288" height="288" fill="#d9c7e6"/>
+  <path d="M256 152 408 464H104Z" fill="#6d48ac"/>
+  <circle cx="256" cy="372" r="86" fill="#de769a"/>
+  <circle cx="256" cy="372" r="42" fill="#f8e7ef"/>
+  <path d="M136 564H376V632H136Z" fill="#f0a6bb"/>
+  <text x="256" y="70" fill="#171717" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">Synthetic view 3</text>
+  <text x="256" y="720" fill="#171717" font-family="Arial, sans-serif" font-size="16" text-anchor="middle">SYNTHETIC TEST ART</text>
+</svg>

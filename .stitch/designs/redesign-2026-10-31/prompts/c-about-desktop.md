@@ -1,4 +1,4 @@
-Proposal C — Explorar y consultar, About. This is the dedicated /about route of the four-page artist website. Its purpose is to introduce Vicent using the real artist photograph and complete source biography, then make the enquiry and appointment process understandable before contact.
+Proposal C — Explore and Contact, About. This is the dedicated /about route of the four-page artist website. Its purpose is to introduce Vicent using the real artist photograph and complete source biography, then make the enquiry and appointment process understandable before contact.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 

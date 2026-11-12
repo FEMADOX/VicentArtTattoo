@@ -201,6 +201,10 @@ coverage/
 
 .impeccable/review/
 
+# Local source videos and preparation tools
+.local-media/
+.local-tools/
+
 # User scripts
 /scripts
 .vitest/

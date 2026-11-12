@@ -1,4 +1,4 @@
-Proposal B — El artista y su trabajo. A single-page introduction built around the relationship between Vicent, his working process and the finished tattoos. The hero is a distinctive paired composition: the artist at work and a completed piece. Do not duplicate Proposal A's gallery-led hero or make the page an interchangeable card stack.
+Proposal B — The Artist and His Work. A single-page introduction built around the relationship between Vicent, his working process and the finished tattoos. The hero is a distinctive paired composition: the artist at work and a completed piece. Do not duplicate Proposal A's gallery-led hero or make the page an interchangeable card stack.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 

@@ -7,9 +7,9 @@ describe('selected website routes', () => {
     expect(resolveDesignRoute('/')).toEqual({ type: 'home' })
   })
 
-  it('preserves the isolated ink study and trailing slash', () => {
-    expect(resolveDesignRoute('/designs/ink-study')).toEqual({ type: 'ink-study' })
-    expect(resolveDesignRoute('/designs/ink-study/')).toEqual({ type: 'ink-study' })
+  it('redirects the retired ink study to the portfolio with a trailing slash', () => {
+    expect(resolveDesignRoute('/designs/ink-study')).toEqual({ type: 'redirect', section: 'portfolio' })
+    expect(resolveDesignRoute('/designs/ink-study/')).toEqual({ type: 'redirect', section: 'portfolio' })
   })
 
   it.each(legacyDesignRoutes)('migrates %s to the selected website', (path, section) => {

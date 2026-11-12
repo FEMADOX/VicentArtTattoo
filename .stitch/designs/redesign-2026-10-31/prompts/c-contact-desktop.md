@@ -1,4 +1,4 @@
-Proposal C — Explorar y consultar, Contact. This is the dedicated /contact route of the four-page artist website. Its purpose is to make choosing an existing contact channel simple while explaining what to send and the actual booking conditions. This is a channel-choice page, not an enquiry form, checkout or booking confirmation.
+Proposal C — Explore and Contact, Contact. This is the dedicated /contact route of the four-page artist website. Its purpose is to make choosing an existing contact channel simple while explaining what to send and the actual booking conditions. This is a channel-choice page, not an enquiry form, checkout or booking confirmation.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 

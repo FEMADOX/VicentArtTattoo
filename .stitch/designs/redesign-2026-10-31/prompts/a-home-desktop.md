@@ -1,4 +1,4 @@
-Proposal A — Galería de obra. A single-page artist portfolio for local prospective tattoo clients, with the artwork as the decisive first impression. The one memorable composition is a large real tattoo photograph followed by a varied-ratio gallery. Keep supporting information disciplined and readable; avoid a generic sequence of identical cards.
+Proposal A — Artwork Gallery. A single-page artist portfolio for local prospective tattoo clients, with the artwork as the decisive first impression. The one memorable composition is a large real tattoo photograph followed by a varied-ratio gallery. Keep supporting information disciplined and readable; avoid a generic sequence of identical cards.
 
 **PLATFORM:** Web, desktop-first. Compose at 1440 CSS pixels wide and show the complete page. Use an intentional wide-screen layout with clear reading order, bounded paragraph widths and generous space for actual photographs. At tablet widths around 680–768 pixels, reduce image columns before text becomes cramped; keep the same content and navigation destinations.
 
