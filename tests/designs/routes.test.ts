@@ -32,6 +32,7 @@ describe('selected website routes', () => {
     const config: unknown = JSON.parse(vercelConfig)
     expect(config).toEqual({
       $schema: 'https://openapi.vercel.sh/vercel.json',
+      buildCommand: 'pnpm exec vpr build',
       redirects: legacyDesignRoutes.filter(([, section]) => !section).map(([source]) => ({ source, destination: '/', permanent: true })),
       rewrites: [{ source: '/designs/:path*', destination: '/index.html' }]
     })
