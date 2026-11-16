@@ -179,6 +179,24 @@
   }
 }
 
+@keyframes tattoo-gesture {
+  0%,
+  45%,
+  100% {
+    transform: translateX(0) scale(1);
+  }
+  5%,
+  38% {
+    transform: translateX(0) scale(0.9);
+  }
+  15% {
+    transform: translateX(-32px) scale(0.9);
+  }
+  28% {
+    transform: translateX(32px) scale(0.9);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

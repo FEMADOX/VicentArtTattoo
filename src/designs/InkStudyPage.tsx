@@ -29,8 +29,8 @@ export default function InkStudyPage () {
       <header className={styles.heading}>
         <h1>Ink animation study</h1>
         <p className={designStyles.copy}>
-          Watch the contours, shading and color build, then move across the
-          finished piece to explore the views recorded on camera. The drawing takes {INK_DURATION}
+          Watch the contours, shading and color build, then drag the
+          finished piece with touch or the left mouse button to explore the views recorded on camera. The drawing takes {INK_DURATION}
           {' '}seconds at normal speed. This is a visual study, not a recreation
           of the tattooing process.
         </p>

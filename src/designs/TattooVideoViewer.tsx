@@ -2,6 +2,8 @@ import { useCallback, useEffect, useId, useRef, useState, type PointerEvent, typ
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
 import { cn } from '@/lib/utils'
+import { useInView } from 'motion/react'
+import { Hand, Mouse, MoveHorizontal } from 'lucide-react'
 import type { TattooImage } from './ink-drawing'
 import { clampVideoPosition, crossesVideoCut, getPointerVideoPosition, getVideoPositionText, getVideoTime, isTattooVideoConfig, type TattooVideoConfig } from './video-view'
 
@@ -12,6 +14,7 @@ type TattooVideoViewerProps = {
   complete: boolean
   resetKey: number
   reducedMotion: boolean
+  onOpenOriginal?: ((image: TattooImage, opener: HTMLButtonElement) => void) | undefined
   children: ReactNode
 }
 
@@ -39,12 +42,79 @@ function getVideoHint (state: string | Error, interactive: boolean, complete: bo
   return complete ? 'Preparing the recorded viewsâ€¦' : 'Explore the recorded views when the drawing finishes.'
 }
 
-export default function TattooVideoViewer ({ video, image, frameRef, complete, resetKey, reducedMotion, children }: TattooVideoViewerProps) {
+function captureVideoFrame (video: HTMLVideoElement | null, image: TattooImage): TattooImage {
+  if (!video || video.readyState < 2 || video.videoWidth === 0) return image
+  const canvas = document.createElement('canvas')
+  canvas.width = video.videoWidth
+  canvas.height = video.videoHeight
+  const context = canvas.getContext('2d')
+  if (!context) return image
+  try {
+    context.drawImage(video, 0, 0)
+    return { ...image, src: canvas.toDataURL('image/png') }
+  } catch (error) {
+    if (error instanceof DOMException) return image
+    throw error
+  }
+}
+
+function TattooIdleHint ({ frameRef, active }: { frameRef: RefObject<HTMLDivElement | null>, active: boolean }) {
+  const inView = useInView(frameRef, { amount: 0.25 })
+  const [hint, setHint] = useState<string | null>(null)
+  const dismissed = useRef(false)
+
+  useEffect(() => {
+    const viewer = frameRef.current?.parentElement
+    if (!viewer || !active || !inView) return
+    let timer: ReturnType<typeof setTimeout> | undefined = undefined
+    const controller = new AbortController()
+
+    function reset (event?: Event) {
+      clearTimeout(timer)
+      setHint(null)
+      if (event?.type === 'pointerdown' || event?.type === 'keydown') dismissed.current = true
+      if (dismissed.current || document.hidden) return
+      timer = setTimeout(() => {
+        const touch = window.matchMedia('(pointer: coarse)').matches
+        setHint(touch
+          ? 'Touch and drag left or right to explore the tattoo.'
+          : 'Hold the left mouse button and drag left or right to explore the tattoo.')
+      }, 5000)
+    }
+
+    const options = { signal: controller.signal, passive: true }
+    for (const event of ['pointermove', 'pointerdown', 'pointerup', 'pointercancel', 'keydown', 'focusin']) viewer.addEventListener(event, reset, options)
+    document.addEventListener('visibilitychange', reset, options)
+    window.addEventListener('scroll', reset, options)
+    queueMicrotask(() => {
+      if (!controller.signal.aborted) reset()
+    })
+    return () => {
+      controller.abort()
+      clearTimeout(timer)
+    }
+  }, [active, inView, frameRef])
+
+  if (!active || !inView || !hint) return null
+  return (
+    <div data-tattoo-idle-hint="" className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center gap-6 bg-black/65 p-6 text-center text-white backdrop-blur-sm" aria-hidden="true">
+      <div className="flex flex-col items-center gap-5">
+        <div data-gesture-device={hint.startsWith('Touch') ? 'touch' : 'mouse'} className="relative animate-[tattoo-gesture_5.4s_ease-in-out_infinite] motion-reduce:animate-none">
+          {hint.startsWith('Touch') ? <Hand className="size-14" strokeWidth={1.5} /> : <Mouse className="size-14" strokeWidth={1.5} />}
+          {!hint.startsWith('Touch') && <span className="absolute top-2 left-4 h-3 w-2 rounded-tl-full bg-white/70" />}
+        </div>
+        <MoveHorizontal className="h-6 w-24" strokeWidth={1.5} />
+      </div>
+      <p className="max-w-64 text-lg/relaxed">{hint}</p>
+    </div>
+  )
+}
+
+export default function TattooVideoViewer ({ video, image, frameRef, complete, resetKey, reducedMotion, onOpenOriginal, children }: TattooVideoViewerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
   const seekRef = useRef<((position: number) => void) | null>(null)
   const clearTransitionRef = useRef<(() => void) | null>(null)
-  const hoverRef = useRef<PointerAnchor | null>(null)
   const dragRef = useRef<PointerAnchor | null>(null)
   const positionRef = useRef(0)
   const reducedRef = useRef(reducedMotion)
@@ -62,7 +132,6 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
   useEffect(() => {
     completeRef.current = complete
     reducedRef.current = reducedMotion
-    hoverRef.current = null
     dragRef.current = null
     if (pointerRequestRef.current) cancelAnimationFrame(pointerRequestRef.current)
     pointerRequestRef.current = 0
@@ -80,7 +149,6 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
   }, [])
 
   const resetView = useCallback(() => {
-    hoverRef.current = null
     dragRef.current = null
     clearTransitionRef.current?.()
     updatePosition(0)
@@ -324,9 +392,9 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
 
   function clearPointer (event: PointerEvent<HTMLDivElement>) {
     const active = dragRef.current
-    if (active && event.currentTarget.hasPointerCapture(active.id)) event.currentTarget.releasePointerCapture(active.id)
+    if (!active || active.id !== event.pointerId) return
     dragRef.current = null
-    hoverRef.current = interactive && !reducedMotion && event.pointerType === 'mouse' ? anchor(event) : null
+    if (event.currentTarget.hasPointerCapture(active.id)) event.currentTarget.releasePointerCapture(active.id)
   }
 
   function dragMove (event: PointerEvent<HTMLDivElement>, drag: PointerAnchor) {
@@ -351,8 +419,6 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
     const drag = dragRef.current
     if (drag && drag.id === event.pointerId) {
       dragMove(event, drag)
-    } else if (!reducedMotion && event.pointerType === 'mouse' && hoverRef.current) {
-      updatePosition(getPointerVideoPosition(hoverRef.current.position, event.clientX - hoverRef.current.x, event.currentTarget.clientWidth))
     }
   }
 
@@ -367,11 +433,8 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
         data-video-position={position}
         data-video-time={time}
         data-video-transition={transition}
-        onPointerEnter={event => {
-          if (interactive && !reducedMotion && event.pointerType === 'mouse' && window.matchMedia('(hover: hover) and (pointer: fine)').matches) hoverRef.current = anchor(event)
-        }}
+        onDragStart={event => event.preventDefault()}
         onPointerLeave={event => {
-          hoverRef.current = null
           if (!event.currentTarget.hasPointerCapture(event.pointerId)) dragRef.current = null
         }}
         onPointerDown={event => {
@@ -379,17 +442,18 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
             clearPointer(event)
             return
           }
-          if (interactive && event.button === 0) dragRef.current = anchor(event)
+          if (interactive && event.button === 0) {
+            dragRef.current = anchor(event)
+            if (event.pointerType === 'mouse') event.currentTarget.setPointerCapture(event.pointerId)
+          }
         }}
         onPointerMove={pointerMove}
         onPointerUp={clearPointer}
-        onPointerCancel={event => {
-          clearPointer(event)
-          hoverRef.current = null
-        }}
+        onPointerCancel={clearPointer}
         onLostPointerCapture={() => { dragRef.current = null }}
       >
         {children}
+        <TattooIdleHint frameRef={frameRef} active={interactive} />
         <video
           ref={videoRef}
           data-tattoo-video
@@ -420,7 +484,6 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
             disabled={!interactive}
             value={[position]}
             onValueChange={values => {
-              hoverRef.current = null
               dragRef.current = null
               updatePosition(values[0] ?? 0)
             }}
@@ -432,6 +495,7 @@ export default function TattooVideoViewer ({ video, image, frameRef, complete, r
           </p>
           <Button type="button" variant="outline" size="sm" disabled={!interactive} onClick={resetView}>Reset view</Button>
           {state instanceof Error && <Button type="button" variant="outline" size="sm" onClick={() => setAttempt(value => value + 1)}>Retry recorded views</Button>}
+          {onOpenOriginal && <Button type="button" variant="outline" size="sm" onClick={event => onOpenOriginal(captureVideoFrame(videoRef.current, image), event.currentTarget)}>Enlarge image</Button>}
         </div>
       </div>
     </div>

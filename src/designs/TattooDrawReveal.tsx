@@ -21,9 +21,9 @@ import InkDrawingSurface from './InkDrawingSurface'
 const styles = {
   study: 'group/ink min-w-0',
   frame: 'relative isolate block w-full overflow-hidden border border-border bg-[#f2f2f2] p-0 text-left text-[#171717]',
-  status: 'flex min-h-12 items-center justify-between gap-4 text-xs/[inherit] text-body [&>span]:whitespace-nowrap [&>span]:text-muted-foreground',
-  controls: 'flex flex-wrap gap-3 [&>button]:flex-1 [@media(width<=390px)]:flex-col',
-  speedControl: 'mb-4 flex flex-wrap items-center gap-3 font-mono text-xs text-body [&>span]:whitespace-nowrap [&>span:last-child]:min-w-[4ch] [&>span:last-child]:text-right [&>span:last-child]:tabular-nums'
+  status: 'flex min-h-12 items-center justify-between gap-4 px-4 py-3 text-xs/[inherit] text-body [&>span]:whitespace-nowrap [&>span]:text-muted-foreground',
+  controls: 'flex flex-wrap gap-3 px-4 pb-4 [&>button]:flex-1 [&>button]:basis-40',
+  speedControl: 'flex flex-wrap items-center gap-3 p-4 py-2 font-mono text-xs text-body [&>span]:whitespace-nowrap [&>span:last-child]:min-w-[4ch] [&>span:last-child]:text-right [&>span:last-child]:tabular-nums'
 }
 
 type TattooDrawRevealProps = {
@@ -34,6 +34,7 @@ type TattooDrawRevealProps = {
   video?: TattooVideoConfig | undefined
   initialComplete?: boolean | undefined
   onAnimationStart?: (() => void) | undefined
+  onOpenOriginal?: ((image: TattooImage, opener: HTMLButtonElement) => void) | undefined
   playOnMount?: boolean | undefined
   inDialog?: boolean | undefined
 }
@@ -110,12 +111,12 @@ function PreparedDrawingRetry ({ failed, requested, enabled, onRetry }: { failed
   return <Button variant="outline" onClick={onRetry} disabled={!enabled}>{failed ? 'Retry drawing' : 'Play drawing'}</Button>
 }
 
-function OutsideOriginalPhoto ({ inDialog, image, originalRef, viewerOpen, onOpen, onClose }: { inDialog: boolean, image: TattooImage, originalRef: RefObject<HTMLButtonElement | null>, viewerOpen: boolean, onOpen: () => void, onClose: () => void }) {
+function OutsideOriginalPhoto ({ inDialog, image, originalRef, viewerOpen, onOpen, onClose, onOpenOriginal }: { inDialog: boolean, image: TattooImage, originalRef: RefObject<HTMLButtonElement | null>, viewerOpen: boolean, onOpen: () => void, onClose: () => void, onOpenOriginal?: ((image: TattooImage, opener: HTMLButtonElement) => void) | undefined }) {
   if (inDialog) return null
-  return <><Button ref={originalRef} variant="outline" onClick={onOpen}>Original photo</Button><DesignDialog title="Original photograph" image={image} open={viewerOpen} onClose={onClose} returnFocusRef={originalRef} /></>
+  return <><Button ref={originalRef} variant="outline" onClick={event => onOpenOriginal ? onOpenOriginal(image, event.currentTarget) : onOpen()}>Original photo</Button><DesignDialog title="Original photograph" image={image} open={viewerOpen} onClose={onClose} returnFocusRef={originalRef} /></>
 }
 
-function PreparedDrawingView ({ image, video, inDialog, failed, requested, complete, onRetry }: { image: TattooImage, video?: TattooVideoConfig | undefined, inDialog: boolean, failed: boolean, requested: boolean, complete: boolean, onRetry: () => void }) {
+function PreparedDrawingView ({ image, video, inDialog, failed, requested, complete, onRetry, onOpenOriginal }: { image: TattooImage, video?: TattooVideoConfig | undefined, inDialog: boolean, failed: boolean, requested: boolean, complete: boolean, onRetry: () => void, onOpenOriginal?: ((image: TattooImage, opener: HTMLButtonElement) => void) | undefined }) {
   const [originalVisible, setOriginalVisible] = useState(false)
   const [viewerOpen, setViewerOpen] = useState(false)
   const originalRef = useRef<HTMLButtonElement>(null)
@@ -124,21 +125,23 @@ function PreparedDrawingView ({ image, video, inDialog, failed, requested, compl
 
   return (
     <div data-ink-study="" data-ink-video={video?.sources.at(-1)?.src} data-drawing-state={failed ? 'unavailable' : requested ? 'preparing' : 'idle'}>
-      <PreparedDrawingPhoto image={image} video={video} frameRef={frameRef} originalVisible={originalVisible} enabled={enabled} complete={complete} />
+      {enabled && requested && !failed
+        ? <div className="w-full bg-[#f2f2f2]" style={{ aspectRatio: image.width / image.height }} role="img" aria-label={'Preparing drawing: ' + image.alt} />
+        : <PreparedDrawingPhoto image={image} video={video} frameRef={frameRef} originalVisible={originalVisible} enabled={enabled} complete={complete} />}
       <PreparedDrawingStatus failed={failed} requested={requested} />
       <PreparedDrawingPhotoToggle inDialog={inDialog} video={video} originalVisible={originalVisible} onChange={setOriginalVisible} />
       <PreparedDrawingRetry failed={failed} requested={requested} enabled={enabled} onRetry={onRetry} />
-      <OutsideOriginalPhoto inDialog={inDialog} image={image} originalRef={originalRef} viewerOpen={viewerOpen} onOpen={() => setViewerOpen(true)} onClose={() => setViewerOpen(false)} />
+      <OutsideOriginalPhoto inDialog={inDialog} image={image} originalRef={originalRef} viewerOpen={viewerOpen} onOpen={() => setViewerOpen(true)} onClose={() => setViewerOpen(false)} onOpenOriginal={onOpenOriginal} />
     </div>
   )
 }
 
-function PreparedDrawing ({ image, video, drawingUrl, initialComplete, onAnimationStart, playOnMount = true, inDialog = false }: PreparedDrawingProps) {
+function PreparedDrawing ({ image, video, drawingUrl, initialComplete, onAnimationStart, onOpenOriginal, playOnMount = true, inDialog = false }: PreparedDrawingProps) {
   const { drawing, failed, requested, requestDrawing: retryDrawing } = usePreparedDrawing(drawingUrl, playOnMount)
 
-  if (drawing) return <InkDrawing image={image} paths={drawing.paths} fill={drawing.fill} video={video} initialComplete={playOnMount ? initialComplete : false} onAnimationStart={onAnimationStart} inDialog={inDialog} />
+  if (drawing) return <InkDrawing image={image} paths={drawing.paths} fill={drawing.fill} video={video} initialComplete={playOnMount ? initialComplete : false} onAnimationStart={onAnimationStart} onOpenOriginal={onOpenOriginal} inDialog={inDialog} />
 
-  return <PreparedDrawingView image={image} video={video} inDialog={inDialog} failed={failed} requested={requested} complete={!playOnMount} onRetry={retryDrawing} />
+  return <PreparedDrawingView image={image} video={video} inDialog={inDialog} failed={failed} requested={requested} complete={!playOnMount} onRetry={retryDrawing} onOpenOriginal={onOpenOriginal} />
 }
 
 function getStatusLabel (status: string, ready: boolean, phase: InkPhase, originalOnly: boolean) {
@@ -181,6 +184,16 @@ function getDrawingState (video: TattooVideoConfig | undefined, status: string) 
   return video === undefined ? undefined : status
 }
 
+function getDisplayedImage (image: TattooImage, displayed: TattooImage | TattooViewFrame): TattooImage {
+  return {
+    src: displayed.src,
+    alt: image.alt,
+    width: displayed.width,
+    height: displayed.height,
+    ...('srcSet' in displayed && displayed.srcSet ? { srcSet: displayed.srcSet } : {})
+  }
+}
+
 function isViewInteractive (status: string, viewerOpen: boolean) {
   return status === 'complete' && !viewerOpen
 }
@@ -194,6 +207,15 @@ function useInkPlayback (enabled: boolean, initialComplete = false) {
   return { startedRef, clock, playback, phaseValue }
 }
 
+function parkNeedle (needle: SVGGElement | null, path: SVGPathElement | undefined, time: number) {
+  if (!needle || !path || time !== 0) return
+  const point = path.getPointAtLength(0)
+  const next = path.getPointAtLength(1)
+  const angle = Math.atan2(next.y - point.y, next.x - point.x) * 180 / Math.PI
+  needle.setAttribute('transform', 'translate(' + point.x + ' ' + point.y + ') rotate(' + angle + ')')
+  needle.style.opacity = '1'
+}
+
 function useInkAutoplay ({ enabled, finish, ready, inView, play, startedRef }: { enabled: boolean, finish: () => void, ready: boolean, inView: boolean, play: () => void, startedRef: RefObject<boolean> }) {
   useEffect(() => {
     if (!enabled) finish()
@@ -201,7 +223,7 @@ function useInkAutoplay ({ enabled, finish, ready, inView, play, startedRef }: {
   }, [enabled, finish, inView, play, ready, startedRef])
 }
 
-function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onAnimationStart, inDialog = false }: TattooDrawRevealProps) {
+function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onAnimationStart, onOpenOriginal, inDialog = false }: TattooDrawRevealProps) {
   const { enabled } = useDesignMotion()
   const frameRef = useRef<HTMLDivElement>(null)
   const originalRef = useRef<HTMLButtonElement>(null)
@@ -223,7 +245,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onA
   const [resetKey, setResetKey] = useState(0)
   const status = useInkSnapshot(playback)
   const phase = useInkSnapshot(phaseValue)
-  const views = useTattooViews({ sequence, image, visible: inView, interactive: isViewInteractive(status, viewerOpen), passive: enabled })
+  const views = useTattooViews({ sequence, image, visible: inView, interactive: isViewInteractive(status, viewerOpen) })
   const { exploring, displayed, depthVisibility } = getInkDisplayState(sequence, status, views.frame, image)
   const animationStartRef = useRef(onAnimationStart)
 
@@ -314,6 +336,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onA
         ]
         geometryRef.current = geometry
         timingsRef.current = nextTimings
+        parkNeedle(needleRef.current, outlines[0], clock.get())
         setTimings(nextTimings)
         setReady(true)
       } catch (error) {
@@ -328,7 +351,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onA
       abortController.abort()
       animationRef.current?.stop()
     }
-  }, [image.src, paths, fill, finish])
+  }, [image.src, paths, fill, finish, clock])
 
   useInkAutoplay({ enabled, finish, ready, inView, play, startedRef })
 
@@ -373,11 +396,11 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onA
   const renderDrawingSurface = () => <InkDrawingSurface image={image} displayed={displayed} fill={fill} paths={paths} timings={timings} clock={clock} photoOpacity={photoOpacity} surfaceOpacity={surfaceOpacity} contoursOpacity={contoursOpacity} showSketch={showSketch} svgVisibility={svgVisibility} overlayVisibility={overlayVisibility} exploring={exploring} enhanceBlacks={enhanceBlacks} depthVisibility={depthVisibility} regionId={regionId} shadingMaskId={shadingMaskId} colorMaskId={colorMaskId} inkDepthId={inkDepthId} imageRef={imageRef} svgRef={svgRef} needleRef={needleRef} />
 
   const renderFrame = () => video
-    ? <TattooVideoViewer video={video} image={image} frameRef={frameRef} complete={status === 'complete' && !originalVisible} resetKey={resetKey} reducedMotion={!enabled}>{renderDrawingSurface()}</TattooVideoViewer>
+    ? <TattooVideoViewer video={video} image={image} frameRef={frameRef} complete={status === 'complete' && !originalVisible} resetKey={resetKey} reducedMotion={!enabled} onOpenOriginal={!inDialog ? onOpenOriginal : undefined}>{renderDrawingSurface()}</TattooVideoViewer>
     : (
-        <div ref={frameRef} className={styles.frame} {...views.pointerHandlers} style={{ touchAction: 'pan-y pinch-zoom' }}>
+        <div ref={frameRef} className={styles.frame} {...views.pointerHandlers} onDragStart={event => event.preventDefault()} style={{ touchAction: 'pan-y pinch-zoom' }}>
           {renderDrawingSurface()}
-          {!inDialog && <InkEnlargeButton multiple={sequence !== undefined} buttonRef={originalRef} onClick={showViewer} statusId={statusId} alt={image.alt} />}
+          {!inDialog && <InkEnlargeButton multiple={sequence !== undefined} buttonRef={originalRef} onClick={opener => onOpenOriginal ? onOpenOriginal(getDisplayedImage(image, displayed), opener) : showViewer()} statusId={statusId} alt={image.alt} />}
         </div>
       )
 
@@ -397,7 +420,7 @@ function InkDrawing ({ image, paths, fill, sequence, video, initialComplete, onA
       <div className={styles.speedControl}>
         <span id={speedId}>Drawing speed</span>
         <Slider className="min-w-0 flex-1" aria-labelledby={speedId} min={0.25} max={2} step={0.25} value={[speed]} onValueChange={values => changeSpeed(values[0])} disabled={speedDisabled} aria-valuetext={speed + ' times normal speed'} />
-        <span aria-hidden="true">{speed}Ãƒâ€”</span>
+        <span aria-hidden="true">{speed}&times;</span>
       </div>
       {renderFrame()}
       <InkViewControls sequence={sequence} views={views} active={exploring} viewerOpen={viewerOpen} />

@@ -9,48 +9,41 @@ async function expectNoOverflow (page: Page) {
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(1)
 }
 
-test('portfolio starts with four pieces and expands and collapses the rest', async ({ page }) => {
+test('portfolio separates four recorded-view tattoos from all eight photographs', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
+  const movement = portfolio.locator('section[aria-labelledby="life-movement-heading"]')
+  const still = portfolio.locator('section[aria-labelledby="still-tattoos-heading"]')
 
-  await expect(gallery).toBeVisible()
-  const works = portfolio.getByRole('button', { name: /^(Enlarge piece|Explore recorded views for piece)/ })
-  await expect(works).toHaveCount(4)
-  await expect(portfolio.getByText('4 of 12 original works')).toBeVisible()
-  await portfolio.getByRole('button', { name: 'View more projects' }).click()
-  await expect(works).toHaveCount(12)
-  await expect(portfolio.getByText('12 of 12 original works')).toBeVisible()
-  await portfolio.getByRole('button', { name: 'Show fewer projects' }).click()
-  await expect(works).toHaveCount(4)
+  await expect(movement).toBeVisible()
+  await expect(still).toBeVisible()
+  await expect(movement.locator('[data-gallery-work]')).toHaveCount(4)
+  await expect(still.locator('[data-gallery-work]')).toHaveCount(8)
+  expect(await movement.locator('[data-gallery-work]').evaluateAll(elements => elements.map(element => element.getAttribute('data-gallery-work')))).toEqual(['9', '10', '11', '12'])
+  expect(await still.locator('[data-gallery-work]').evaluateAll(elements => elements.map(element => element.getAttribute('data-gallery-work')))).toEqual(['1', '2', '3', '4', '5', '6', '7', '8'])
 })
 
-test('portfolio arrows and arrow keys move through the selected pieces', async ({ page }) => {
-  await page.setViewportSize({ width: 320, height: 900 })
-  await page.emulateMedia({ reducedMotion: 'reduce' })
+test('sunflower drawing loads and starts when the photo enters view', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
   const portfolio = await visitPortfolio(page)
-  const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
-  const previous = gallery.getByRole('button', { name: 'Previous slide' })
-  const next = gallery.getByRole('button', { name: 'Next slide' })
-
-  await expect(previous).toBeDisabled()
-  await next.click()
-  await expect(previous).toBeEnabled()
-  await previous.click()
-  await expect(previous).toBeDisabled()
-  await next.focus()
-  await next.press('ArrowRight')
-  await expect(previous).toBeEnabled()
-  await previous.press('ArrowLeft')
-  await expect(previous).toBeDisabled()
+  const work = portfolio.locator('[data-gallery-work="2"]')
+  await work.scrollIntoViewIfNeeded()
+  const drawing = work.locator('[data-ink-study]')
+  await expect(drawing).toBeVisible()
+  await expect(drawing).toHaveAttribute('data-ink-state', 'playing')
+  await expect(drawing).toHaveAttribute('data-ink-phase', 'outline')
+  await expect(drawing.locator('[data-ink-layer="shading"]')).toBeVisible()
 })
 
 test('lightbox navigates all twelve pieces, traps focus and restores each opener', async ({ page }) => {
+  test.setTimeout(60_000)
   await page.setViewportSize({ width: 390, height: 844 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  const first = portfolio.getByRole('button', { name: /^Enlarge piece 1:/ })
-  const sourceImage = first.locator('img')
+  const firstWork = portfolio.locator('[data-gallery-work="1"]')
+  await firstWork.scrollIntoViewIfNeeded()
+  const first = firstWork.getByRole('button', { name: /^View original:/ })
+  const sourceImage = firstWork.locator('img').first()
   const originalWidth = await sourceImage.getAttribute('width') ?? ''
   const originalHeight = await sourceImage.getAttribute('height') ?? ''
 
@@ -64,21 +57,23 @@ test('lightbox navigates all twelve pieces, traps focus and restores each opener
   await expect(lightboxImage).toHaveCSS('object-fit', 'contain')
   await expect(lightboxImage).toHaveAttribute('width', originalWidth)
   await expect(lightboxImage).toHaveAttribute('height', originalHeight)
-  await expect(dialog.getByText('1 / 12', { exact: true })).toBeVisible()
-  await expect(dialog.getByRole('button', { name: 'Previous', exact: true })).toBeDisabled()
+  await expect(dialog.getByText('5 / 12', { exact: true })).toBeVisible()
+  await expect(dialog.getByRole('button', { name: 'Previous', exact: true })).toBeEnabled()
   const firstSource = await lightboxImage.getAttribute('src')
   for (let index = 0; index < 10; index += 1) {
     await page.keyboard.press('Tab')
     expect(await dialog.evaluate(element => element.contains(document.activeElement))).toBe(true)
   }
   await page.keyboard.press('ArrowRight')
-  await expect(dialog.getByText('2 / 12', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('6 / 12', { exact: true })).toBeVisible()
   await expect(lightboxImage).not.toHaveAttribute('src', firstSource ?? '')
-  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 9: Ghostface')
   await page.keyboard.press('ArrowLeft')
   await expect(lightboxImage).toHaveAttribute('src', firstSource ?? '')
+  for (let piece = 0; piece < 5; piece += 1) await page.keyboard.press('ArrowLeft')
+  await expect(dialog.getByText('1 / 12', { exact: true })).toBeVisible()
+  await expect(dialog.locator('[aria-live="polite"]')).toContainText('Piece 9: Ghostface')
   await page.keyboard.press('ArrowRight')
-  for (let piece = 3; piece <= 12; piece += 1) {
+  for (let piece = 2; piece <= 12; piece += 1) {
     await dialog.getByRole('button', { name: 'Next', exact: true }).click()
   }
   await expect(dialog.getByText('12 / 12', { exact: true })).toBeVisible()
@@ -87,108 +82,61 @@ test('lightbox navigates all twelve pieces, traps focus and restores each opener
   await expect(dialog).not.toBeVisible()
   await expect(first).toBeFocused()
 
-  await portfolio.getByRole('button', { name: 'View more projects' }).click()
-  const eighth = portfolio.getByRole('button', { name: /^Enlarge piece 8:/ })
+  const eighthWork = portfolio.locator('[data-gallery-work="8"]')
+  await eighthWork.scrollIntoViewIfNeeded()
+  const eighth = eighthWork.getByRole('button', { name: /^View original:/ })
   await eighth.click()
-  await expect(dialog.getByText('10 / 12', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('12 / 12', { exact: true })).toBeVisible()
   await dialog.getByRole('button', { name: 'Previous', exact: true }).click()
-  await expect(dialog.getByText('9 / 12', { exact: true })).toBeVisible()
+  await expect(dialog.getByText('11 / 12', { exact: true })).toBeVisible()
   await page.keyboard.press('Escape')
   await expect(eighth).toBeFocused()
 })
 
-test('desktop scroll drives the gallery to its end and back without losing focused controls', async ({ page }) => {
+test('portfolio uses two movement columns and three photo columns on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  const rail = portfolio.locator('[data-scroll-gallery]')
-  const gallery = portfolio.getByRole('region', { name: 'Selected tattoo projects' })
-  const first = gallery.getByRole('button', { name: /^Enlarge piece 1:/ })
-  const last = gallery.getByRole('button', { name: /^(Enlarge piece|Explore recorded views for piece)/ }).last()
-  const next = gallery.getByRole('button', { name: 'Next slide' })
+  const movementGrid = portfolio.locator('section[aria-labelledby="life-movement-heading"] > div')
+  const stillGrid = portfolio.locator('section[aria-labelledby="still-tattoos-heading"] > div')
 
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'linked')
-  const start = await rail.evaluate(element => element.getBoundingClientRect().top + window.scrollY)
-  await page.evaluate(position => window.scrollTo(0, position), start)
-  await expect(first).toBeInViewport({ ratio: 0.5 })
-
-  for (const control of [first, next]) {
-    await control.focus()
-    await page.evaluate(() => window.scrollBy(0, 16))
-    await expect(control).toBeFocused()
-    await expect(control).toBeInViewport()
-  }
-  await next.evaluate(element => element.blur())
-
-  const end = await rail.evaluate(element => element.getBoundingClientRect().bottom + window.scrollY - window.innerHeight)
-  await page.evaluate(position => window.scrollTo(0, position), end)
-  await expect(last).toBeInViewport({ ratio: 0.5 })
-  await expect(first).not.toBeInViewport()
-  await last.focus()
-  for (let step = 0; step < 24; step += 1) {
-    await page.evaluate(() => window.scrollBy(0, -16))
-    await expect(last).toBeFocused()
-    await expect(last).toBeInViewport({ ratio: 0.5 })
-  }
-  await last.evaluate(element => element.blur())
-  await page.evaluate(position => window.scrollTo(0, position), end)
-  await expect(last).toBeInViewport({ ratio: 0.5 })
-
-  await page.evaluate(position => window.scrollTo(0, position), start)
-  await expect(first).toBeInViewport({ ratio: 0.5 })
-  await expect(last).not.toBeInViewport()
-
-  await page.setViewportSize({ width: 1023, height: 900 })
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'manual')
-  await next.click()
-  await expect(gallery.getByRole('button', { name: 'Previous slide' })).toBeEnabled()
-  await next.evaluate(element => element.blur())
-  await page.setViewportSize({ width: 1440, height: 900 })
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'linked')
-  await expect(first).toBeInViewport({ ratio: 0.5 })
+  await expect.poll(async () => await movementGrid.evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(2)
+  await expect.poll(async () => await stillGrid.evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(3)
 })
 
-test('reduced motion keeps the desktop gallery manual at load and when changed live', async ({ page }) => {
+test('portfolio grids collapse to one column on mobile', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  const rail = portfolio.locator('[data-scroll-gallery]')
+  const movementGrid = portfolio.locator('section[aria-labelledby="life-movement-heading"] > div')
+  const stillGrid = portfolio.locator('section[aria-labelledby="still-tattoos-heading"] > div')
 
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'manual')
-  await page.emulateMedia({ reducedMotion: 'no-preference' })
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'linked')
-  await page.emulateMedia({ reducedMotion: 'reduce' })
-  await expect(rail).toHaveAttribute('data-scroll-gallery', 'manual')
+  await page.setViewportSize({ width: 390, height: 844 })
+  await expect.poll(async () => await movementGrid.evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(1)
+  await expect.poll(async () => await stillGrid.evaluate(element => getComputedStyle(element).gridTemplateColumns.split(' ').length)).toBe(1)
 })
 
 test('portfolio images stay contained without horizontal overflow at responsive widths', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 900 })
   await page.emulateMedia({ reducedMotion: 'reduce' })
   const portfolio = await visitPortfolio(page)
-  await portfolio.getByRole('button', { name: 'View more projects' }).click()
-  const artworks = portfolio.getByRole('button', { name: /^Enlarge piece/ })
+  const stillWorks = portfolio.locator('section[aria-labelledby="still-tattoos-heading"] [data-gallery-work]')
 
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewportSize({ width, height: 900 })
-    await expect(artworks).toHaveCount(8)
-    const measurements = await artworks.evaluateAll(buttons => buttons.map(button => {
-      const image = button.querySelector('img')
+    await expect(stillWorks).toHaveCount(8)
+    const measurements = await stillWorks.evaluateAll(cards => cards.map(card => {
+      const image = card.querySelector('img')
       const imageRect = image?.getBoundingClientRect()
       return {
         ratio: imageRect ? imageRect.width / imageRect.height : 0,
-        objectFit: image ? getComputedStyle(image).objectFit : '',
-        captionHeight: button.lastElementChild?.getBoundingClientRect().height ?? 0
+        objectFit: image ? getComputedStyle(image).objectFit : ''
       }
     }))
     expect(measurements).toHaveLength(8)
     for (const measurement of measurements) {
       expect(measurement.ratio).toBeCloseTo(0.75, 2)
       expect(measurement.objectFit).toBe('contain')
-    }
-    for (const group of [measurements.slice(0, 4), measurements.slice(4)]) {
-      const heights = group.map(measurement => measurement.captionHeight)
-      expect(heights[0]).toBeGreaterThanOrEqual(80)
-      expect(new Set(heights).size).toBe(1)
     }
     await expectNoOverflow(page)
   }
