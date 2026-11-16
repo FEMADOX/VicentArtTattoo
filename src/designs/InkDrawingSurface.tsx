@@ -47,11 +47,26 @@ type InkDrawingSurfaceProps = {
   needleRef: RefObject<SVGGElement | null>
 }
 
+function PhotoLayers ({ image, displayed, photoOpacity, imageRef }: Pick<InkDrawingSurfaceProps, 'image' | 'displayed' | 'photoOpacity' | 'imageRef'>) {
+  return <m.img ref={imageRef} className={styles.original} src={displayed.src} srcSet={displayed.srcSet} sizes={image.sizes} alt={image.alt} width={image.width} height={image.height} decoding="async" draggable={false} style={{ opacity: photoOpacity }} />
+}
+
+function MaskedPhotoLayers ({ image, enhanceBlacks, depthVisibility, shadingMaskId, colorMaskId, inkDepthId }: Pick<InkDrawingSurfaceProps, 'image' | 'enhanceBlacks' | 'depthVisibility' | 'shadingMaskId' | 'colorMaskId' | 'inkDepthId'>) {
+  return (
+    <>
+      <image data-ink-layer="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} className={styles.shading} />
+      {enhanceBlacks && <image data-ink-depth-pass="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />}
+      <image data-ink-layer="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} />
+      {enhanceBlacks && <image data-ink-depth-pass="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />}
+    </>
+  )
+}
+
 export default function InkDrawingSurface ({ image, displayed, fill, paths, timings, clock, photoOpacity, surfaceOpacity, contoursOpacity, showSketch, svgVisibility, overlayVisibility, exploring, enhanceBlacks, depthVisibility, regionId, shadingMaskId, colorMaskId, inkDepthId, imageRef, svgRef, needleRef }: InkDrawingSurfaceProps) {
   return (
     <>
       <span className={styles.paper} hidden={!showSketch} />
-      <m.img ref={imageRef} className={styles.original} src={displayed.src} srcSet={displayed.srcSet} sizes={image.sizes} alt={image.alt} width={image.width} height={image.height} decoding="async" draggable={false} style={{ opacity: photoOpacity }} />
+      <PhotoLayers image={image} displayed={displayed} photoOpacity={photoOpacity} imageRef={imageRef} />
       <m.svg ref={svgRef} className={styles.sketch} viewBox={'0 0 ' + image.width + ' ' + image.height} preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false" style={{ visibility: exploring ? 'hidden' : svgVisibility }}>
         <defs>
           <clipPath id={regionId} clipPathUnits="userSpaceOnUse"><path d={fill.region} data-ink-region="" /></clipPath>
@@ -75,10 +90,7 @@ export default function InkDrawingSurface ({ image, displayed, fill, paths, timi
           </mask>
         </defs>
         <m.g data-ink-animation="" style={{ opacity: surfaceOpacity, visibility: overlayVisibility }}>
-          <image data-ink-layer="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} className={styles.shading} />
-          {enhanceBlacks && <image data-ink-depth-pass="shading" href={image.src} width={image.width} height={image.height} mask={'url(#' + shadingMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />}
-          <image data-ink-layer="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} />
-          {enhanceBlacks && <image data-ink-depth-pass="color" href={image.src} width={image.width} height={image.height} mask={'url(#' + colorMaskId + ')'} filter={'url(#' + inkDepthId + ')'} visibility={depthVisibility} />}
+          <MaskedPhotoLayers image={image} enhanceBlacks={enhanceBlacks} depthVisibility={depthVisibility} shadingMaskId={shadingMaskId} colorMaskId={colorMaskId} inkDepthId={inkDepthId} />
           <m.g style={{ opacity: contoursOpacity }}>
             {paths.map((d, index) => <DrawingStroke key={d} d={d} clock={clock} timing={timings[index]} pass="outline" width={2} />)}
           </m.g>

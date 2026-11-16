@@ -183,7 +183,7 @@ function DesignPortfolio ({ design, works }: { design: 'a' | 'b', works?: readon
             <h2 className={designStyles.heading} id="portfolio-heading">{design === 'a' ? 'Portfolio' : 'Selected work'}</h2>
             <p className={cn(designStyles.copy, styles.portfolioIntro)}>
               {design === 'a'
-                ? 'Explore four selected works. Open a photograph to view it in full, or explore recorded views where available.'
+                ? 'Watch each tattoo drawing appear as you scroll. Explore four pieces with recorded movement, then browse the full photo collection below.'
                 : 'Explore eight original works. Select any photograph to view the full, uncropped image at its original size.'}
             </p>
           </m.header>

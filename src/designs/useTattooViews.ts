@@ -11,7 +11,6 @@ type ViewOptions = {
   image: TattooImage
   visible: boolean
   interactive: boolean
-  passive: boolean
 }
 
 type ViewState = {
@@ -32,7 +31,7 @@ type Drag = {
 }
 
 export function useTattooViews (options: ViewOptions) {
-  const { image, sequence, visible, interactive, passive } = options
+  const { image, sequence, visible, interactive } = options
   const validation = sequence ? validateTattooSequence(image, sequence) : null
   const key = JSON.stringify([image.src, image.srcSet, image.sizes,
     image.width, image.height, sequence])
@@ -53,12 +52,12 @@ export function useTattooViews (options: ViewOptions) {
     displayed.current = { key: state.key, index: state.index }
   }, [state.key, state.index])
   const controller = useRef<{
-    select: (index: number, isPassive?: boolean, isDrag?: boolean) => void
-    freeze: (passiveOnly: boolean, dragOnly?: boolean) => void
+    select: (index: number, isDrag?: boolean) => void
+    freeze: (dragOnly?: boolean) => void
   } | null>(null)
   const drag = useRef<Drag | null>(null)
   const raf = useRef<number | null>(null)
-  const pending = useRef<{ index: number, passive: boolean } | null>(null)
+  const pending = useRef<{ index: number } | null>(null)
 
   const cancelPointer = useCallback(() => {
     if (raf.current !== null) cancelAnimationFrame(raf.current)
@@ -107,7 +106,6 @@ export function useTattooViews (options: ViewOptions) {
 
     let failed = false
     let wanted = displayed.current.key === key ? displayed.current.index : reference
-    let wantedPassive = false
     let wantedDrag = false
     let wantedInteractive = false
     const cache = new Map<number, HTMLImageElement>()
@@ -129,7 +127,6 @@ export function useTattooViews (options: ViewOptions) {
       const current = latest.current
       if (!current.options.visible || current.key !== key) return
       if (wantedInteractive && !current.options.interactive) return
-      if (wantedPassive && !current.options.passive) return
       const element = cache.get(index)
       if (!element) return
       touch(index, element)
@@ -192,11 +189,10 @@ export function useTattooViews (options: ViewOptions) {
       })
     }
 
-    const request = (index: number, isPassive?: boolean, isDrag?: boolean) => {
+    const request = (index: number, isDrag?: boolean) => {
       if (signal.aborted || failed || !Number.isInteger(index) ||
         !views.frames[index]) return
       wanted = index
-      wantedPassive = isPassive === true
       wantedDrag = isDrag === true
       wantedInteractive = true
       if (index === reference) update({ key, frame: base, index })
@@ -211,12 +207,10 @@ export function useTattooViews (options: ViewOptions) {
 
     controller.current = {
       select: request,
-      freeze: (passiveOnly, dragOnly) => {
-        if (passiveOnly && !wantedPassive) return
+      freeze: dragOnly => {
         if (dragOnly && !wantedDrag) return
-        // A late hover decode must not move the photo after motion preferences change.
+        // A late decode must not move the photo after the interaction is cancelled.
         wanted = displayed.current.key === key ? displayed.current.index : reference
-        wantedPassive = false
         wantedDrag = false
         wantedInteractive = false
       }
@@ -245,12 +239,9 @@ export function useTattooViews (options: ViewOptions) {
     if (!visible || !interactive) {
       cancelPointer()
       clearDrag()
-      controller.current?.freeze(false)
-    } else if (!passive) {
-      if (pending.current?.passive) cancelPointer()
-      controller.current?.freeze(true)
+      controller.current?.freeze()
     }
-  }, [visible, interactive, passive, cancelPointer, clearDrag])
+  }, [visible, interactive, cancelPointer, clearDrag])
 
   const select = useCallback((index: number) => {
     const current = latest.current
@@ -274,23 +265,22 @@ export function useTattooViews (options: ViewOptions) {
     }))
   }, [cancelPointer, clearDrag])
 
-  const queuePointer = useCallback((index: number, isPassive: boolean) => {
-    pending.current = { index, passive: isPassive }
+  const queuePointer = useCallback((index: number) => {
+    pending.current = { index }
     if (raf.current !== null) return
     raf.current = requestAnimationFrame(() => {
       raf.current = null
       const next = pending.current
       pending.current = null
       const current = latest.current
-      if (!next || !current.options.visible || !current.options.interactive ||
-        (next.passive && !current.options.passive)) return
-      controller.current?.select(next.index, next.passive, !next.passive)
+      if (!next || !current.options.visible || !current.options.interactive) return
+      controller.current?.select(next.index, true)
     })
   }, [])
 
   const onPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     const current = latest.current
-    if (event.pointerType === 'mouse' || !event.isPrimary ||
+    if (event.button !== 0 || !event.isPrimary ||
       !current.options.visible || !current.options.interactive ||
       !current.options.sequence || current.validation) return
     cancelPointer()
@@ -312,16 +302,11 @@ export function useTattooViews (options: ViewOptions) {
     const views = current.options.sequence
     if (!views || current.validation || !current.options.visible ||
       !current.options.interactive) return
-    if (event.pointerType === 'mouse') {
-      if (!current.options.passive) return
-      const bounds = event.currentTarget.getBoundingClientRect()
-      queuePointer(getViewIndex(event.clientX - bounds.left,
-        bounds.width, views.frames.length), true)
-    } else if (drag.current?.id === event.pointerId) {
+    if (drag.current?.id === event.pointerId) {
       const currentDrag = drag.current
       const x = (currentDrag.index + 0.5) * currentDrag.width /
         views.frames.length + event.clientX - currentDrag.x
-      queuePointer(getViewIndex(x, currentDrag.width, views.frames.length), false)
+      queuePointer(getViewIndex(x, currentDrag.width, views.frames.length))
     }
   }, [queuePointer])
 
@@ -336,7 +321,7 @@ export function useTattooViews (options: ViewOptions) {
     if (drag.current?.id !== event.pointerId) return
     cancelPointer()
     clearDrag()
-    controller.current?.freeze(false, true)
+    controller.current?.freeze(true)
   }, [cancelPointer, clearDrag])
 
   const current = state.key === key

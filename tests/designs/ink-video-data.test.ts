@@ -5,8 +5,9 @@ import { getVideoTime } from '../../src/designs/video-view'
 import publicManifestText from '../../public/videos/tattoos/manifest.json?raw'
 
 const drawings = import.meta.glob('../../public/videos/tattoos/*-drawing.json', { query: '?raw', import: 'default', eager: true })
+const photoDrawings = import.meta.glob('../../public/drawings/tattoos/*-drawing.json', { query: '?raw', import: 'default', eager: true })
 
-describe('prepared footage studies', () => {
+describe('prepared tattoo artwork', () => {
   it('keeps bundled and public metadata synchronized', () => {
     expect(parseTattooVideoStudies(JSON.parse(publicManifestText))).toEqual(tattooVideoStudies)
   })
@@ -19,6 +20,17 @@ describe('prepared footage studies', () => {
       expect(typeof raw).toBe('string')
       if (typeof raw !== 'string') throw new Error('Missing prepared drawing')
       expect(parseTattooDrawing(JSON.parse(raw)).paths.length).toBeGreaterThan(0)
+    }
+  })
+
+  it('includes native-resolution drawings for the six remaining photographs', () => {
+    const works = [2, 3, 4, 5, 6, 8].map(id => `/drawings/tattoos/portfolio${id}-drawing.json`)
+    expect(Object.keys(photoDrawings).map(path => path.slice(path.lastIndexOf('portfolio') + 9, path.lastIndexOf('-drawing.json'))).sort()).toEqual(['2', '3', '4', '5', '6', '8'])
+    for (const path of works) {
+      const raw = photoDrawings['../../public' + path]
+      expect(typeof raw).toBe('string')
+      if (typeof raw !== 'string') throw new Error('Missing photo drawing')
+      expect(parseTattooDrawing(JSON.parse(raw)).paths.length).toBeGreaterThan(36)
     }
   })
 

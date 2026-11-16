@@ -6,6 +6,43 @@ test.setTimeout(60_000)
 const studies = ['Ghostface', 'Portrait', 'Flowers', 'Color sleeve'] as const
 const widths = [320, 1440] as const
 
+for (const touch of [false, true]) {
+  test.describe(touch ? 'touch idle instructions' : 'mouse idle instructions', () => {
+    test.use({ hasTouch: touch, isMobile: touch, viewport: { width: touch ? 390 : 1440, height: 900 } })
+
+    test('shows device instructions after inactivity and hides them on interaction', async ({ page }) => {
+      const panel = await openStudy(page, true)
+      const frame = await expectVideoReady(panel)
+      const hint = panel.locator('[data-tattoo-idle-hint]')
+      await expect(hint).toBeVisible({ timeout: 10_000 })
+      await expect(hint).toContainText(touch ? 'Touch and drag' : 'Hold the left mouse button')
+      await expect(hint).toHaveCSS('pointer-events', 'none')
+      const gesture = hint.locator('[data-gesture-device]')
+      await expect(gesture).toHaveAttribute('data-gesture-device', touch ? 'touch' : 'mouse')
+      await expect(gesture).toHaveCSS('animation-name', 'none')
+      await expect(hint).not.toHaveCSS('backdrop-filter', 'none')
+      await hint.screenshot({ path: '.playwright-results/idle-help-' + (touch ? 'touch' : 'mouse') + '.png' })
+      const box = await frame.boundingBox()
+      if (!box) throw new Error('Tattoo frame is missing')
+      if (touch) await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2)
+      else await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2)
+      await expect(hint).toHaveCount(0)
+      // Wait beyond the idle interval to prove that the help stays dismissed.
+      await page.waitForTimeout(5500)
+      await expect(hint).toHaveCount(0)
+      const angle = viewingAngle(panel)
+      await angle.focus()
+      await page.keyboard.press('End')
+      await expect(hint).toHaveCount(0)
+      await expect(frame).toHaveAttribute('data-video-position', '100')
+      await page.evaluate(() => window.scrollTo(0, 0))
+      await frame.scrollIntoViewIfNeeded()
+      await page.waitForTimeout(5500)
+      await expect(hint).toHaveCount(0)
+    })
+  })
+}
+
 async function openStudy (page: Page, reducedMotion = false) {
   await page.emulateMedia({ reducedMotion: reducedMotion ? 'reduce' : 'no-preference' })
   await page.goto('/__ui?view=ink-study')
@@ -51,6 +88,66 @@ async function expectVideoTime (frame: Locator, expected: number) {
   await expect.poll(async () => Math.abs(await readVideoTime(frame) - expected), { timeout: 20_000 }).toBeLessThanOrEqual(2 / 30)
 }
 
+test('public recorded tattoos draw on visibility once and enlarge the selected frame', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/#portfolio')
+  const ghostface = page.locator('[data-gallery-work="9"]')
+  await ghostface.scrollIntoViewIfNeeded()
+  const drawing = ghostface.locator('[data-ink-state]')
+  await expect(drawing).toHaveAttribute('data-ink-state', 'playing', { timeout: 20_000 })
+  await expect(drawing).toHaveAttribute('data-ink-state', 'complete', { timeout: 20_000 })
+
+  const frame = videoFrame(ghostface)
+  await expect(frame).toHaveAttribute('data-video-state', 'ready', { timeout: 20_000 })
+  const box = await frame.boundingBox()
+  expect(box).not.toBeNull()
+  if (!box) return
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * 0.85, box.y + box.height / 2, { steps: 4 })
+  await page.mouse.up()
+  await expect.poll(async () => Number(await frame.getAttribute('data-video-position'))).toBeGreaterThan(0)
+  const selectedPosition = await frame.getAttribute('data-video-position')
+
+  await ghostface.getByRole('button', { name: 'Enlarge image' }).click()
+  const dialog = page.getByRole('dialog', { name: 'Original tattoo work' })
+  await expect(dialog.getByRole('img')).toHaveAttribute('src', /^data:image\/png/)
+  await page.keyboard.press('Escape')
+  await expect(frame).toHaveAttribute('data-video-position', selectedPosition ?? '')
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+  await ghostface.scrollIntoViewIfNeeded()
+  await expect(drawing).toHaveAttribute('data-ink-state', 'complete')
+  await ghostface.getByRole('button', { name: 'Animation', exact: true }).click()
+  await expect(drawing).toHaveAttribute('data-ink-state', 'playing')
+})
+
+test('public reduced motion finishes drawings and retains deliberate angle control', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#portfolio')
+  const ghostface = page.locator('[data-gallery-work="9"]')
+  await ghostface.scrollIntoViewIfNeeded()
+  const drawing = ghostface.locator('[data-ink-state]')
+  await expect(drawing).toHaveAttribute('data-ink-state', 'complete', { timeout: 20_000 })
+  await expect(ghostface.getByRole('button', { name: 'Animation', exact: true })).toBeDisabled()
+  await expect(ghostface.getByRole('slider', { name: 'Drawing speed' })).toBeDisabled()
+
+  const frame = await expectVideoReady(ghostface)
+  const angle = viewingAngle(ghostface)
+  await expect(angle).toBeEnabled()
+  const box = await frame.boundingBox()
+  expect(box).not.toBeNull()
+  if (!box) return
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height / 2, { steps: 4 })
+  await expect(frame).toHaveAttribute('data-video-position', '0')
+  await angle.focus()
+  await page.keyboard.press('End')
+  await expect(frame).toHaveAttribute('data-video-position', '100')
+})
+
 test('drawing finishes at the front, then replay preserves speed and resets exploration', async ({ page }) => {
   const panel = await openStudy(page)
   await expect(panel.locator('[data-drawing-state]')).toHaveAttribute('data-drawing-state', 'playing')
@@ -78,7 +175,7 @@ test('drawing finishes at the front, then replay preserves speed and resets expl
   await panel.getByRole('button', { name: 'Skip drawing', exact: true }).click()
 })
 
-test('cursor exploration starts at the front, follows both directions, and keeps the last view on exit', async ({ page }) => {
+test('only left-button dragging explores angles and release keeps the selected view', async ({ page }) => {
   const panel = await openStudy(page)
   await panel.getByRole('button', { name: 'Skip drawing', exact: true }).click()
   const frame = await expectVideoReady(panel)
@@ -95,15 +192,28 @@ test('cursor exploration starts at the front, follows both directions, and keeps
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
   await expect(frame).toHaveAttribute('data-video-position', '0')
   await page.mouse.move(box.x + box.width * 0.9, box.y + box.height / 2, { steps: 4 })
+  await expect(frame).toHaveAttribute('data-video-position', '0')
+  await page.mouse.down({ button: 'right' })
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2, { steps: 4 })
+  await page.mouse.up({ button: 'right' })
+  await expect(frame).toHaveAttribute('data-video-position', '0')
+  await page.keyboard.press('Escape')
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * 0.9, box.y + box.height / 2, { steps: 4 })
+  await page.mouse.up()
   await expect.poll(async () => Number(await frame.getAttribute('data-video-position'))).toBeGreaterThan(0)
   await expect.poll(async () => await readVideoTime(frame)).toBeGreaterThan(frontTime)
   const rightPosition = await frame.getAttribute('data-video-position')
+  await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2, { steps: 4 })
+  await expect(frame).toHaveAttribute('data-video-position', rightPosition ?? '')
   await page.mouse.move(0, 0)
   await expect(frame).toHaveAttribute('data-video-position', rightPosition ?? '')
 
   await panel.getByRole('button', { name: 'Reset view', exact: true }).click()
   await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2)
+  await page.mouse.down()
   await page.mouse.move(box.x + box.width * 0.1, box.y + box.height / 2, { steps: 4 })
+  await page.mouse.up()
   await expect.poll(async () => Number(await frame.getAttribute('data-video-position'))).toBeLessThan(0)
   await expect.poll(async () => await readVideoTime(frame), { timeout: 20_000 }).toBeLessThan(frontTime)
 
@@ -208,7 +318,7 @@ test('switching studies cancels the previous media and each drawing stays comple
   }
 })
 
-test('reduced motion disables passive tracking while deliberate slider selection remains available', async ({ page }) => {
+test('reduced motion retains deliberate dragging and keyboard angle selection', async ({ page }) => {
   const panel = await openStudy(page, true)
   const frame = await expectVideoReady(panel)
   const angle = viewingAngle(panel)
@@ -218,6 +328,10 @@ test('reduced motion disables passive tracking while deliberate slider selection
   await page.mouse.move(box.x + box.width * 0.2, box.y + box.height / 2)
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2, { steps: 5 })
   await expect(frame).toHaveAttribute('data-video-position', '0')
+  await page.mouse.down()
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height / 2, { steps: 5 })
+  await page.mouse.up()
+  await expect.poll(async () => Number(await frame.getAttribute('data-video-position'))).toBeLessThan(0)
   await angle.focus()
   await page.keyboard.press('End')
   await expect(frame).toHaveAttribute('data-video-position', '100')

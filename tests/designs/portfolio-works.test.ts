@@ -2,10 +2,14 @@ import { describe, expect, it } from 'vite-plus/test'
 import { portfolioWorks } from '../../src/designs/portfolio-works'
 
 describe('public portfolio works', () => {
-  it('keeps the eight photo identifiers and places the four recordings after the selected four', () => {
-    expect(portfolioWorks.map(work => work.id)).toEqual([1, 9, 10, 7, 2, 3, 4, 5, 6, 8, 11, 12])
+  it('groups recorded work before photographs while preserving each group order', () => {
+    expect(portfolioWorks.map(work => work.id)).toEqual([1, 9, 10, 2, 3, 4, 5, 6, 7, 8, 11, 12])
     expect(new Set(portfolioWorks.map(work => work.id)).size).toBe(12)
-    expect(portfolioWorks.slice(0, 4).map(work => work.title ?? work.id)).toEqual([1, 'Ghostface', 'Portrait', 7])
+    const movement = portfolioWorks.filter(work => work.video)
+    const still = portfolioWorks.filter(work => !work.video)
+    expect(movement.map(work => work.title)).toEqual(['Ghostface', 'Portrait', 'Flowers', 'Color sleeve'])
+    expect(still.map(work => work.id)).toEqual([1, 2, 3, 4, 5, 6, 7, 8])
+    expect([...movement, ...still]).toHaveLength(portfolioWorks.length)
   })
 
   it('gives the four recorded pieces their local footage and drawing data', () => {
@@ -17,7 +21,12 @@ describe('public portfolio works', () => {
     }
   })
 
-  it('offers the existing gorilla and owl drawings without adding them to the other photos', () => {
+  it('keeps the hand-authored gorilla and owl drawings', () => {
     expect(portfolioWorks.filter(work => work.drawing).map(work => [work.id, work.drawing])).toEqual([[1, 'gorilla'], [7, 'owl']])
+  })
+
+  it('assigns prepared drawings to every public portfolio work', () => {
+    expect(portfolioWorks.every(work => work.video || work.drawing || work.drawingUrl)).toBe(true)
+    expect(portfolioWorks.filter(work => work.drawingUrl?.startsWith('/drawings/tattoos/')).map(work => work.id)).toEqual([2, 3, 4, 5, 6, 8])
   })
 })

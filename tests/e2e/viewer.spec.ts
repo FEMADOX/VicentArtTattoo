@@ -25,7 +25,7 @@ async function expectCaptionVisible (caption: Locator) {
 for (const viewport of viewports) {
   test('gallery viewer keeps its shell within the viewport while navigating at ' + viewport.width + 'x' + viewport.height, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
-    const first = page.getByRole('button', { name: /^Enlarge piece 1:/ })
+    const firstWork = page.locator('[data-gallery-work="9"]')
     const dialog = page.getByRole('dialog', { name: 'Original tattoo work' })
     const image = dialog.getByRole('img')
     const caption = dialog.locator('[aria-live="polite"]')
@@ -34,6 +34,8 @@ for (const viewport of viewports) {
 
     await page.setViewportSize(viewport)
     await page.goto('/')
+    await firstWork.scrollIntoViewIfNeeded()
+    const first = firstWork.getByRole('button', { name: 'Enlarge image', exact: true })
     await first.click()
     await expect(dialog).toBeVisible()
     await page.evaluate(async () => {
@@ -73,7 +75,9 @@ test('InkStudy opens the shared viewer shell with full image dimensions and rest
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/')
-  const galleryTrigger = page.getByRole('button', { name: /^Enlarge piece 1:/ })
+  const firstWork = page.locator('[data-gallery-work="9"]')
+  await firstWork.scrollIntoViewIfNeeded()
+  const galleryTrigger = firstWork.getByRole('button', { name: 'Enlarge image', exact: true })
   await galleryTrigger.click()
 
   const galleryDialog = page.getByRole('dialog', { name: 'Original tattoo work' })

@@ -208,3 +208,10 @@ coverage/
 # User scripts
 /scripts
 .vitest/
+
+# Track the reproducible tattoo drawing generator while keeping other local scripts ignored.
+!/scripts/
+/scripts/*
+!/scripts/tattoo-drawing/
+/scripts/tattoo-drawing/*
+!/scripts/tattoo-drawing/prepare.ts

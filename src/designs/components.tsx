@@ -1,8 +1,8 @@
 import { lazy, Suspense, useRef, useState } from 'react'
 import type { KeyboardEvent, ReactNode, RefObject } from 'react'
 import * as motion from 'motion/react-m'
+import { useInView } from 'motion/react'
 import MasonryGrid from './MasonryGrid'
-import PortfolioPreview from './PortfolioRail'
 import { ArrowDownLeft, ArrowLeft, ArrowRight, ExternalLink, Camera, UserRound, Mail, MapPin, MessageCircle } from 'lucide-react'
 import { address, artworks, bookingChecklist, contactChannels } from './content'
 import { cn } from '../lib/utils'
@@ -12,8 +12,8 @@ import { Button } from '../components/ui/button'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion'
 import { DesignDialog } from './DesignDialog'
 import type { PortfolioWork } from './portfolio-works'
+import type { TattooImage } from './ink-views'
 
-const TattooDrawReveal = lazy(async () => await import('./TattooDrawReveal'))
 const InkDrawingExperience = lazy(async () => await import('./InkDrawingExperience'))
 
 type ArtworkGalleryProps = {
@@ -26,82 +26,105 @@ type ArtworkGalleryProps = {
 type ArtworkCardProps = {
   artwork: PortfolioWork
   index: number
-  preview: boolean
   reveal: ReturnType<typeof useDesignMotion>['reveal']
-  onOpen: (index: number, element: HTMLButtonElement) => void
+  onOpen: (index: number, element: HTMLButtonElement, image?: TattooImage) => void
 }
 
-function ArtworkCard ({ artwork, index, preview, reveal, onOpen }: ArtworkCardProps) {
+const ArtworkCard = ({ artwork, index, reveal, onOpen }: ArtworkCardProps) => (
+  <motion.button
+    {...reveal((index % 3) * 0.06)}
+    type="button"
+    className={designStyles.artwork}
+    data-gallery-work={artwork.id}
+    onClick={event => onOpen(index, event.currentTarget)}
+    aria-haspopup="dialog"
+    aria-label={(artwork.video ? 'Explore recorded views for piece ' : 'Enlarge piece ') + artwork.id + ': ' + artwork.alt}
+  >
+    <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
+    <span className={designStyles.artworkCaption}><span>{artwork.title ?? 'Piece ' + String(artwork.id).padStart(2, '0')}</span><span>{artwork.video ? 'Explore recorded views' : 'View full image'} <ArrowRight size={16} aria-hidden="true" /></span></span>
+  </motion.button>
+)
+
+function ArtworkExperience ({ artwork, index, reveal, onOpen }: ArtworkCardProps) {
+  const frameRef = useRef<HTMLDivElement>(null)
+  const visible = useInView(frameRef, { margin: '300px', once: true })
+  const { enabled } = useDesignMotion()
+  const fallback = enabled
+    ? <div className="w-full bg-[#f2f2f2]" style={{ aspectRatio: artwork.width / artwork.height }} role="img" aria-label={'Preparing drawing: ' + artwork.alt} />
+    : <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
+
   return (
-    <motion.button
-      {...(preview && index < 4 ? {} : reveal((index % 3) * 0.06))}
-      type="button"
-      className={cn(designStyles.artwork, preview && index < 4 && 'focus-visible:-outline-offset-2')}
-      onClick={event => onOpen(index, event.currentTarget)}
-      aria-haspopup="dialog"
-      aria-label={(artwork.video ? 'Explore recorded views for piece ' : 'Enlarge piece ') + artwork.id + ': ' + artwork.alt}
-    >
-      <img className={designStyles.artworkImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} loading="lazy" decoding="async" />
-      <span className={designStyles.artworkCaption}><span>{artwork.title ?? 'Piece ' + String(artwork.id).padStart(2, '0')}</span><span>{artwork.video ? 'Explore recorded views' : 'View full image'} <ArrowRight size={16} aria-hidden="true" /></span></span>
-    </motion.button>
+    <motion.article {...reveal((index % 2) * 0.08)} data-gallery-work={artwork.id} className="min-w-0">
+      <h3 className="mb-3 text-xl">{artwork.title ?? 'Piece ' + String(artwork.id).padStart(2, '0')}</h3>
+      <div ref={frameRef} className="min-w-0 overflow-hidden border border-border bg-card">
+        {visible
+          ? <Suspense fallback={fallback}><InkDrawingExperience image={artwork} drawing={artwork.drawing ?? 'gorilla'} video={artwork.video} drawingUrl={artwork.drawingUrl} onOpenOriginal={(image, element) => onOpen(index, element, image)} /></Suspense>
+          : fallback}
+      </div>
+    </motion.article>
   )
 }
 
-function ArtworkLayout ({ layout, preview, cards }: { layout: ArtworkGalleryProps['layout'], preview: boolean, cards: ReactNode[] }) {
-  if (preview) return <PortfolioPreview>{cards}</PortfolioPreview>
+type ArtworkLayoutProps = { layout: ArtworkGalleryProps['layout'], cards: ReactNode[] }
+
+function ArtworkLayout ({ layout, cards }: ArtworkLayoutProps) {
   if (layout === 'a') return <><div className={designStyles.galleryFeatured}>{cards.slice(0, 2)}</div><MasonryGrid>{cards.slice(2)}</MasonryGrid></>
   if (layout === 'c') return <MasonryGrid>{cards}</MasonryGrid>
   return <div className="grid grid-cols-2 items-start gap-14 [&>:nth-child(even)]:mt-24 max-[1000px]:gap-8 max-[720px]:grid-cols-1 max-[720px]:gap-6 max-[720px]:[&>:nth-child(even)]:mt-0">{cards}</div>
 }
 
-function getArtworkDialogBody (artwork: PortfolioWork, drawingActive: boolean) {
-  if (artwork.video && artwork.drawingUrl) {
-    return <Suspense fallback={<img className={designStyles.lightboxImage} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} />}><TattooDrawReveal key={artwork.id} image={artwork} video={artwork.video} drawingUrl={artwork.drawingUrl} playOnMount={false} inDialog /></Suspense>
-  }
-  if (drawingActive && artwork.drawing) return <Suspense fallback={<p role="status">Preparing drawing</p>}><InkDrawingExperience key={artwork.id} image={artwork} drawing={artwork.drawing} /></Suspense>
-  return undefined
-}
+type ArtworkDialogControlsProps = { activeIndex: number, length: number, onNavigate: (index: number) => void }
 
-function ArtworkDialogControls ({ artwork, activeIndex, length, drawingActive, enabled, onDraw, onNavigate }: { artwork: PortfolioWork, activeIndex: number, length: number, drawingActive: boolean, enabled: boolean, onDraw: () => void, onNavigate: (index: number) => void }) {
-  return (
-    <div className="grid gap-3">
-      {artwork.drawing && !drawingActive ? <Button variant="outline" onClick={onDraw} disabled={!enabled}>Play drawing</Button> : null}
-      <div className={designStyles.lightboxControls}>
-        <Button variant="outline" size="sm" className="justify-self-start" aria-label="Previous" disabled={activeIndex === 0} onClick={() => onNavigate(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" /><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Previous</span></Button>
-        <span className="whitespace-nowrap font-mono text-xs text-muted-foreground tabular-nums">{activeIndex + 1} / {length}</span>
-        <Button variant="outline" size="sm" className="justify-self-end" aria-label="Next" disabled={activeIndex === length - 1} onClick={() => onNavigate(activeIndex + 1)}><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Next</span><ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
-      </div>
+const ArtworkDialogControlsProps = ({ activeIndex, length, onNavigate }: ArtworkDialogControlsProps) => (
+  <div className="grid gap-3">
+    <div className={designStyles.lightboxControls}>
+      <Button variant="outline" size="sm" className="justify-self-start" aria-label="Previous" disabled={activeIndex === 0} onClick={() => onNavigate(activeIndex - 1)}><ArrowLeft data-icon="inline-start" aria-hidden="true" /><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Previous</span></Button>
+      <span className="whitespace-nowrap font-mono text-xs text-muted-foreground tabular-nums">{activeIndex + 1} / {length}</span>
+      <Button variant="outline" size="sm" className="justify-self-end" aria-label="Next" disabled={activeIndex === length - 1} onClick={() => onNavigate(activeIndex + 1)}><span className="hidden min-[360px]:inline [@media(height<=500px)]:hidden">Next</span><ArrowRight data-icon="inline-end" aria-hidden="true" /></Button>
     </div>
-  )
+  </div>
+)
+
+type ArtworkDialogProps = {
+  artwork: PortfolioWork
+  image: TattooImage
+  activeIndex: number
+  length: number
+  open: boolean
+  onClose: () => void
+  onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void
+  onNavigate: (index: number) => void
+  returnFocusRef: RefObject<HTMLButtonElement | null>
 }
 
-function ArtworkDialog ({ artwork, activeIndex, length, drawingActive, open, enabled, body, onClose, onKeyDown, onDraw, onNavigate, returnFocusRef }: { artwork: PortfolioWork, activeIndex: number, length: number, drawingActive: boolean, open: boolean, enabled: boolean, body: ReactNode, onClose: () => void, onKeyDown: (event: KeyboardEvent<HTMLDivElement>) => void, onDraw: () => void, onNavigate: (index: number) => void, returnFocusRef: RefObject<HTMLButtonElement | null> }) {
-  return (
-    <DesignDialog title="Original tattoo work" image={artwork} caption={'Piece ' + artwork.id + ': ' + (artwork.title ?? artwork.alt)} body={body} open={open} onClose={onClose} onKeyDown={onKeyDown} returnFocusRef={returnFocusRef}>
-      <ArtworkDialogControls artwork={artwork} activeIndex={activeIndex} length={length} drawingActive={drawingActive} enabled={enabled} onDraw={onDraw} onNavigate={onNavigate} />
-    </DesignDialog>
-  )
-}
+const ArtworkDialog = ({ artwork, image, activeIndex, length, open, onClose, onKeyDown, onNavigate, returnFocusRef }: ArtworkDialogProps) => (
+  <DesignDialog title="Original tattoo work" image={image} caption={'Piece ' + artwork.id + ': ' + (artwork.title ?? artwork.alt)} open={open} onClose={onClose} onKeyDown={onKeyDown} returnFocusRef={returnFocusRef}>
+    <ArtworkDialogControlsProps activeIndex={activeIndex} length={length} onNavigate={onNavigate} />
+  </DesignDialog>
+)
 
 export function ArtworkGallery ({ layout, ids, preview = false, works }: ArtworkGalleryProps) {
   const collection: readonly PortfolioWork[] = works ?? (ids ? artworks.filter(artwork => ids.includes(artwork.id)) : artworks)
+  const publicCollection = preview ? [...collection.filter(work => work.video), ...collection.filter(work => !work.video)] : collection
+  const movement = preview ? publicCollection.filter(work => work.video) : []
+  const still = preview ? publicCollection.filter(work => !work.video) : publicCollection
   const [activeIndex, setActiveIndex] = useState(0)
   const [open, setOpen] = useState(false)
-  const [drawingActive, setDrawingActive] = useState(false)
+  const [viewerImage, setViewerImage] = useState<TattooImage>()
   const trigger = useRef<HTMLButtonElement>(null)
-  const selected = collection.at(activeIndex)
-  const { enabled, reveal } = useDesignMotion()
+  const selected = publicCollection.at(activeIndex)
+  const { reveal } = useDesignMotion()
 
-  function openArtwork (index: number, element: HTMLButtonElement) {
+  function openArtwork (index: number, element: HTMLButtonElement, image?: TattooImage) {
     trigger.current = element
     setActiveIndex(index)
-    setDrawingActive(false)
+    setViewerImage(image ?? publicCollection[index])
     setOpen(true)
   }
 
   function navigate (index: number) {
     setActiveIndex(index)
-    setDrawingActive(false)
+    setViewerImage(publicCollection[index])
   }
 
   function handleArrowKey (event: KeyboardEvent<HTMLDivElement>) {
@@ -115,18 +138,31 @@ export function ArtworkGallery ({ layout, ids, preview = false, works }: Artwork
     }
   }
 
-  function close () {
-    setOpen(false)
-    setDrawingActive(false)
-  }
-
-  const cards = collection.map((artwork, index) => <ArtworkCard key={artwork.id} artwork={artwork} index={index} preview={preview} reveal={reveal} onOpen={openArtwork} />)
-  const body = selected && open ? getArtworkDialogBody(selected, drawingActive) : undefined
+  const galleryIndex = new Map(publicCollection.map((work, index) => [work.id, index]))
+  const cards = (works: readonly PortfolioWork[]) => works.map((artwork, index) => {
+    const selectedIndex = galleryIndex.get(artwork.id) ?? index
+    return artwork.video || artwork.drawing || artwork.drawingUrl
+      ? <ArtworkExperience key={artwork.id} artwork={artwork} index={selectedIndex} reveal={reveal} onOpen={openArtwork} />
+      : <ArtworkCard key={artwork.id} artwork={artwork} index={selectedIndex} reveal={reveal} onOpen={openArtwork} />
+  })
 
   return (
     <>
-      <ArtworkLayout layout={layout} preview={preview} cards={cards} />
-      {selected && <ArtworkDialog artwork={selected} activeIndex={activeIndex} length={collection.length} drawingActive={drawingActive} open={open} enabled={enabled} body={body} onClose={close} onKeyDown={handleArrowKey} onDraw={() => setDrawingActive(true)} onNavigate={navigate} returnFocusRef={trigger} />}
+      {preview
+        ? (
+            <div className="grid gap-16 max-[720px]:gap-12">
+              <section aria-labelledby="life-movement-heading">
+                <h3 id="life-movement-heading" className={cn(designStyles.heading, 'mb-8 text-2xl')}>Life movement</h3>
+                <div className="grid grid-cols-2 items-start gap-10 max-[720px]:grid-cols-1 max-[720px]:gap-12">{cards(movement)}</div>
+              </section>
+              <section aria-labelledby="still-tattoos-heading">
+                <h3 id="still-tattoos-heading" className={cn(designStyles.heading, 'mb-8 text-2xl')}>Still tattoos</h3>
+                <div className="grid grid-cols-3 items-start gap-8 max-[1000px]:grid-cols-2 max-[720px]:grid-cols-1 max-[720px]:gap-6">{cards(still)}</div>
+              </section>
+            </div>
+          )
+        : <ArtworkLayout layout={layout} cards={cards(still)} />}
+      {selected && viewerImage && <ArtworkDialog artwork={selected} image={viewerImage} activeIndex={activeIndex} length={publicCollection.length} open={open} onClose={() => setOpen(false)} onKeyDown={handleArrowKey} onNavigate={navigate} returnFocusRef={trigger} />}
     </>
   )
 }
