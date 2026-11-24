@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import TattooDrawReveal from '../../../src/designs/TattooDrawReveal'
-import { DesignMotion } from '../../../src/designs/DesignMotion'
+import TattooDrawReveal from '../../../src/features/portfolio/viewer/TattooDrawReveal'
+import { SiteMotion } from '../../../src/motion/SiteMotion'
 import '../../../src/global.css'
 
 const sources = [
@@ -37,10 +37,10 @@ const root = document.getElementById('root')
 if (!root) throw new Error('Fixture root is missing')
 
 createRoot(root).render(
-  <DesignMotion enabled>
+  <SiteMotion enabled>
     <main style={{ maxWidth: 512, margin: '0 auto', padding: 16 }}>
       <h1 style={{ margin: '0 0 16px', fontSize: 32, lineHeight: 1.2 }}>Ink views fixture</h1>
       <TattooDrawReveal image={image} sequence={sequence} paths={paths} fill={fill} />
     </main>
-  </DesignMotion>
+  </SiteMotion>
 )

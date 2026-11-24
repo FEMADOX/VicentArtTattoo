@@ -1,20 +1,14 @@
-import { lazy, Suspense } from 'react'
 import './global.css'
-import DesignApp from './designs/DesignApp'
-import { CatalogSkeleton } from './components/ContentSkeleton'
-import { legacyDesignHref, resolveDesignRoute } from './designs/routes'
+import SiteApp from './app/SiteApp'
+import { legacyHref, resolveSiteRoute } from './app/routes'
 
-const DevCatalog = import.meta.env.DEV ? lazy(async () => await import('./dev/UiCatalog')) : null
-const catalogRoute = import.meta.env.DEV && /^\/__ui\/?$/.test(window.location.pathname)
-const requestedRoute = resolveDesignRoute(window.location.pathname)
+const requestedRoute = resolveSiteRoute(window.location.pathname)
 const route = requestedRoute.type === 'redirect' ? { type: 'home' as const } : requestedRoute
 
 if (requestedRoute.type === 'redirect') {
-  const oldInkStudy = /^\/designs\/ink-study\/?$/.test(window.location.pathname)
-  window.history.replaceState(null, '', legacyDesignHref(requestedRoute.section, window.location.search, oldInkStudy ? '' : window.location.hash))
+  window.history.replaceState(null, '', legacyHref(requestedRoute.section, window.location.search, window.location.hash))
 }
 
-export default function Entry () {
-  if (catalogRoute && DevCatalog) return <Suspense fallback={<CatalogSkeleton />}><DevCatalog /></Suspense>
-  return <DesignApp route={route} />
-}
+const Entry = () => <SiteApp route={route} />
+
+export default Entry

@@ -15,7 +15,7 @@
   "tailwindCSS.experimental": {
     "classRegex": [
       [
-        "\\b(?:styles|designStyles)\\s*=\\s*\\{([\\s\\S]*?)\\r?\\n\\}",
+        "\\b(?:styles|portfolioStyles|siteStyles)\\s*=\\s*\\{([\\s\\S]*?)\\r?\\n\\}",
         "'([^'\\r\\n]+)'"
       ]
     ]
@@ -36,5 +36,6 @@
   },
   "[json]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
-  }
+  },
+  "cSpell.words": ["vicentartattoo"]
 }

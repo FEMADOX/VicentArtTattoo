@@ -28,7 +28,7 @@ Visitors use the portfolio in a browser on desktop or mobile. The interactive re
 - Four works include recorded views. All twelve works draw once when they enter view and can show the original photograph.
 - All works use the shared viewer with previous, next, and close controls. The original photograph remains available if optional media fails.
 - Only the opened work's video is loaded. A drawing failure does not block its recorded views; a video failure preserves the photo and retry action.
-- The public legacy route `/designs/ink-study`, with or without a trailing slash, redirects to `/#portfolio` while preserving query parameters. The ink-study demo remains in the development catalog at `/__ui?view=ink-study`.
+- Optional drawing animation is integrated into the public artwork viewer. The removed `/designs/ink-study` path, with or without a trailing slash, renders the noindex not-found page.
 - The site has no backend, appointment booking service, payment flow, account system, or required environment variable. Do not invent availability, prices, credentials, reviews, guarantees, booking confirmations, or new contact channels.
 
 ## Brand Commitments

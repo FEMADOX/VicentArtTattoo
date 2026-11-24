@@ -12,7 +12,7 @@ Use font-display, font-body, and font-mono. Local WOFF2 files include their OFL 
 
 ## Components and composition
 
-- Button: existing variants and sizes, asChild, native button props/ref. data-preview-state pins catalog examples without overriding real states. Disabled uses native disabled.
+- Button: existing variants and sizes, asChild, native button props/ref. data-preview-state can pin a visual state without overriding real interaction. Disabled uses native disabled.
 - Dialog: standard Trigger, Close, Content, Header, Footer, Title, Description, Portal and Overlay exports. Content supports showCloseButton; provide an accessible close action when false. Every dialog needs a Title and a Description, visibly or with sr-only.
 - Sheet: standard Root, Trigger, Close, Content, Header, Footer, Title and Description exports. Content supports side and showCloseButton. Use for mobile navigation, with a Title and Description.
 - Accordion: Root, Item, Trigger and Content. Pass a unique value per Item; preserve the Root single or multiple type contract.
@@ -23,7 +23,7 @@ Portal overlays use layers 80/81, above page navigation. Both entering and exiti
 
 ## Portfolio selection
 
-Design A initially mounts four works in the shared Embla Carousel. On desktop
+The public portfolio initially mounts four works in the shared Embla Carousel. On desktop
 with a fine pointer and sufficient viewport height, scrolling down advances the
 sticky horizontal selection. Small screens and reduced motion use manual swipe
 and arrow controls. Focused artwork and manual navigation take priority over
@@ -35,31 +35,31 @@ the photograph that opened it. Portfolio cards share a 3:4 image frame and an
 80px minimum caption height across the rail and expanded gallery. Images use
 object-contain against the dark canvas, preserving the complete original file.
 The rail caps card width to fit its image and controls in the viewport. The
-retained galleries and legacy carousel use the same image-frame proportions;
 the enlarged viewer retains its existing viewport-based containment.
 
 ## Image viewer
 
-DesignDialog owns the image frame, caption, header and action area for both the
-portfolio and ink study. Its panel has a viewport-based height capped at 960px
+ArtworkDialog owns the image frame, caption, header and action area for the
+public portfolio's artwork viewer. Its panel has a viewport-based height capped at 960px
 and a maximum width of 896px. A flexible image area contains each complete
 photograph, retaining its source dimensions. Captions reserve 64px and controls
 reserve at least 44px, keeping the layout stable while navigating the collection.
 Longer text can grow rather than being truncated. At narrow widths, Previous
 and Next retain their accessible names while their visual labels collapse to
 icons. Short landscape viewports place the photo beside the caption and controls
-to preserve viewing space. The single-image study viewer offers Close image in
-the same action area.
+to preserve viewing space.
 
-## Development catalog
+## Public component use
 
-Run the development server and open /__ui. The nine choices are Components, Design A, Design B, Design C / Home, Design C / Portfolio, Design C / About, Design C / Contact, Legacy App, and Ink study. Only development loads this module; production keeps the public Design A entry. The catalog sets noindex/nofollow and retains view selection in the URL.
+The public site at `/` is the only live composition. Its navigation, artwork viewer,
+gallery and recorded-view controls exercise the shared Button, Sheet, Dialog,
+Carousel and Slider primitives in their actual user flows.
 
-The Components choice contains real primary/outline Button specimens in normal, hover, focus, pressed and disabled states, all Button sizes, live Dialog and Sheet examples, Accordion, and enabled/disabled Sliders. The retained views exercise the complete compositions and carousel. Pinned states are inspectable examples; enabled controls still react to pointer and keyboard input.
+## Historical verification record — 2026-11-02
 
-## Verification record — 2026-11-02
-
-The main task completed the following checks; counts describe separate runs and must not be added together as unique cases.
+The checks below describe the earlier component-system migration, before the
+development catalog and comparison views were removed. Counts describe separate
+runs and must not be added together as unique cases.
 
 | Check                                   | Result and scope                                                                                                                                    |
 | --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -71,7 +71,7 @@ The main task completed the following checks; counts describe separate runs and 
 | Final production build                  | Passed both build steps; emitted CSS was 69.26KB and all three local WOFF2 files were present.                                                      |
 | Independent visual finish review        | Ship, with no findings in the eight required desktop/mobile captures.                                                                               |
 
-The visual review is scoped to the supplied captures in .impeccable/review/final; the retained-view captures are in .impeccable/review/catalog. This is not a claim of exhaustive browser, device, or WCAG certification. A separate actual-Chrome production-route smoke check is tracked by the main task.
+The visual review was scoped to the supplied captures in .impeccable/review/final; the retained-view captures were in .impeccable/review/catalog. This is not a claim of exhaustive browser, device, or WCAG certification. A separate actual-Chrome production-route smoke check was tracked by that task.
 
 The design detector ran once. Its font advisories were addressed through the shared fixed type ramp, but it was not rescanned; no zero-advisory detector result is claimed. The user-pinned direction and code-led compositions were preserved. No new raster assets were generated, and the existing artwork is unchanged.
 

@@ -2,31 +2,31 @@
 
 # Using Vite+, the Unified Toolchain for the Web
 
-This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `vp dev` and `vp build`. Run `vp help` to print a list of commands and `vp <command> --help` for information about a specific command.
+This project is using Vite+, a unified toolchain built on top of Vite, Rolldown, Vitest, tsdown, Oxlint, Oxfmt, and Vite Task. Vite+ wraps runtime management, package management, and frontend tooling in a single global CLI called `vp`. Vite+ is distinct from Vite, and it invokes Vite through `rtk vp dev` and `rtk vp build`. Run `rtk vp help` to print a list of commands and `rtk vp <command> --help` for information about a specific command.
 
 Docs are local at `node_modules/vite-plus/docs` or online at https://viteplus.dev/guide/.
 
 ## Built-in Commands vs Scripts
 
-`vp <name>` runs a built-in command. `vp run <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `vp dev` and `vp run dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `vp run <name>` when the project defines a script or task with that name.
+`rtk vp <name>` runs a built-in command. `rtk vpr <name>` runs a `package.json` script or a `vite.config.ts` task. Scripts cannot overwrite built-ins, so `rtk vp dev` and `rtk vpr dev` may do different things. Check `package.json` and `vite.config.ts` first, and run `rtk vpr <name>` when the project defines a script or task with that name.
 
 ## Running Scripts
 
-Run TypeScript and JavaScript files with `vpx <file>`, for example `vpx ./scripts/seed.ts --dry-run`. It handles enums, decorators, JSX, and tsconfig `paths`, so do not add `tsx` or `ts-node` to run scripts. `vpx --watch <file>` reruns the file when a file it uses changes, in place of `tsx watch`. `vp node <file>` runs plain Node.js.
+Run TypeScript and JavaScript files with `rtk vpx <file>`, for example `rtk vpx ./scripts/seed.ts --dry-run`. It handles enums, decorators, JSX, and tsconfig `paths`, so do not add `tsx` or `ts-node` to run scripts. `rtk vpx --watch <file>` reruns the file when a file it uses changes, in place of `tsx watch`. `rtk vp node <file>` runs plain Node.js.
 
 ## Tool Versions
 
-Run `vp toolchain` to show versions and relationships in the active Vite+
+Run `rtk vp toolchain` to show versions and relationships in the active Vite+
 release. Add a tool name to select part of the graph. For example, run
-`vp toolchain vite`. Use `--global` to ignore the local `vite-plus` package. Use
-`vp why <package>` to show the package-manager dependency graph.
+`rtk vp toolchain vite`. Use `--global` to ignore the local `vite-plus` package. Use
+`rtk vp why <package>` to show the package-manager dependency graph.
 
 ## Review Checklist
 
-- [ ] Run `vp install` after pulling remote changes and before getting started.
-- [ ] Run `vp check` and `vp test` to format, lint, type check and test changes.
-- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `vp run <script>`.
-- [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
+- [ ] Run `rtk vp install` after pulling remote changes and before getting started.
+- [ ] Run `rtk vp check` and `rtk vp test` to format, lint, type check and test changes.
+- [ ] Check if there are `vite.config.ts` tasks or `package.json` scripts necessary for validation, run via `rtk vpr <script>`.
+- [ ] If setup, runtime, or package-manager behavior looks wrong, run `rtk vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
 
@@ -37,16 +37,17 @@ release. Add a tool name to select part of the graph. For example, run
 - Prefix every shell command with `rtk`. On native Windows, do not use `rtk ls`; use `rtk rg --files`, `rtk find`, or `rtk proxy powershell -NoProfile -Command "..."` for a raw PowerShell command.
 - Check `package.json` before choosing a command. Use `rtk vpr <script>` for project scripts; `rtk vp <command>` invokes a Vite+ built-in. Use `rtk vp install` to install dependencies and `rtk vp dev` to start the app.
 - The project pins Node.js `26.13.0` in `.node-version` and pnpm `12.16.1` in `packageManager`.
-- `rtk vpr check` runs the project check with warnings denied; `rtk vpr tsc` invokes the TypeScript build check; `rtk vpr check-all` runs both plus `rtk vpr lint:tailwind`. `rtk vpr test` and `rtk vpr test:watch` invoke Vitest. Tests belong in root `tests/`: Vitest covers `tests/designs/`, while Playwright covers `tests/e2e/` separately. `rtk vpr test:e2e` builds before starting the browser suite.
+- `rtk vpr check` runs the project check with warnings denied; `rtk vpr tsc` invokes the TypeScript build check; `rtk vpr check-all` runs both plus `rtk vpr lint:tailwind`. `rtk vpr test` and `rtk vpr test:watch` invoke Vitest for `tests/unit/` and `tests/integration/`; Playwright recursively discovers `tests/e2e/`. `rtk vpr test:e2e` builds before starting the browser suite.
 - Use `rtk vpr build` for the full project build: the `build` script runs the TypeScript build before Vite+. Calling `rtk vp build` alone skips the script's TypeScript build step.
 
 ### Project map and conventions
 
 - This is a static React + TypeScript single-page site. There is no backend, API, or required environment variable.
-- `src/main.tsx` mounts `Entry.tsx`; the public site is Design A through `src/designs/DesignApp.tsx`. The retained `App.tsx`, B and C are available only in the development catalog at `/__ui`.
-- `src/components/ui/` contains shared shadcn/Radix controls and the Embla carousel. `src/hooks/` contains navigation and carousel state; `src/common/` contains static content, navigation data, and types; `src/assets/images/` contains the WebP artwork.
+- `src/main.tsx` mounts `Entry.tsx`; `src/app/` composes the single public site, layout and route compatibility. The removed `/designs/ink-study` path renders the noindex not-found page.
+- `src/sections/` contains public page sections; `src/features/portfolio/` owns the gallery, artwork viewer, its data, and interaction state. Shared artist/contact content lives in `src/content/site.ts`, motion in `src/motion/`, and site-wide classes in `src/styles/site.ts`.
+- `src/components/ui/` contains shared shadcn/Radix controls and the Embla carousel. `src/assets/images/` contains the WebP artwork.
 - `src/global.css` owns Tailwind v4, the global fixed dark theme, local fonts and semantic tokens. Use `DESIGN.md` and `docs/component-system.md` as the visual/component standard. DaisyUI has been removed; use shared primitives instead of introducing another control implementation.
-- Design components under `src/designs/` use Tailwind v4 utilities, with shared class primitives in `styles.ts`; keep Motion values and SVG geometry dynamic. Tailwind lint explicitly scans every source TS/TSX file; do not replace that glob with autodiscovery, which may only inspect the CSS entry. Run `rtk vpr lint:tailwind:fix` for canonical classes and finish with `rtk vpr lint:tailwind` to verify zero diagnostics. Keep flat class maps detectable by the editor class extraction settings.
+- Section components under `src/sections/` and portfolio components under `src/features/portfolio/` use Tailwind v4 utilities, with shared primitives in `src/styles/site.ts` and `src/features/portfolio/styles.ts`; keep Motion values and SVG geometry dynamic. Tailwind lint explicitly scans every source TS/TSX file; do not replace that glob with autodiscovery, which may only inspect the CSS entry. Run `rtk vpr lint:tailwind:fix` for canonical classes and finish with `rtk vpr lint:tailwind` to verify zero diagnostics. Keep flat class maps detectable by the editor class extraction settings.
 - Page copy is in English. Keep it in English unless a language change is explicitly requested.
 - JavaScript and TypeScript style uses the `standardTsStyle` Stylistic rules in `vite.config.ts`, executed through Oxlint. This includes `function name ()`. Oxfmt excludes JS/TS and owns other formats. Keep these owners separate; preserve their shared formatting exclusions. Use `rtk vpr format` (format plus safe lint fixes) and `rtk vpr format:check` to cover both. VS Code saves JS/TS through `source.fixAll.oxc`. Stylistic does not automatically reflow JS/TS to the editor's 80-column guide.
 - Oxlint applies one fix pass. Overlapping fixes may need another `rtk vpr format`; always finish with `rtk vpr format:check` rather than assuming all fixes were applied. Do not suppress remaining diagnostics to make a hook pass.
