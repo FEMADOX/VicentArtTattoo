@@ -8,6 +8,7 @@ A single-page portfolio website presenting VicentArt's work and contact informat
 - Vite+ as the development and build toolchain
 - Tailwind CSS v4 with shared shadcn/Radix UI components
 - Embla Carousel for the gallery
+- Motion for section transitions, drawing playback and recorded-view interactions
 
 This is a static frontend application. It has no backend and requires no environment variables to run.
 
@@ -18,8 +19,8 @@ The project pins Node.js `26.13.0` in `.node-version` and pnpm `12.16.1` in `pac
 The commands below require the [Vite+ CLI](https://viteplus.dev/guide/) and RTK on `PATH`. VS Code extension recommendations and quality/build tasks are in `.vscode/`.
 
 ```powershell
-vp install
-vp dev
+rtk vp install
+rtk vp dev
 ```
 
 Vite prints the local address in the terminal when the server starts.
@@ -27,28 +28,31 @@ Vite prints the local address in the terminal when the server starts.
 ## Commands
 
 ```powershell
-vpr check
-vpr tsc
-vpr check-all
-vpr lint:tailwind
-vpr lint:tailwind:fix
-vpr test
-vpr test:watch
-vpr build
-vp preview
+rtk vpr check
+rtk vpr tsc
+rtk vpr check-all
+rtk vpr lint:tailwind
+rtk vpr lint:tailwind:fix
+rtk vpr test
+rtk vpr test:watch
+rtk vpr test:e2e
+rtk vpr build
+rtk vp preview
 ```
 
-Use `vpr <script>` to run project-defined scripts. In particular, `vpr build` runs the TypeScript build before the Vite build; `vp build` runs only the built-in build command. Vitest discovers `*.test.ts`, `*.test.tsx`, `*.spec.ts` and `*.spec.tsx` files under `tests/`; TypeScript checks that directory too. `check-all` runs formatting, lint, type checks and `tailwind-lint`.
+Prefix shell commands with `rtk`. Use `rtk vpr <name>` to run scripts from `package.json` or tasks from `vite.config.ts`; `rtk vp <name>` invokes a Vite+ built-in. The `build` task runs the TypeScript build, Vite build and production-output checks; `rtk vp build` alone skips the other steps. `check-all` runs formatting, lint, type checks and `tailwind-lint`.
 
-Designs in `src/designs/` use Tailwind v4 utilities and reusable class constants, without dedicated stylesheets or CSS Modules. `src/global.css` contains the Tailwind entry point, local fonts and shared dark theme. `DESIGN.md` and [the component system](docs/component-system.md) document the shadcn/Radix standard; DaisyUI has been removed. `lint:tailwind:fix` canonicalizes utility classes; conflicts without an automatic fix are reviewed manually. Editor settings include the `styles` and `designStyles` constants in class extraction.
+Vitest discovers `*.test.ts`, `*.test.tsx`, `*.spec.ts` and `*.spec.tsx` files under `tests/unit/` and `tests/integration/`. Playwright recursively discovers browser tests under `tests/e2e/`, and its task builds the app first. TypeScript checks both `src/` and `tests/`.
+
+Sections in `src/sections/` and the portfolio feature in `src/features/portfolio/` use Tailwind v4 utilities and reusable class constants, without dedicated stylesheets or CSS Modules. `src/global.css` contains the Tailwind entry point, local fonts and shared dark theme. `DESIGN.md` and [the component system](docs/component-system.md) document the shadcn/Radix standard; DaisyUI has been removed. `lint:tailwind:fix` canonicalizes utility classes; conflicts without an automatic fix are reviewed manually. Editor settings include the `styles`, `portfolioStyles` and `siteStyles` constants in class extraction.
 
 ## Formatting
 
 Style is configured in `vite.config.ts` and run through Vite+. [Stylistic](https://eslint.style/) runs as an Oxlint plugin for JavaScript and TypeScript; [Oxfmt](https://viteplus.dev/guide/fmt) formats CSS, JSON and the other enabled file types.
 
 ```powershell
-vpr format
-vpr format:check
+rtk vpr format
+rtk vpr format:check
 ```
 
 The `standardTsStyle` profile follows a [StandardJS](https://standardjs.com/rules.html)-inspired style: two spaces, single quotes, no semicolons or optional trailing commas, spaces inside object braces, optional parentheses for arrow parameters, and a final newline. It also requires `function name ()`, anonymous functions, and a space before method parentheses. TypeScript keeps its type annotations; JSX uses double quotes.
@@ -72,9 +76,9 @@ The project configures [CodeGraph](https://github.com/colbymchenry/codegraph) in
 To create the index in a fresh clone and query the code:
 
 ```powershell
-codegraph init
-codegraph status
-codegraph explore "App PortfolioCarousel useCarousel"
+rtk codegraph init
+rtk codegraph status
+rtk codegraph explore "SiteApp ArtworkGallery useTattooViews"
 ```
 
 The active MCP updates the index when source code or exclusions change. You can also sync manually with `codegraph sync` and check pending changes with `codegraph status`. For MCP queries, pass the absolute project root as `projectPath` to `codegraph_explore`.
@@ -97,9 +101,9 @@ HTML, PNG and temporary responses stay in `.stitch/.cache/`, outside Git. The do
 
 ## Selected design
 
-Proposal A is the public site at `/`, with a responsive gallery, booking process, contact options and Motion animations. Its portfolio contains the eight existing photographs and four recorded-view projects. The comparison catalog and proposals B/C are no longer public; their legacy links go to the home page or the matching section. The ink animation study remains development-only at `/__ui?view=ink-study`; `/designs/ink-study` redirects to `/#portfolio`.
+The public site at `/` has a responsive gallery, booking process, contact options and Motion animations. Its portfolio contains the eight existing photographs and four recorded-view projects, with optional drawing animation integrated into the artwork viewer. The removed `/designs/ink-study` URL renders the noindex not-found page.
 
-See [routes, interactions and validation](docs/design-previews.md). Run `vp dev` to view the site locally.
+See [routes, interactions and validation](docs/design-previews.md). Run `rtk vp dev` to view the site locally.
 
 ## Project map
 
@@ -108,25 +112,54 @@ index.html                 Page metadata and HTML entry point
 public/logo.svg            Logo
 src/main.tsx               React mount
 src/Entry.tsx              Public entry point and route compatibility
-src/designs/DesignApp.tsx   Public site, navigation and legacy-route handling
-src/designs/styles.ts       Shared Tailwind visual primitives
-src/App.tsx                Migrated legacy version, available in the local catalog
-src/components/            Navigation, page sections and components
+src/app/                   Site composition, layout and route handling
+src/sections/              Public page sections
+src/features/portfolio/    Gallery, artwork viewer, data and interaction state
+  data/                    Artwork collection, drawing data and video studies
+  viewer/                  Drawing animation and recorded-view components
+    hooks/                 Drag, drawing playback and image/video view state
+  utils/                   Drawing, timeline and recorded-view calculations
+  styles.ts                Shared gallery and artwork-dialog class constants
 src/components/ui/         Shared shadcn/Radix primitives and carousel
-src/hooks/                 Navigation and carousel state
-src/common/                Navigation data, accordion copy and types
+src/content/site.ts        Shared artist and contact content
+src/motion/                Shared motion behavior and feature loading
+src/styles/site.ts         Shared site class constants
 src/assets/images/         WebP images and their exports
 src/lib/                   CSS class utilities
 src/global.css             Tailwind v4, local fonts and semantic tokens
-src/dev/                   Development-only catalog at /__ui
-tests/designs/             Vitest route and ink animation tests
-tests/e2e/                 Playwright interaction and responsive tests
+tests/unit/app/             Route-resolution unit tests
+tests/unit/portfolio/       Pure drawing, view and timeline tests
+tests/integration/app/      Hosting route configuration checks
+tests/integration/portfolio/ Portfolio collection and public media checks
+tests/e2e/app/              Public site and navigation flows
+tests/e2e/portfolio/        Gallery, viewer and media interactions
+tests/fixtures/ink-views/   Vite-served viewer fixture and synthetic images
 ```
 
-Page copy lives mainly in `src/components/` and `src/common/`. Keep it in English unless a language change is explicitly requested.
+Shared artist and contact content lives in `src/content/site.ts`; portfolio data lives with its feature. Keep public copy in English unless a language change is explicitly requested.
+
+## Module exports
+
+A source module with exactly one exported symbol uses `export default`; its consumers use a default import. Modules exposing multiple symbols keep named exports, including shared UI primitives and modules that expose both values and types. Import types with `import type` when they are only used for type checking.
+
+For example, [portfolio styles](src/features/portfolio/styles.ts) exports one class map:
+
+```typescript
+const portfolioStyles = {
+  // Shared gallery and artwork-dialog classes.
+};
+
+export default portfolioStyles;
+```
+
+Its consumers import it directly:
+
+```typescript
+import portfolioStyles from "./styles";
+```
 
 ## Component system
 
-Open `/__ui` with `vp dev` to review the shared primitives, their states and the retained views. The catalog and modules for C and the legacy App are excluded from the public build; legacy paths still redirect to the home page. Variant B shares A's composition module, though its public route remains retired.
+Shared primitives power the public site's navigation, artwork viewer, gallery and booking/contact flows. The site has one public design; former comparison views and the development catalog are not part of the app.
 
-`vpr check-all` checks formatting, lint, types and Tailwind classes across TS/TSX files. `vpr build` also checks that development-only code stays out of the generated JavaScript. `vpr test:e2e` builds the app and runs Playwright; Windows uses installed Chrome, while Linux requires `vpx playwright install --with-deps chromium`.
+`rtk vpr check-all` checks formatting, lint, types and Tailwind classes across TS/TSX files. `rtk vpr test:e2e` builds the app and runs Playwright; Windows uses installed Chrome, while Linux requires `rtk vpx playwright install --with-deps chromium`.

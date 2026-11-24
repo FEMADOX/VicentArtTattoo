@@ -1,6 +1,6 @@
 # Ink studies with recorded views
 
-The public Design A portfolio includes twelve works: four recorded-view tattoos in the Life movement section and eight photographs in Still tattoos. All twelve works draw automatically once when they enter view. Their speed, replay and skip controls remain available. The separate animation study remains available in the development catalog at `/__ui?view=ink-study`; `/designs/ink-study` redirects to `/#portfolio` while preserving its query string.
+The public portfolio includes twelve works: eight existing photographs and four recorded-view projects. Gorilla, Owl and the four video projects offer an optional drawing animation integrated into the artwork viewer. The removed `/designs/ink-study` path renders the noindex not-found page.
 
 ## Recorded source material
 
@@ -23,16 +23,16 @@ The intervals avoid the reels' later cuts, close-ups, alternate lighting and end
 
 Drawing still takes 12 seconds at 1x. Its speed control, machine, shadows and color passes remain shared with the gorilla/owl studies. Video studies finish on the unmodified reference and hide the SVG layers before enabling recorded views. The original gorilla/owl studies retain their localized black enhancement.
 
-- Hold the left mouse button and drag horizontally after drawing to select views. Hovering does not change a view; releasing preserves the selected angle.
+- After drawing, hold the primary mouse button and drag horizontally to select views; pointer movement without a press does not change a view, and releasing preserves the selected one.
 - Touch and pen drag horizontally. Vertical scrolling and pinch zoom remain available.
 - The Viewing angle slider supports arrows, Home and End, and announces View X of N.
 - Replay restores the reference and keeps drawing speed. Show original finishes the drawing and restores the reference.
-- In the development study, Enlarge image opens the displayed frame as a static original. In the public portfolio, the original photo stays inside the artwork dialog. Escape returns focus to the opener.
-- Reduced motion skips drawing. Deliberate slider and drag selection remain available.
+- In the public portfolio, the original photo stays inside the artwork dialog. Escape returns focus to the opener.
+- Reduced motion skips drawing and passive hover. Deliberate slider and drag selection remain available.
 
-Each visible study prepares at most two images concurrently and retains up to eight decoded cache entries. Frames are decoded before display; the prior photograph stays visible while a requested view loads. Cancelled drag requests cannot later replace it. Leaving the viewport releases preparation work and cached references; returning preserves the selected view. A loading failure falls back to the reference with an accessible message. The browser controls its own underlying image/HTTP cache.
+Each visible study prepares at most two images concurrently and retains up to eight decoded cache entries. Frames are decoded before display; the prior photograph stays visible while a requested view loads. Cancelled drag/hover requests cannot later replace it. Leaving the viewport releases preparation work and cached references; returning preserves the selected view. A loading failure falls back to the reference with an accessible message. The browser controls its own underlying image/HTTP cache.
 
-The development study remains noindex/nofollow. Public recorded-view projects use the portfolio page and its existing metadata. No backend, contact change, frame tracking, per-view ink enhancement or artificial 3D rendering was added.
+The integrated drawing experience uses the public portfolio's existing metadata. No backend, contact change, frame tracking, per-view ink enhancement or artificial 3D rendering was added.
 
 ## Validation
 

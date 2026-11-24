@@ -138,7 +138,7 @@ adapts to short viewports while preserving access to the close and arrow buttons
 
 **Slider.** The actual thumb receives its accessible name, description, and value text. A 44px hit area surrounds its visible circular mark. Controlled values remain arrays as required by Radix. Label opacity controls in terms of the visual effect, with meaningful percentage value text.
 
-**Development catalog.** The development-only /__ui reference exposes Components plus eight retained views. Its live specimens cover Button states and sizes, Dialog, Sheet, Accordion and Slider; retained views exercise the portfolio and carousel compositions. It preserves the public Design A route and adds no public design picker.
+**Public composition.** The site at `/` is the only live design. Shared Button, Dialog, Sheet, Slider and Carousel components are exercised in the public navigation, artwork viewer and gallery; there is no development design picker or comparison route.
 
 **Carousel.** Retain Embla behavior and existing exports. Previous and next controls have at least 44px hit areas. Autoplay behavior is owned by the calling portfolio component; this primitive does not add another autoplay state.
 
