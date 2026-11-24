@@ -35,7 +35,7 @@ const ArtworkDialog = ({ title, image, caption = image.alt, children, actions, o
           <DialogTitle>{title}</DialogTitle>
           <DialogClose asChild><Button variant="ghost" size="icon" aria-label="Close dialog"><X aria-hidden="true" /></Button></DialogClose>
         </div>
-        <DialogDescription className="sr-only">The complete original photograph. Press Escape or use Close dialog to return to the page.</DialogDescription>
+        <DialogDescription className="sr-only">Explore this tattoo work. Press Escape or use Close dialog to return to the page.</DialogDescription>
         <div className={portfolioStyles.lightboxFrame}>
           {children ?? <motion.img key={image.src} className={portfolioStyles.lightboxImage} src={image.src} alt={image.alt} width={image.width} height={image.height} initial={enabled ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: enabled ? 0.15 : 0 }} />}
         </div>
