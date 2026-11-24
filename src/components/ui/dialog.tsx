@@ -1,39 +1,49 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import cn from "@/lib/utils"
 import { XIcon } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
 import { Button } from "@/components/ui/button"
 
-function Dialog ({
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Root>) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />
-}
+type DialogProps = React.ComponentProps<typeof DialogPrimitive.Root>
 
-function DialogTrigger ({
+const Dialog = ({
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
-  return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
-}
+}: DialogProps) => 
+  <DialogPrimitive.Root data-slot="dialog" {...props} />
 
-function DialogPortal ({
+
+type DialogTriggerProps = React.ComponentProps<typeof DialogPrimitive.Trigger>
+
+const DialogTrigger = ({
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Portal>) {
-  return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
-}
+}: DialogTriggerProps) => 
+  <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 
-function DialogClose ({
+
+type DialogPortalProps = React.ComponentProps<typeof DialogPrimitive.Portal>
+
+const DialogPortal = ({
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Close>) {
-  return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
-}
+}: DialogPortalProps) => 
+  <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 
-function DialogOverlay ({
+
+type DialogCloseProps = React.ComponentProps<typeof DialogPrimitive.Close>
+
+const DialogClose = ({
+  ...props
+}: DialogCloseProps) => 
+  <DialogPrimitive.Close data-slot="dialog-close" {...props} />
+
+
+type DialogOverlayProps = React.ComponentProps<typeof DialogPrimitive.Overlay>
+
+const DialogOverlay = ({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
-  return (
+}: DialogOverlayProps) => 
+  (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
       className={cn(
@@ -43,17 +53,19 @@ function DialogOverlay ({
       {...props}
     />
   )
+
+
+type DialogContentProps = React.ComponentProps<typeof DialogPrimitive.Content> & {
+  showCloseButton?: boolean
 }
 
-function DialogContent ({
+const DialogContent = ({
   className,
   children,
   showCloseButton = true,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content> & {
-  showCloseButton?: boolean
-}) {
-  return (
+}: DialogContentProps) => 
+  (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
       <DialogPrimitive.Content
@@ -77,27 +89,31 @@ function DialogContent ({
       </DialogPrimitive.Content>
     </DialogPortal>
   )
-}
 
-function DialogHeader ({ className, ...props }: React.ComponentProps<"div">) {
-  return (
+
+type DialogHeaderProps = React.ComponentProps<"div">
+
+const DialogHeader = ({ className, ...props }: DialogHeaderProps) => 
+  (
     <div
       data-slot="dialog-header"
       className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
       {...props}
     />
   )
+
+
+type DialogFooterProps = React.ComponentProps<"div"> & {
+  showCloseButton?: boolean
 }
 
-function DialogFooter ({
+const DialogFooter = ({
   className,
   showCloseButton = false,
   children,
   ...props
-}: React.ComponentProps<"div"> & {
-  showCloseButton?: boolean
-}) {
-  return (
+}: DialogFooterProps) => 
+  (
     <div
       data-slot="dialog-footer"
       className={cn(
@@ -114,33 +130,37 @@ function DialogFooter ({
       )}
     </div>
   )
-}
 
-function DialogTitle ({
+
+type DialogTitleProps = React.ComponentProps<typeof DialogPrimitive.Title>
+
+const DialogTitle = ({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
-  return (
+}: DialogTitleProps) => 
+  (
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn("font-display text-3xl leading-tight font-normal uppercase tracking-wider text-foreground", className)}
       {...props}
     />
   )
-}
 
-function DialogDescription ({
+
+type DialogDescriptionProps = React.ComponentProps<typeof DialogPrimitive.Description>
+
+const DialogDescription = ({
   className,
   ...props
-}: React.ComponentProps<typeof DialogPrimitive.Description>) {
-  return (
+}: DialogDescriptionProps) => 
+  (
     <DialogPrimitive.Description
       data-slot="dialog-description"
       className={cn("font-body text-lg leading-relaxed text-body", className)}
       {...props}
     />
   )
-}
+
 
 export {
   Dialog,

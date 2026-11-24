@@ -1,33 +1,39 @@
 import * as React from "react"
-import { cn } from "@/lib/utils"
+import cn from "@/lib/utils"
 import { ChevronDownIcon } from "lucide-react"
 import { Accordion as AccordionPrimitive } from "radix-ui"
 
-function Accordion ({
-  ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root data-slot="accordion" {...props} />
-}
+type AccordionProps = React.ComponentProps<typeof AccordionPrimitive.Root>
 
-function AccordionItem ({
+const Accordion = ({
+  ...props
+}: AccordionProps) => 
+  <AccordionPrimitive.Root data-slot="accordion" {...props} />
+
+
+type AccordionItemProps = React.ComponentProps<typeof AccordionPrimitive.Item>
+
+const AccordionItem = ({
   className,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Item>) {
-  return (
+}: AccordionItemProps) => 
+  (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
       className={cn("border-b last:border-b-0", className)}
       {...props}
     />
   )
-}
 
-function AccordionTrigger ({
+
+type AccordionTriggerProps = React.ComponentProps<typeof AccordionPrimitive.Trigger>
+
+const AccordionTrigger = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
-  return (
+}: AccordionTriggerProps) => 
+  (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
@@ -42,14 +48,16 @@ function AccordionTrigger ({
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
-}
 
-function AccordionContent ({
+
+type AccordionContentProps = React.ComponentProps<typeof AccordionPrimitive.Content>
+
+const AccordionContent = ({
   className,
   children,
   ...props
-}: React.ComponentProps<typeof AccordionPrimitive.Content>) {
-  return (
+}: AccordionContentProps) => 
+  (
     <AccordionPrimitive.Content
       data-slot="accordion-content"
       className="overflow-hidden font-body text-lg leading-relaxed text-body duration-240 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
@@ -58,6 +66,6 @@ function AccordionContent ({
       <div className={cn("pt-0 pb-4", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )
-}
+
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }

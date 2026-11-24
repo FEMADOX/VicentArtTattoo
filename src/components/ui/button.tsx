@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '@/lib/utils'
+import cn from '@/lib/utils'
 
 const buttonVariants = cva(
   "inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border font-mono text-xs font-normal uppercase tracking-[0.14em] transition-colors duration-150 outline-none disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-4 focus-visible:outline-ring data-[preview-state=focus]:outline-2 data-[preview-state=focus]:outline-solid data-[preview-state=focus]:outline-offset-4 data-[preview-state=focus]:outline-ring aria-invalid:border-destructive [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -30,17 +30,18 @@ const buttonVariants = cva(
   }
 )
 
-function Button ({
+type ButtonProps = React.ComponentProps<'button'> & VariantProps<typeof buttonVariants> & {
+  asChild?: boolean
+  'data-preview-state'?: 'normal' | 'hover' | 'focus' | 'pressed' | 'disabled'
+}
+
+const Button = ({
   className,
   variant,
   size,
   asChild = false,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-    'data-preview-state'?: 'normal' | 'hover' | 'focus' | 'pressed' | 'disabled'
-  }) {
+}: ButtonProps) => {
   const Comp = asChild ? Slot : 'button'
 
   return (
